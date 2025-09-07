@@ -1,0 +1,228 @@
+{
+  "sections": {
+    "hero": { "enabled": true },
+    "features": { "enabled": true },
+    "services": { "enabled": true },
+    "parceiros": { "enabled": true },
+    "instagram": { "enabled": true },
+    "blog": { "enabled": true },
+    "cta": { "enabled": true },
+    "stats": { "enabled": true },
+    "header": { "enabled": true },
+    "footer": { "enabled": true }
+  },
+  "theme": {
+    "primary": "#0b2743",
+    "secondary": "#2AAA48",
+    "button": "#2E6BD6",
+    "background": "#0a0a0a",
+    "text": "#ffffff",
+    "font": "Inter",
+    "fontSize": {
+      "h1": "3rem",
+      "h2": "2.25rem",
+      "h3": "1.5rem",
+      "body": "1rem"
+    },
+    "header": {
+      "backgroundColor": "#0a0a0a",
+      "textColor": "#ffffff",
+      "borderColor": "#374151"
+    },
+    "footer": {
+      "backgroundColor": "#111827",
+      "textColor": "#9ca3af",
+      "borderColor": "#374151"
+    }
+  },
+  "content": {
+    "hero": {
+      "title": "Rapidus Vistoria",
+      "subtitle": "Soluções digitais especializadas em vistoria veicular. Agilidade, precisão e tecnologia para garantir a segurança do seu veículo.",
+      "primaryButton": "Solicitar Vistoria",
+      "secondaryButton": "Saiba Mais",
+      "bannerImage": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      "bannerAlt": "Vistoria veicular profissional - Inspeção técnica de veículos"
+    },
+    "features": {
+      "title": "Nossos Diferenciais",
+      "items": [
+        {
+          "icon": "🔍",
+          "title": "Inspeção Completa",
+          "description": "Vistoria detalhada de todos os sistemas do veículo com tecnologia de ponta e profissionais especializados."
+        },
+        {
+          "icon": "⚡",
+          "title": "Agilidade",
+          "description": "Processo rápido e eficiente, com relatórios detalhados entregues em tempo recorde."
+        },
+        {
+          "icon": "🛡️",
+          "title": "Segurança Garantida",
+          "description": "Identificação precisa de problemas e recomendações para manter seu veículo sempre seguro."
+        }
+      ]
+    },
+    "services": {
+      "title": "Nossos Serviços",
+      "items": [
+        {
+          "title": "Vistoria Preventiva",
+          "description": "Inspeção completa para identificar problemas antes que se tornem críticos.",
+          "features": ["Verificação de freios", "Análise de suspensão", "Inspeção de motor", "Teste de iluminação"]
+        },
+        {
+          "title": "Vistoria Pós-Acidente",
+          "description": "Avaliação detalhada de danos e estimativa de reparos após acidentes.",
+          "features": ["Análise estrutural", "Verificação de segurança", "Relatório de danos", "Orçamento de reparos"]
+        },
+        {
+          "title": "Vistoria para Seguro",
+          "description": "Inspeção técnica para contratação de seguros veiculares.",
+          "features": ["Documentação completa", "Fotos detalhadas", "Relatório técnico", "Valor de mercado"]
+        },
+        {
+          "title": "Vistoria para Transferência",
+          "description": "Inspeção obrigatória para transferência de propriedade de veículos.",
+          "features": ["Conformidade legal", "Verificação de documentos", "Inspeção técnica", "Laudo oficial"]
+        }
+      ]
+    },
+    "parceiros": {
+      "title": "Nossos Parceiros",
+      "subtitle": "Trabalhamos com seguradoras, concessionárias e oficinas especializadas para oferecer o melhor serviço.",
+      "logos": ["SEGURO 1", "CONCESSIONÁRIA 2", "OFICINA 3", "SEGURO 4", "CONCESSIONÁRIA 5", "OFICINA 6"]
+    },
+    "instagram": {
+      "title": "Siga-nos no Instagram",
+      "subtitle": "Acompanhe nosso trabalho e veja vistorias em tempo real.",
+      "handle": "@rapidus_vistoria",
+      "posts": [
+        { "caption": "Vistoria completa realizada", "image": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" },
+        { "caption": "Inspeção técnica detalhada", "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" },
+        { "caption": "Relatório de vistoria", "image": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" },
+        { "caption": "Veículo aprovado", "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" }
+      ]
+    },
+    "blog": {
+      "title": "Últimas do Blog",
+      "subtitle": "Dicas de manutenção, segurança veicular e novidades do setor automotivo.",
+      "articles": [
+        {
+          "title": "Como Preparar seu Veículo para a Vistoria",
+          "category": "Dicas",
+          "excerpt": "Dicas essenciais para garantir que seu veículo passe na vistoria sem problemas.",
+          "date": "15 Jan 2024",
+          "image": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+        },
+        {
+          "title": "Sinais de que seu Carro Precisa de Vistoria",
+          "category": "Segurança",
+          "excerpt": "Identifique os sinais que indicam a necessidade de uma inspeção técnica.",
+          "date": "10 Jan 2024",
+          "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+        },
+        {
+          "title": "Vistoria Digital: O Futuro da Inspeção Veicular",
+          "category": "Tecnologia",
+          "excerpt": "Como a tecnologia está revolucionando o processo de vistoria de veículos.",
+          "date": "05 Jan 2024",
+          "image": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Pronto para Vistoriar seu Veículo?",
+      "subtitle": "Agende sua vistoria conosco e garanta a segurança e conformidade do seu veículo.",
+      "primaryButton": "Agendar Vistoria",
+      "secondaryButton": "Ver Serviços"
+    },
+    "stats": {
+      "items": [
+        { "value": "5000+", "label": "Vistorias Realizadas" },
+        { "value": "99%", "label": "Aprovação" },
+        { "value": "24h", "label": "Relatório Entregue" },
+        { "value": "10+", "label": "Anos de Experiência" }
+      ]
+    }
+  },
+  "images": {
+    "logos": ["SEGURO 1", "CONCESSIONÁRIA 2", "OFICINA 3", "SEGURO 4", "CONCESSIONÁRIA 5", "OFICINA 6"],
+    "blogThumbnails": [
+      "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    ],
+    "instagramPosts": [
+      "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+      "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+    ],
+    "heroBackground": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    "serviceImages": [
+      "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    ],
+    "featureImages": [
+      "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+    ]
+  },
+  "header": {
+    "logo": {
+      "text": "Rapidus",
+      "image": "",
+      "useImage": false
+    },
+    "menu": {
+      "items": [
+        { "label": "Início", "url": "#hero", "enabled": true },
+        { "label": "Serviços", "url": "#services", "enabled": true },
+        { "label": "Sobre", "url": "#features", "enabled": true },
+        { "label": "Blog", "url": "#blog", "enabled": true },
+        { "label": "Contato", "url": "#cta", "enabled": true }
+      ]
+    },
+    "loginButton": {
+      "enabled": true,
+      "text": "Login",
+      "url": "/login"
+    }
+  },
+  "footer": {
+    "socialMedia": {
+      "instagram": { "enabled": true, "url": "https://instagram.com/rapidus", "label": "Instagram" },
+      "whatsapp": { "enabled": true, "url": "https://wa.me/5511999999999", "label": "WhatsApp" },
+      "linkedin": { "enabled": true, "url": "https://linkedin.com/company/rapidus", "label": "LinkedIn" },
+      "facebook": { "enabled": false, "url": "", "label": "Facebook" },
+      "twitter": { "enabled": false, "url": "", "label": "Twitter" }
+    },
+    "copyright": "© 2025 Rapidus. Todos os direitos reservados.",
+    "links": {
+      "privacyPolicy": { "enabled": true, "url": "/privacy", "label": "Política de Privacidade" },
+      "termsOfUse": { "enabled": true, "url": "/terms", "label": "Termos de Uso" },
+      "contact": { "enabled": true, "url": "/contact", "label": "Contato" }
+    }
+  },
+  "advanced": {
+    "tracking": {
+      "googleAnalytics": { "enabled": false, "id": "" },
+      "facebookPixel": { "enabled": false, "id": "" },
+      "googleTagManager": { "enabled": false, "id": "" }
+    },
+    "chat": {
+      "whatsapp": { "enabled": true, "number": "5511999999999", "message": "Olá! Gostaria de saber mais sobre os serviços da Rapidus." },
+      "liveChat": { "enabled": false, "provider": "tawk", "id": "" }
+    },
+    "seo": {
+      "metaTitle": "Rapidus Vistoria - Soluções Digitais para Inspeção Veicular",
+      "metaDescription": "Especialistas em vistoria veicular com tecnologia avançada. Agilidade, precisão e segurança para seu veículo.",
+      "metaKeywords": "vistoria veicular, inspeção técnica, segurança automotiva, tecnologia veicular"
+    }
+  }
+}

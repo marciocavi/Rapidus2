@@ -1,0 +1,160 @@
+/* Admin Modern UI – Theme (v1)
+   Aplique no contêiner raiz: <body data-modern-admin="1"> ou <div id="admin" data-modern-admin="1"> */
+
+/* RESET de utilidades opcionais – mantenha mínimo para evitar conflitos */
+[data-modern-admin="1"] {
+  --bgBase: #0E1116;
+  --bgSidebar: #0B1320;
+  --bgTopbar: #0F1B2D;
+  --textPrimary: #E6F0FF;
+  --textSecondary: #9DB4D3;
+  --accentA: #2E68D6;
+  --accentB: #9C4DFF;
+  --success: #2ECC71;
+  --warning: #F4C000;
+  --danger:  #FF5A5F;
+
+  --gradPrimary: linear-gradient(135deg, var(--accentA), var(--accentB));
+  --gradSurface: radial-gradient(closest-side, #101828, #0B1320);
+
+  --shadow-1: 0 1px 2px rgba(0,0,0,.25);
+  --shadow-2: 0 8px 24px rgba(0,0,0,.35);
+  --shadow-3: 0 24px 60px rgba(0,0,0,.45);
+
+  --radius-xs: 8px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --transition-fast: 160ms cubic-bezier(0.2,0.8,0.2,1);
+  --transition-med: 200ms cubic-bezier(0.2,0.8,0.2,1);
+}
+
+/* --- Shell ------------------------------------------------------------ */
+[data-modern-admin="1"] .adm-shell {
+  min-height: 100svh;
+  background: radial-gradient(1200px 800px at 70% -10%, rgba(156,77,255,0.12), transparent 60%),
+              radial-gradient(1000px 600px at 0% 100%, rgba(46,104,214,0.10), transparent 60%),
+              var(--bgBase);
+  color: var(--textPrimary);
+}
+
+[data-modern-admin="1"] .adm-topbar {
+  position: sticky;
+  top: 0;
+  height: 64px;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.00)), var(--bgTopbar);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  box-shadow: var(--shadow-1);
+  z-index: 30;
+}
+
+[data-modern-admin="1"] .adm-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: calc(100svh - 64px);
+}
+
+@media (max-width: 1023px) {
+  [data-modern-admin="1"] .adm-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+[data-modern-admin="1"] .adm-sidebar {
+  background: var(--bgSidebar);
+  border-right: 1px solid rgba(255,255,255,.06);
+  padding: 16px 12px;
+}
+
+[data-modern-admin="1"] .adm-content {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 24px 56px;
+}
+
+/* --- Cards / Panels --------------------------------------------------- */
+[data-modern-admin="1"] .adm-card,
+[data-modern-admin="1"] .adm-panel {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+[data-modern-admin="1"] .adm-panel:hover { box-shadow: var(--shadow-3); transform: translateY(-1px); }
+[data-modern-admin="1"] .adm-panel:active { transform: translateY(0); box-shadow: var(--shadow-2); }
+
+[data-modern-admin="1"] .adm-panel__header { padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,.06); }
+[data-modern-admin="1"] .adm-panel__body { padding: 16px 20px; }
+[data-modern-admin="1"] .adm-panel__footer { padding: 12px 20px; border-top: 1px solid rgba(255,255,255,.06); display: flex; gap: 12px; justify-content: flex-end; }
+
+/* --- Fields ----------------------------------------------------------- */
+[data-modern-admin="1"] .adm-field { display: grid; gap: 8px; }
+[data-modern-admin="1"] .adm-label { font-size: 14px; color: var(--textSecondary); }
+
+[data-modern-admin="1"] .adm-input,
+[data-modern-admin="1"] .adm-select,
+[data-modern-admin="1"] .adm-textarea {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,.12);
+  color: var(--textPrimary);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  outline: none;
+  transition: border var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+[data-modern-admin="1"] .adm-input:focus,
+[data-modern-admin="1"] .adm-select:focus,
+[data-modern-admin="1"] .adm-textarea:focus {
+  border-color: var(--accentA);
+  box-shadow: 0 0 0 2px rgba(46,104,214,.35);
+}
+
+[data-modern-admin="1"] .adm-hint { font-size: 12px; color: var(--textSecondary); }
+[data-modern-admin="1"] .adm-error { font-size: 12px; color: var(--danger); }
+
+/* --- Buttons ---------------------------------------------------------- */
+[data-modern-admin="1"] .adm-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 44px; padding: 0 16px; border-radius: var(--radius-sm);
+  border: 1px solid transparent; cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+  font-weight: 600; color: var(--textPrimary);
+}
+
+[data-modern-admin="1"] .adm-btn--primary { background: var(--gradPrimary); box-shadow: var(--shadow-2); }
+[data-modern-admin="1"] .adm-btn--primary:hover { box-shadow: var(--shadow-3); transform: translateY(-1px); }
+
+[data-modern-admin="1"] .adm-btn--tonal { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,.08); }
+[data-modern-admin="1"] .adm-btn--ghost { background: transparent; border-color: rgba(255,255,255,.10); }
+
+/* --- Toggle ----------------------------------------------------------- */
+[data-modern-admin="1"] .adm-toggle { width: 44px; height: 24px; background: rgba(255,255,255,.12); border-radius: 999px; position: relative; transition: background var(--transition-fast); }
+[data-modern-admin="1"] .adm-toggle__knob { width: 20px; height: 20px; background: #fff; border-radius: 999px; position: absolute; top: 2px; left: 2px; transition: transform var(--transition-fast); }
+[data-modern-admin="1"] .adm-toggle.is-on { background: linear-gradient(135deg, rgba(46,104,214,.9), rgba(156,77,255,.9)); }
+[data-modern-admin="1"] .adm-toggle.is-on .adm-toggle__knob { transform: translateX(20px); }
+
+/* --- Tabs ------------------------------------------------------------- */
+[data-modern-admin="1"] .adm-tabs { display: flex; gap: 16px; border-bottom: 1px solid rgba(255,255,255,.08); }
+[data-modern-admin="1"] .adm-tab { padding: 10px 4px; color: var(--textSecondary); border-bottom: 2px solid transparent; cursor: pointer; }
+[data-modern-admin="1"] .adm-tab[aria-selected="true"] { color: var(--textPrimary); border-bottom-color: var(--accentA); }
+
+/* --- Utilitários ------------------------------------------------------ */
+[data-modern-admin="1"] .text-secondary { color: var(--textSecondary); }
+[data-modern-admin="1"] .gap-16 { gap: 16px; }
+[data-modern-admin="1"] .mb-16 { margin-bottom: 16px; }
+[data-modern-admin="1"] .mb-24 { margin-bottom: 24px; }
+[data-modern-admin="1"] .mt-24 { margin-top: 24px; }
+
+/* Acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  [data-modern-admin="1"] * { transition: none !important; }
+}

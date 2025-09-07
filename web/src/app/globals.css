@@ -1,0 +1,262 @@
+@import "tailwindcss";
+
+/* Design System CSS Variables */
+:root {
+  /* Brand Colors */
+  --color-brand-primary: #4F46E5;
+  --color-brand-primaryHover: #4338CA;
+  --color-brand-primaryMuted: #EEF2FF;
+
+  /* Neutral Colors - Light Mode */
+  --color-neutral-bg: #FFFFFF;
+  --color-neutral-surface: #F8FAFC;
+  --color-neutral-surfaceAlt: #F1F5F9;
+  --color-neutral-onSurfaceHigh: #0F172A;
+  --color-neutral-onSurface: #334155;
+  --color-neutral-onSurfaceLow: #64748B;
+  --color-neutral-border: #E2E8F0;
+  --color-neutral-overlay: #0F172A80;
+
+  /* Feedback Colors */
+  --color-feedback-success: #16A34A;
+  --color-feedback-successHover: #15803D;
+  --color-feedback-successMuted: #DCFCE7;
+  --color-feedback-warning: #F59E0B;
+  --color-feedback-warningHover: #D97706;
+  --color-feedback-warningMuted: #FEF3C7;
+  --color-feedback-danger: #DC2626;
+  --color-feedback-dangerHover: #B91C1C;
+  --color-feedback-dangerMuted: #FEE2E2;
+  --color-feedback-info: #0284C7;
+  --color-feedback-infoHover: #0369A1;
+  --color-feedback-infoMuted: #E0F2FE;
+
+  /* Semantic Colors */
+  --color-semantic-primary: #7C5CFC;
+  --color-semantic-primaryHover: #6A4AE6;
+  --color-semantic-primaryMuted: #2A2151;
+  --color-semantic-secondary: #14B8A6;
+  --color-semantic-secondaryHover: #0D9488;
+  --color-semantic-secondaryMuted: #0D2724;
+
+  /* Accent Colors */
+  --color-accent-violet-base: #7C5CFC;
+  --color-accent-violet-hover: #6A4AE6;
+  --color-accent-violet-muted: #2A2151;
+  --color-accent-cyan-base: #22D3EE;
+  --color-accent-cyan-hover: #06B6D4;
+  --color-accent-cyan-muted: #0B2A33;
+  --color-accent-lime-base: #A3E635;
+  --color-accent-lime-hover: #84CC16;
+  --color-accent-lime-muted: #1F2A0F;
+  --color-accent-pink-base: #FB7185;
+  --color-accent-pink-hover: #F43F5E;
+  --color-accent-pink-muted: #2D0F17;
+  --color-accent-teal-base: #14B8A6;
+  --color-accent-teal-hover: #0D9488;
+  --color-accent-teal-muted: #0D2724;
+  --color-accent-amber-base: #F59E0B;
+  --color-accent-amber-hover: #D97706;
+  --color-accent-amber-muted: #2F2208;
+}
+
+/* Dark Mode Variables */
+.dark {
+  /* Neutral Colors - Dark Mode */
+  --color-neutral-bg: #0B1020;
+  --color-neutral-surface: #0F172A;
+  --color-neutral-surfaceAlt: #111624;
+  --color-neutral-onSurfaceHigh: #E8EEF7;
+  --color-neutral-onSurface: #C6D1E4;
+  --color-neutral-onSurfaceLow: #8FA3C1;
+  --color-neutral-border: #1A2233;
+  --color-neutral-overlay: #0C0F16CC;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-neutral-bg);
+  color: var(--color-neutral-onSurfaceHigh);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-neutral-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-onSurfaceLow);
+}
+
+/* Focus Styles for Accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-semantic-primary);
+  outline-offset: 2px;
+}
+
+/* Custom Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 0 2px rgba(124, 92, 252, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(124, 92, 252, 0.4);
+  }
+}
+
+/* Utility Classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.15s ease-out;
+}
+
+.animate-fade-in-left {
+  animation: fadeInLeft 0.15s ease-out;
+}
+
+.animate-fade-in-right {
+  animation: fadeInRight 0.15s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.15s ease-out;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Glass Morphism Effects - DISABLED */
+/*
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(30, 41, 59, 0.3);
+}
+*/
+
+/* Gradient Text */
+.text-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-accent-violet-base) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Loading Skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-neutral-surfaceAlt) 25%, var(--color-neutral-border) 50%, var(--color-neutral-surfaceAlt) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-neutral-border: #000000;
+    --color-neutral-onSurfaceLow: #000000;
+  }
+  
+  .dark {
+    --color-neutral-border: #FFFFFF;
+    --color-neutral-onSurfaceLow: #FFFFFF;
+  }
+}
