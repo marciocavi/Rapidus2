@@ -1,6 +1,7 @@
-import * as React from "react";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import { cva, type VariantProps } from "class-variance-authority";
+import * as React from "react";
+
 import { cn } from "@/lib/utils";
 
 const switchVariants = cva(
@@ -44,7 +45,8 @@ const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   SwitchProps
 >(({ className, variant, size, label, helpText, error, id, ...props }, ref) => {
-  const switchId = id || React.useId();
+  const generatedId = React.useId();
+  const switchId = id || generatedId;
   const helpTextId = helpText ? `${switchId}-help` : undefined;
   const errorId = error ? `${switchId}-error` : undefined;
 

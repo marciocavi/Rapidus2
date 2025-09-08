@@ -1,7 +1,8 @@
 'use client';
 
-import { useSiteConfig } from '@/context/SiteConfigContext';
 import { useState } from 'react';
+
+import { useSiteConfig } from '@/context/SiteConfigContext';
 
 export default function HomePage() {
   const { config } = useSiteConfig();
@@ -160,7 +161,7 @@ export default function HomePage() {
               >
                 <div className="relative w-full h-48 rounded-xl overflow-hidden mb-6">
                   <img
-                    src={config.images && 'featureImages' in config.images ? (config.images as any).featureImages[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`}
+                    src={config.images && 'featureImages' in config.images ? (config.images as { featureImages: string[] }).featureImages[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`}
                     alt={`${item.title} - Vistoria veicular`}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
@@ -215,7 +216,7 @@ export default function HomePage() {
               >
                 <div className="relative w-full h-64 rounded-xl overflow-hidden mb-6">
                   <img
-                    src={config.images && 'serviceImages' in config.images ? (config.images as any).serviceImages[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80`}
+                    src={config.images && 'serviceImages' in config.images ? (config.images as { serviceImages: string[] }).serviceImages[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80`}
                     alt={`${service.title} - Serviço de vistoria veicular`}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
@@ -299,7 +300,7 @@ export default function HomePage() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <img
-                  src={config.images && 'instagramPosts' in config.images ? (config.images as any).instagramPosts[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`}
+                  src={config.images && 'instagramPosts' in config.images ? (config.images as { instagramPosts: string[] }).instagramPosts[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`}
                   alt={`Post ${index + 1} - Instagram`}
                   className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
                 />
@@ -338,7 +339,7 @@ export default function HomePage() {
               >
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src={config.images && 'blogThumbnails' in config.images ? (config.images as any).blogThumbnails[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80`}
+                    src={config.images && 'blogThumbnails' in config.images ? (config.images as { blogThumbnails: string[] }).blogThumbnails[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80`}
                     alt={article.title}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />

@@ -324,7 +324,7 @@ export const components = {
 // Função para obter cor baseada no tema
 export const getThemeColor = (colorPath: string, theme: 'light' | 'dark' = 'dark') => {
   const path = colorPath.split('.');
-  let color = colors as any;
+  let color: Record<string, unknown> = colors;
   
   for (const key of path) {
     if (key === 'neutral' && theme) {
@@ -371,7 +371,7 @@ export const generateCSSVariables = (theme: 'light' | 'dark' = 'dark') => {
 };
 
 // Export default para facilitar importação
-export default {
+const designTokens = {
   colors,
   typography,
   spacing,
@@ -381,3 +381,5 @@ export default {
   getThemeColor,
   generateCSSVariables,
 };
+
+export default designTokens;

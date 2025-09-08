@@ -1,10 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from "next/font/google";
 
-import Navbar from "@/app/components/Navbar";
+import AdminLayoutWrapper from "@/app/admin/AdminLayoutWrapper";
 import { SiteConfigProvider } from "@/context/SiteConfigContext";
 import { loadSiteConfig } from "@/lib/site-config";
-import AdminLayoutWrapper from "@/app/admin/AdminLayoutWrapper";
 
 import "./globals.css";
 
