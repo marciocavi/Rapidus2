@@ -80,16 +80,16 @@ export default function AdminSettings() {
   };
 
   const sections = [
-    { key: 'hero', name: 'Hero', icon: Home, description: 'Seção principal do site' },
-    { key: 'features', name: 'Features', icon: Star, description: 'Diferenciais e características' },
-    { key: 'services', name: 'Services', icon: Wrench, description: 'Serviços oferecidos' },
-    { key: 'parceiros', name: 'Parceiros', icon: Heart, description: 'Logos dos parceiros' },
-    { key: 'instagram', name: 'Instagram', icon: Instagram, description: 'Posts do Instagram' },
-    { key: 'blog', name: 'Blog', icon: FileText, description: 'Artigos do blog' },
-    { key: 'cta', name: 'CTA', icon: Megaphone, description: 'Call to action' },
-    { key: 'stats', name: 'Stats', icon: BarChart3, description: 'Estatísticas' },
-    { key: 'header', name: 'Header', icon: Settings, description: 'Cabeçalho do site' },
-    { key: 'footer', name: 'Footer', icon: Settings, description: 'Rodapé do site' }
+    { key: 'hero' as const, name: 'Hero', icon: Home, description: 'Seção principal do site' },
+    { key: 'features' as const, name: 'Features', icon: Star, description: 'Diferenciais e características' },
+    { key: 'services' as const, name: 'Services', icon: Wrench, description: 'Serviços oferecidos' },
+    { key: 'parceiros' as const, name: 'Parceiros', icon: Heart, description: 'Logos dos parceiros' },
+    { key: 'instagram' as const, name: 'Instagram', icon: Instagram, description: 'Posts do Instagram' },
+    { key: 'blog' as const, name: 'Blog', icon: FileText, description: 'Artigos do blog' },
+    { key: 'cta' as const, name: 'CTA', icon: Megaphone, description: 'Call to action' },
+    { key: 'stats' as const, name: 'Stats', icon: BarChart3, description: 'Estatísticas' },
+    { key: 'header' as const, name: 'Header', icon: Settings, description: 'Cabeçalho do site' },
+    { key: 'footer' as const, name: 'Footer', icon: Settings, description: 'Rodapé do site' }
   ];
 
   // Loading state para evitar hydration error
@@ -259,6 +259,7 @@ export default function AdminSettings() {
                             sections: {
                               ...config.sections,
                               hero: {
+                                enabled: config.sections.hero?.enabled ?? false,
                                 ...config.sections.hero,
                                 content: {
                                   ...config.sections.hero?.content,
@@ -283,6 +284,7 @@ export default function AdminSettings() {
                             sections: {
                               ...config.sections,
                               hero: {
+                                enabled: config.sections.hero?.enabled ?? false,
                                 ...config.sections.hero,
                                 content: {
                                   ...config.sections.hero?.content,
@@ -307,6 +309,7 @@ export default function AdminSettings() {
                           sections: {
                             ...config.sections,
                             hero: {
+                              enabled: config.sections.hero?.enabled ?? false,
                               ...config.sections.hero,
                               content: {
                                 ...config.sections.hero?.content,
@@ -384,6 +387,7 @@ export default function AdminSettings() {
                             sections: {
                               ...config.sections,
                               hero: {
+                                enabled: config.sections.hero?.enabled ?? false,
                                 ...config.sections.hero,
                                 style: {
                                   ...config.sections.hero?.style,
@@ -522,13 +526,14 @@ export default function AdminSettings() {
                         onChange={(e) => updateConfig({
                           sections: {
                             ...config.sections,
-                            hero: {
-                              ...config.sections.hero,
-                              content: {
-                                ...config.sections.hero?.content,
-                                title: e.target.value
+                              hero: {
+                                enabled: config.sections.hero?.enabled ?? false,
+                                ...config.sections.hero,
+                                content: {
+                                  ...config.sections.hero?.content,
+                                  title: e.target.value
+                                }
                               }
-                            }
                           }
                         })}
                         className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg text-white placeholder-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
@@ -546,13 +551,14 @@ export default function AdminSettings() {
                         onChange={(e) => updateConfig({
                           sections: {
                             ...config.sections,
-                            hero: {
-                              ...config.sections.hero,
-                              content: {
-                                ...config.sections.hero?.content,
-                                primaryButton: e.target.value
+                              hero: {
+                                enabled: config.sections.hero?.enabled ?? false,
+                                ...config.sections.hero,
+                                content: {
+                                  ...config.sections.hero?.content,
+                                  primaryButton: e.target.value
+                                }
                               }
-                            }
                           }
                         })}
                         className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg text-white placeholder-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
@@ -570,13 +576,14 @@ export default function AdminSettings() {
                       onChange={(e) => updateConfig({
                         sections: {
                           ...config.sections,
-                          hero: {
-                            ...config.sections.hero,
-                            content: {
-                              ...config.sections.hero?.content,
-                              subtitle: e.target.value
+                            hero: {
+                              enabled: config.sections.hero?.enabled ?? false,
+                              ...config.sections.hero,
+                              content: {
+                                ...config.sections.hero?.content,
+                                subtitle: e.target.value
+                              }
                             }
-                          }
                         }
                       })}
                       rows={3}
@@ -602,6 +609,7 @@ export default function AdminSettings() {
                             sections: {
                               ...config.sections,
                               hero: {
+                                enabled: config.sections.hero?.enabled ?? false,
                                 ...config.sections.hero,
                                 style: {
                                   ...config.sections.hero?.style,
@@ -619,6 +627,7 @@ export default function AdminSettings() {
                             sections: {
                               ...config.sections,
                               hero: {
+                                enabled: config.sections.hero?.enabled ?? false,
                                 ...config.sections.hero,
                                 style: {
                                   ...config.sections.hero?.style,
