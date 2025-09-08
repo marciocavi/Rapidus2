@@ -334,7 +334,7 @@ export const getThemeColor = (colorPath: string, theme: 'light' | 'dark' = 'dark
     }
   }
   
-  return color as string;
+  return color as unknown as string;
 };
 
 // Função para gerar CSS custom properties
