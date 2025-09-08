@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
 import { 
   Settings, 
   BarChart3, 
@@ -21,16 +20,7 @@ import {
 import { StatCard, MiniLineChart, RadialGauge } from '@/components/admin/dashboard';
 
 export default function AdminHome() {
-  const [isModernUI, setIsModernUI] = useState(false);
-  const [isClient, setIsClient] = useState(false);
-
-  // Evitar hydration error
-  useEffect(() => {
-    setIsClient(true);
-    const envFlag = process.env.NEXT_PUBLIC_MODERN_ADMIN_UI === '1';
-    const localStorageFlag = localStorage.getItem('modern-admin-ui') === 'true';
-    setIsModernUI(envFlag || localStorageFlag);
-  }, []);
+  const isModernUI = process.env.NEXT_PUBLIC_MODERN_ADMIN_UI === '1';
 
   // Dados para os gráficos
   const sessionsData = [
@@ -107,28 +97,9 @@ export default function AdminHome() {
     { name: 'SSL', status: 'online', icon: Shield }
   ];
 
-  // Função para toggle da interface moderna
-  const toggleModernUI = () => {
-    const current = localStorage.getItem('modern-admin-ui') === 'true';
-    localStorage.setItem('modern-admin-ui', (!current).toString());
-    setIsModernUI(!current);
-  };
-
-  // Loading state para evitar hydration error
-  if (!isClient) {
-    return (
-      <div className="space-y-8">
-        <div className="animate-pulse">
-          <div className="h-8 bg-zinc-800 rounded w-1/3 mb-4"></div>
-          <div className="h-4 bg-zinc-800 rounded w-1/2"></div>
-        </div>
-      </div>
-    );
-  }
-
   if (isModernUI) {
     return (
-      <div className="space-y-8" data-modern-admin="1">
+      <div className="space-y-8">
         {/* Welcome Section */}
         <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-xl border border-slate-600/30 rounded-xl p-6">
           <div className="flex items-center justify-between">
@@ -136,17 +107,9 @@ export default function AdminHome() {
               <h1 className="text-4xl font-bold text-white mb-2">Bem-vindo ao Rapidus</h1>
               <p className="text-slate-300 text-lg">Painel de controle administrativo</p>
             </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={toggleModernUI}
-                className="px-4 py-2 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-lg hover:bg-purple-500/30 transition-colors text-sm"
-              >
-                Interface Neon: ON
-              </button>
-              <div className="hidden md:flex items-center space-x-2 text-sm text-slate-400">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span>Sistema Online</span>
-              </div>
+            <div className="hidden md:flex items-center space-x-2 text-sm text-slate-400">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span>Sistema Online</span>
             </div>
           </div>
         </div>
@@ -252,17 +215,9 @@ export default function AdminHome() {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-2xl font-semibold text-white">Painel de Controle</h2>
-            <p className="text-zinc-400">Bem-vindo à área administrativa do Rapidus.</p>
-          </div>
-          <button
-            onClick={toggleModernUI}
-            className="px-4 py-2 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-lg hover:bg-blue-500/30 transition-colors text-sm"
-          >
-            Ativar Interface Neon
-          </button>
+        <div>
+          <h2 className="text-2xl font-semibold text-white">Painel de Controle</h2>
+          <p className="text-zinc-400">Bem-vindo à área administrativa do Rapidus.</p>
         </div>
       </div>
 

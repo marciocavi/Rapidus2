@@ -14,6 +14,13 @@
   --warning: #F4C000;
   --danger:  #FF5A5F;
 
+  /* Neon tokens */
+  --neonA: #22d3ee;
+  --neonB: #a855f7;
+  --neonC: #60a5fa;
+  --bgCanvas: radial-gradient(1200px 800px at 70% -10%, rgba(168,85,247,.10), transparent 60%), #0b0f1a;
+  --glow: 0 0 24px rgba(168,85,247,.35);
+
   --gradPrimary: linear-gradient(135deg, var(--accentA), var(--accentB));
   --gradSurface: radial-gradient(closest-side, #101828, #0B1320);
 
@@ -154,9 +161,51 @@
 [data-modern-admin="1"] .mb-24 { margin-bottom: 24px; }
 [data-modern-admin="1"] .mt-24 { margin-top: 24px; }
 
+/* --- Dashboard Utilitários ---------------------------------------------- */
+[data-modern-admin="1"] .adm-card--glass {
+  background: rgba(255,255,255,.04);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  box-shadow: var(--shadow-3);
+}
+
+[data-modern-admin="1"] .adm-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--neonA), var(--neonB));
+  box-shadow: var(--glow);
+}
+
+[data-modern-admin="1"] .adm-metric {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--textPrimary);
+}
+
+[data-modern-admin="1"] .adm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+[data-modern-admin="1"] .sidebar .item.is-active {
+  background: linear-gradient(135deg, rgba(34,211,238,.12), rgba(168,85,247,.12));
+  border-radius: 12px;
+}
+
 /* Acessibilidade */
 @media (prefers-reduced-motion: reduce) {
-  [data-modern-admin="1"] * { transition: none !important; }
+  [data-modern-admin="1"] * { 
+    transition: none !important; 
+    animation: none !important;
+  }
+  [data-modern-admin="1"] * {
+    filter: none !important;
+  }
 }
 
 
