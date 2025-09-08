@@ -1,23 +1,24 @@
 'use client';
 
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
+
+import Link from 'next/link';
+
 import { 
   Settings, 
   BarChart3, 
   FileText, 
   Users, 
-  Shield, 
-  HelpCircle,
+  Shield,
   TrendingUp,
   Activity,
   Database,
-  Globe,
   Clock,
   CheckCircle,
   DollarSign,
   Target
 } from 'lucide-react';
+
 import { StatCard, MiniLineChart, RadialGauge } from '@/components/admin/dashboard';
 
 export default function AdminHome() {

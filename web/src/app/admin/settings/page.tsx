@@ -14,19 +14,14 @@ import {
   Instagram,
   FileText,
   Megaphone,
-  BarChart3,
-  Users,
-  Shield,
-  HelpCircle,
-  Check,
-  X
+  BarChart3
 } from 'lucide-react';
 
 import { useSiteConfig } from '@/context/SiteConfigContext';
 import { SiteConfig } from '@/lib/site-config';
 
 export default function AdminSettings() {
-  const { config, updateConfig, saveConfig, isLoading } = useSiteConfig();
+  const { config, updateConfig, saveConfig } = useSiteConfig();
   const [message, setMessage] = useState<string>('');
   const [activeSection, setActiveSection] = useState<keyof SiteConfig['sections']>('hero');
   const [isSaving, setIsSaving] = useState(false);
@@ -56,22 +51,13 @@ export default function AdminSettings() {
     });
   };
 
-  const handleThemeChange = (key: keyof SiteConfig['theme'], value: string) => {
-    updateConfig({
-      theme: {
-        ...config.theme,
-        [key]: value
-      }
-    });
-  };
-
   const handleSave = async () => {
     setIsSaving(true);
     try {
       await saveConfig();
       setMessage('Configurações salvas com sucesso!');
       setTimeout(() => setMessage(''), 3000);
-    } catch (error) {
+    } catch {
       setMessage('Erro ao salvar configurações');
       setTimeout(() => setMessage(''), 3000);
     } finally {

@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
+
 import Navbar from "@/app/components/Navbar";
 
 interface AdminLayoutWrapperProps {
