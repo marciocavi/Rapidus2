@@ -28,7 +28,7 @@ export default function HomePage() {
       {config.sections.hero?.enabled && (
         <section className="relative mx-4 sm:mx-6 lg:mx-8">
           {/* Banner Image */}
-          {config.content.hero.bannerImage && (
+          {config.content.hero.bannerImage && config.content.hero.bannerImage.trim() !== '' && (
             <div className="relative w-full h-96 overflow-hidden rounded-xl shadow-2xl">
               <Image
                 src={config.content.hero.bannerImage}
@@ -483,12 +483,14 @@ export default function HomePage() {
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 <div className="relative h-64 overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
+                  {item.image && item.image.trim() !== '' && (
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 right-4">
                     <h3 
@@ -547,12 +549,14 @@ export default function HomePage() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
+                  {item.image && item.image.trim() !== '' && (
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1 bg-zinc-900 bg-opacity-80 text-zinc-100 text-xs font-medium rounded-full">
