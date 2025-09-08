@@ -18,7 +18,7 @@ export type TabsProps = {
  * Tabs component for modern admin UI
  * Uses adm-tabs classes from modern-admin.css
  */
-export default function Tabs({ tabs, activeTab, onTabChange, className = '' }: TabsProps) {
+export default function Tabs({ tabs, onTabChange, className = '' }: TabsProps) {
   return (
     <div className={`adm-tabs ${className}`}>
       {tabs.map((tab) => (

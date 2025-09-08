@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 import { useSiteConfig } from '@/context/SiteConfigContext';
 
@@ -29,10 +30,12 @@ export default function HomePage() {
           {/* Banner Image */}
           {config.content.hero.bannerImage && (
             <div className="relative w-full h-96 overflow-hidden rounded-xl shadow-2xl">
-              <img
+              <Image
                 src={config.content.hero.bannerImage}
                 alt={config.content.hero.bannerAlt || 'Banner principal'}
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                fill
+                className="object-cover transition-transform duration-700 hover:scale-105"
+                priority
               />
               
               {/* Hero Content Overlay */}
@@ -160,10 +163,11 @@ export default function HomePage() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="relative w-full h-48 rounded-xl overflow-hidden mb-6">
-                  <img
+                  <Image
                     src={config.images && 'featureImages' in config.images ? (config.images as { featureImages: string[] }).featureImages[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`}
                     alt={`${item.title} - Vistoria veicular`}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
                   <div className="absolute top-4 left-4 w-12 h-12 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center">
@@ -215,10 +219,11 @@ export default function HomePage() {
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 <div className="relative w-full h-64 rounded-xl overflow-hidden mb-6">
-                  <img
+                  <Image
                     src={config.images && 'serviceImages' in config.images ? (config.images as { serviceImages: string[] }).serviceImages[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80`}
                     alt={`${service.title} - Serviço de vistoria veicular`}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/15 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 right-4">
@@ -299,9 +304,11 @@ export default function HomePage() {
                 className="group relative overflow-hidden rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all duration-300 transform hover:scale-105"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <img
+                <Image
                   src={config.images && 'instagramPosts' in config.images ? (config.images as { instagramPosts: string[] }).instagramPosts[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`}
                   alt={`Post ${index + 1} - Instagram`}
+                  width={300}
+                  height={256}
                   className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
@@ -338,10 +345,11 @@ export default function HomePage() {
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 <div className="relative h-48 overflow-hidden">
-                  <img
+                  <Image
                     src={config.images && 'blogThumbnails' in config.images ? (config.images as { blogThumbnails: string[] }).blogThumbnails[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80`}
                     alt={article.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1 bg-zinc-900 bg-opacity-80 text-zinc-100 text-xs font-medium rounded-full">

@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, HTMLAttributes, useState } from 'react';
+import { forwardRef, HTMLAttributes } from 'react';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'elevated' | 'outlined';
@@ -16,7 +16,6 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     children, 
     ...props 
   }, ref) => {
-    const [isHovered, setIsHovered] = useState(false);
 
     const baseClasses = `
       rounded-xl transition-all duration-300 transform
@@ -48,8 +47,6 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={classes}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
         {...props}
       >
         {children}
