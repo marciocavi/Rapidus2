@@ -124,7 +124,7 @@ const config: Config = {
   },
   plugins: [
     // Plugin para utilities customizadas
-    function({ addUtilities, theme }: { addUtilities: (utilities: Record<string, Record<string, string>>) => void; theme: (path: string) => unknown }) {
+    function({ addUtilities, theme }: { addUtilities: (utilities: Record<string, any>) => void; theme: (path: string) => unknown }) {
       const newUtilities = {
         '.focus-ring': {
           outline: '2px solid transparent',
