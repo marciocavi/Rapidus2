@@ -14,7 +14,10 @@ import {
   Instagram,
   FileText,
   Megaphone,
-  BarChart3
+  BarChart3,
+  Images,
+  Award,
+  Share2
 } from 'lucide-react';
 
 import { useSiteConfig } from '@/context/SiteConfigContext';
@@ -74,6 +77,9 @@ export default function AdminSettings() {
     { key: 'blog' as const, name: 'Blog', icon: FileText, description: 'Artigos do blog' },
     { key: 'cta' as const, name: 'CTA', icon: Megaphone, description: 'Call to action' },
     { key: 'stats' as const, name: 'Stats', icon: BarChart3, description: 'Estatísticas' },
+    { key: 'carrossels' as const, name: 'Carrosséis', icon: Images, description: 'Carrosséis de produtos/serviços' },
+    { key: 'certificacoes' as const, name: 'Certificações', icon: Award, description: 'Selos e certificações' },
+    { key: 'icones-flutuantes' as const, name: 'Ícones Flutuantes', icon: Share2, description: 'Redes sociais flutuantes' },
     { key: 'header' as const, name: 'Header', icon: Settings, description: 'Cabeçalho do site' },
     { key: 'footer' as const, name: 'Footer', icon: Settings, description: 'Rodapé do site' }
   ];

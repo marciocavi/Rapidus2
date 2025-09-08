@@ -456,6 +456,152 @@ export default function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Carrosséis Section */}
+      {config.sections.carrossels?.enabled && (
+        <section id="carrossels" className="space-y-8 container mx-auto px-4 sm:px-6 lg:px-8 max-w-container">
+          <div className="text-center space-y-4">
+            <h2 
+              className="font-bold text-zinc-100"
+              style={{ fontSize: config.theme.fontSize?.h2 || '2.25rem' }}
+            >
+              {config.content.carrossels.title}
+            </h2>
+            <p 
+              className="text-zinc-400 max-w-2xl mx-auto"
+              style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
+            >
+              {config.content.carrossels.subtitle}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {config.content.carrossels.items.filter(item => item.enabled).map((item, index) => (
+              <div 
+                key={item.id}
+                className="group border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 transform hover:scale-105"
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                <div className="relative h-64 overflow-hidden">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 
+                      className="font-semibold text-white text-xl mb-2"
+                      style={{ fontSize: config.theme.fontSize?.h3 || '1.5rem' }}
+                    >
+                      {item.title}
+                    </h3>
+                    <p 
+                      className="text-zinc-200 text-sm"
+                      style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
+                    >
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+                {item.link && (
+                  <div className="p-4">
+                    <a 
+                      href={item.link}
+                      className="inline-flex items-center px-4 py-2 bg-zinc-800 text-zinc-100 rounded-lg hover:bg-zinc-700 transition-colors duration-200"
+                    >
+                      Saiba Mais
+                    </a>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Certificações Section */}
+      {config.sections.certificacoes?.enabled && (
+        <section id="certificacoes" className="space-y-8 container mx-auto px-4 sm:px-6 lg:px-8 max-w-container">
+          <div className="text-center space-y-4">
+            <h2 
+              className="font-bold text-zinc-100"
+              style={{ fontSize: config.theme.fontSize?.h2 || '2.25rem' }}
+            >
+              {config.content.certificacoes.title}
+            </h2>
+            <p 
+              className="text-zinc-400 max-w-2xl mx-auto"
+              style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
+            >
+              {config.content.certificacoes.subtitle}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {config.content.certificacoes.items.filter(item => item.enabled).map((item, index) => (
+              <div 
+                key={item.id}
+                className="group border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 transform hover:scale-105"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="relative h-48 overflow-hidden">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 bg-zinc-900 bg-opacity-80 text-zinc-100 text-xs font-medium rounded-full">
+                      {item.organization}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 
+                    className="font-semibold text-zinc-100 mb-2"
+                    style={{ fontSize: config.theme.fontSize?.h3 || '1.5rem' }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p 
+                    className="text-zinc-400 text-sm"
+                    style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
+                  >
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Ícones Flutuantes */}
+      {config.sections['icones-flutuantes']?.enabled && (
+        <div className="fixed right-4 bottom-4 z-50 space-y-3">
+          {config.content.iconesFlutuantes.items.filter(item => item.enabled).map((item, index) => (
+            <a
+              key={item.id}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
+              style={{ 
+                backgroundColor: item.color,
+                animationDelay: `${index * 100}ms`
+              }}
+              title={item.name}
+            >
+              <span className="text-2xl">{item.icon}</span>
+            </a>
+          ))}
+        </div>
+      )}
+
     </div>
   );
 }

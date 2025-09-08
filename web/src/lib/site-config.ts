@@ -1,11 +1,13 @@
 import { z } from 'zod';
 
 export type SectionKey = 
-  | 'hero' | 'features' | 'services' | 'parceiros' | 'instagram' | 'blog' | 'cta' | 'stats' | 'header' | 'footer' | 'advanced';
+  | 'hero' | 'features' | 'services' | 'parceiros' | 'instagram' | 'blog' | 'cta' | 'stats' | 'header' | 'footer' | 'advanced'
+  | 'carrossels' | 'certificacoes' | 'icones-flutuantes';
 
 export const SiteConfigSchema = z.object({
   sections: z.record(z.enum([
-    'hero', 'features', 'services', 'parceiros', 'instagram', 'blog', 'cta', 'stats', 'header', 'footer', 'advanced'
+    'hero', 'features', 'services', 'parceiros', 'instagram', 'blog', 'cta', 'stats', 'header', 'footer', 'advanced',
+    'carrossels', 'certificacoes', 'icones-flutuantes'
   ]), z.object({
     enabled: z.boolean(),
     title: z.string().optional(),
@@ -107,6 +109,41 @@ export const SiteConfigSchema = z.object({
         value: z.string(),
         label: z.string()
       }))
+    }),
+    carrossels: z.object({
+      title: z.string(),
+      subtitle: z.string(),
+      items: z.array(z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string(),
+        image: z.string(),
+        link: z.string().optional(),
+        enabled: z.boolean()
+      }))
+    }),
+    certificacoes: z.object({
+      title: z.string(),
+      subtitle: z.string(),
+      items: z.array(z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string(),
+        image: z.string(),
+        organization: z.string(),
+        enabled: z.boolean()
+      }))
+    }),
+    iconesFlutuantes: z.object({
+      title: z.string(),
+      items: z.array(z.object({
+        id: z.string(),
+        name: z.string(),
+        icon: z.string(),
+        url: z.string(),
+        color: z.string(),
+        enabled: z.boolean()
+      }))
     })
   }),
   images: z.object({
@@ -115,7 +152,9 @@ export const SiteConfigSchema = z.object({
     instagramPosts: z.array(z.string()),
     heroBackground: z.string().optional(),
     serviceImages: z.array(z.string()).optional(),
-    featureImages: z.array(z.string()).optional()
+    featureImages: z.array(z.string()).optional(),
+    carrosselImages: z.array(z.string()).optional(),
+    certificacaoImages: z.array(z.string()).optional()
   }),
   header: z.object({
     logo: z.object({
@@ -183,7 +222,10 @@ export const defaultConfig: SiteConfig = {
     stats: { enabled: true },
     header: { enabled: true },
     footer: { enabled: true },
-    advanced: { enabled: true }
+    advanced: { enabled: true },
+    carrossels: { enabled: false },
+    certificacoes: { enabled: false },
+    iconesFlutuantes: { enabled: false }
   },
   theme: {
     primary: '#0b2743',
@@ -299,13 +341,98 @@ export const defaultConfig: SiteConfig = {
         { value: '24/7', label: 'Suporte' },
         { value: '5+', label: 'Anos de Experiência' }
       ]
+    },
+    carrossels: {
+      title: 'Nossos Carrosséis',
+      subtitle: 'Apresente seus produtos e serviços de forma dinâmica e atrativa.',
+      items: [
+        {
+          id: 'carrossel-1',
+          title: 'Serviços de Vistoria',
+          description: 'Conheça nossos serviços especializados em vistoria veicular.',
+          image: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+          link: '/servicos',
+          enabled: true
+        },
+        {
+          id: 'carrossel-2',
+          title: 'Processo de Vistoria',
+          description: 'Veja como funciona nosso processo completo de inspeção.',
+          image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+          link: '/processo',
+          enabled: true
+        }
+      ]
+    },
+    certificacoes: {
+      title: 'Selos e Certificações',
+      subtitle: 'Nossas certificações e selos de qualidade que garantem a excelência dos nossos serviços.',
+      items: [
+        {
+          id: 'cert-1',
+          title: 'ISO 9001:2015',
+          description: 'Certificação de qualidade em gestão de processos.',
+          image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+          organization: 'ABNT',
+          enabled: true
+        },
+        {
+          id: 'cert-2',
+          title: 'Selo de Qualidade',
+          description: 'Certificação de excelência em serviços de vistoria.',
+          image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+          organization: 'Detran',
+          enabled: true
+        }
+      ]
+    },
+    iconesFlutuantes: {
+      title: 'Redes Sociais',
+      items: [
+        {
+          id: 'whatsapp',
+          name: 'WhatsApp',
+          icon: '📱',
+          url: 'https://wa.me/5511999999999',
+          color: '#25D366',
+          enabled: true
+        },
+        {
+          id: 'instagram',
+          name: 'Instagram',
+          icon: '📷',
+          url: 'https://instagram.com/rapidus_oficial',
+          color: '#E4405F',
+          enabled: true
+        },
+        {
+          id: 'facebook',
+          name: 'Facebook',
+          icon: '👥',
+          url: 'https://facebook.com/rapidus',
+          color: '#1877F2',
+          enabled: false
+        },
+        {
+          id: 'tiktok',
+          name: 'TikTok',
+          icon: '🎵',
+          url: 'https://tiktok.com/@rapidus',
+          color: '#000000',
+          enabled: false
+        }
+      ]
     }
   },
   images: {
     logos: ['LOGO 1', 'LOGO 2', 'LOGO 3', 'LOGO 4', 'LOGO 5', 'LOGO 6'],
     blogThumbnails: ['📝', '📱', '🚀'],
     instagramPosts: ['📸', '📸', '📸', '📸'],
-    heroBackground: undefined
+    heroBackground: undefined,
+    serviceImages: undefined,
+    featureImages: undefined,
+    carrosselImages: undefined,
+    certificacaoImages: undefined
   }
 };
 
