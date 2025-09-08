@@ -35,3 +35,5 @@ export default function Tabs({ tabs, activeTab, onTabChange, className = '' }: T
     </div>
   );
 }
+
+

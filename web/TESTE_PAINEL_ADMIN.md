@@ -129,3 +129,5 @@ Após testar todas as funcionalidades implementadas, você deve conseguir:
 - Ativar/desativar qualquer seção do site
 - Alterar cores e tipografia globalmente
 - Ver as mudanças refletidas imediatamente no site
+
+

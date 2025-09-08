@@ -44,3 +44,5 @@ Para voltar ao layout original:
 3. Verifique se o layout moderno está ativo
 4. Configure `NEXT_PUBLIC_MODERN_ADMIN_UI=0`
 5. Verifique se voltou ao layout original
+
+

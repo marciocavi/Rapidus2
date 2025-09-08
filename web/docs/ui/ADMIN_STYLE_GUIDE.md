@@ -75,3 +75,5 @@ Visual moderno para o Admin com base em Material 3 + Fluent + toque de glassmorp
 - Ativação por env: `NEXT_PUBLIC_MODERN_ADMIN_UI=1`.
 - O layout aplica estilos apenas quando `data-modern-admin="1"` no contêiner raiz.
 - Rollback: setar flag para `0` ou remover o atributo; layout antigo permanece intacto.
+
+

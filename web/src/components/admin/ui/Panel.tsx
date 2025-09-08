@@ -30,3 +30,5 @@ export default function Panel({ children, className = '', header, footer }: Pane
     </section>
   );
 }
+
+

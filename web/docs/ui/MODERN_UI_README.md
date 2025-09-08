@@ -164,3 +164,5 @@ Para customizar cores ou espaçamentos, modifique as variáveis CSS em `modern-a
 - Não altera rotas ou props - apenas visual
 - Rollback seguro: basta desativar a flag
 - Mantém compatibilidade com layout existente
+
+
