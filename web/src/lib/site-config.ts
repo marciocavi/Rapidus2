@@ -225,7 +225,7 @@ export const defaultConfig: SiteConfig = {
     advanced: { enabled: true },
     carrossels: { enabled: false },
     certificacoes: { enabled: false },
-    iconesFlutuantes: { enabled: false }
+    'icones-flutuantes': { enabled: false }
   },
   theme: {
     primary: '#0b2743',
