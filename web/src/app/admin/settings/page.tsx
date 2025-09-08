@@ -345,6 +345,7 @@ export default function AdminSettings() {
                               sections: {
                                 ...config.sections,
                                 hero: {
+                                  enabled: config.sections.hero?.enabled ?? false,
                                   ...config.sections.hero,
                                   style: {
                                     ...config.sections.hero?.style,
@@ -362,6 +363,7 @@ export default function AdminSettings() {
                               sections: {
                                 ...config.sections,
                                 hero: {
+                                  enabled: config.sections.hero?.enabled ?? false,
                                   ...config.sections.hero,
                                   style: {
                                     ...config.sections.hero?.style,
@@ -652,13 +654,14 @@ export default function AdminSettings() {
                         onChange={(e) => updateConfig({
                           sections: {
                             ...config.sections,
-                            hero: {
-                              ...config.sections.hero,
-                              style: {
-                                ...config.sections.hero?.style,
-                                titleSize: e.target.value
-                              }
-                            }
+                                hero: {
+                                  enabled: config.sections.hero?.enabled ?? false,
+                                  ...config.sections.hero,
+                                  style: {
+                                    ...config.sections.hero?.style,
+                                    titleSize: e.target.value
+                                  }
+                                }
                           }
                         })}
                         className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg text-white placeholder-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
