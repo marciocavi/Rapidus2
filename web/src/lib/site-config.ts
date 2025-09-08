@@ -10,7 +10,17 @@ export const SiteConfigSchema = z.object({
     enabled: z.boolean(),
     title: z.string().optional(),
     subtitle: z.string().optional(),
-    description: z.string().optional()
+    description: z.string().optional(),
+    content: z.object({
+      title: z.string().optional(),
+      subtitle: z.string().optional(),
+      primaryButton: z.string().optional(),
+      secondaryButton: z.string().optional()
+    }).optional(),
+    style: z.object({
+      primaryButtonColor: z.string().optional(),
+      titleSize: z.string().optional()
+    }).optional()
   })),
   theme: z.object({
     primary: z.string(),
