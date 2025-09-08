@@ -328,13 +328,13 @@ export const getThemeColor = (colorPath: string, theme: 'light' | 'dark' = 'dark
   
   for (const key of path) {
     if (key === 'neutral' && theme) {
-      color = color[key][theme];
+      color = (color[key] as Record<string, unknown>)[theme] as Record<string, unknown>;
     } else {
-      color = color[key];
+      color = color[key] as Record<string, unknown>;
     }
   }
   
-  return color;
+  return color as string;
 };
 
 // Função para gerar CSS custom properties
