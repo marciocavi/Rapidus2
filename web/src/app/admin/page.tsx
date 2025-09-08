@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { 
   Settings, 
   BarChart3, 
@@ -15,6 +15,7 @@ import {
   DollarSign,
   Target
 } from 'lucide-react';
+
 import { StatCard, MiniLineChart, RadialGauge } from '@/components/admin/dashboard';
 
 export default function AdminHome() {

@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+
 import { colors, typography, spacing, motion, zIndex } from './src/lib/tokens';
 
 const config: Config = {
