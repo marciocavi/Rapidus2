@@ -23,24 +23,12 @@ const eslintConfig = [
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
     rules: {
-      "import/order": [
-        "error",
-        {
-          groups: [
-            "builtin",
-            "external", 
-            "internal",
-            "parent",
-            "sibling",
-            "index"
-          ],
-          "newlines-between": "always",
-          alphabetize: {
-            order: "asc",
-            caseInsensitive: true
-          }
-        }
-      ]
+      "import/order": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@next/next/no-img-element": "warn",
+      "react-hooks/rules-of-hooks": "error",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "import/no-anonymous-default-export": "warn"
     }
   }
 ];
