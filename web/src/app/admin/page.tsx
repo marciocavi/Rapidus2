@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
 import Link from 'next/link';
-
 import { 
   Settings, 
   BarChart3, 
@@ -13,12 +11,10 @@ import {
   TrendingUp,
   Activity,
   Database,
-  Clock,
   CheckCircle,
   DollarSign,
   Target
 } from 'lucide-react';
-
 import { StatCard, MiniLineChart, RadialGauge } from '@/components/admin/dashboard';
 
 export default function AdminHome() {
