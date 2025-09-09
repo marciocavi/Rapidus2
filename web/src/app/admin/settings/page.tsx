@@ -22,7 +22,8 @@ import {
 
 import { useSiteConfig } from '@/context/SiteConfigContext';
 import { SiteConfig } from '@/lib/site-config';
-import { Panel, Field, Button, Toggle, Tabs } from '@/components/admin/ui';
+import { Panel, Button, Toggle } from '@/components/admin/ui';
+import { SectionsOrderList, SectionItem } from '@/components/admin/SectionsOrderList';
 
 export default function AdminSettings() {
   const { config, updateConfig, saveConfig } = useSiteConfig();
@@ -31,6 +32,7 @@ export default function AdminSettings() {
   const [isSaving, setIsSaving] = useState(false);
   const [isModernUI, setIsModernUI] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [sectionsDnD, setSectionsDnD] = useState(false);
 
   // Evitar hydration error
   useEffect(() => {
@@ -69,6 +71,44 @@ export default function AdminSettings() {
     }
   };
 
+  const handleSectionsReorder = async (items: SectionItem[]) => {
+    try {
+      const response = await fetch('/api/sections/reorder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          order: items.map((item, index) => ({
+            id: item.id,
+            position: index + 1
+          }))
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save sections order');
+      }
+
+      // Update local config with new order
+      const newSections = { ...config.sections };
+      items.forEach((item, index) => {
+        if (newSections[item.key as keyof SiteConfig['sections']]) {
+          newSections[item.key as keyof SiteConfig['sections']] = {
+            ...newSections[item.key as keyof SiteConfig['sections']],
+            enabled: newSections[item.key as keyof SiteConfig['sections']]?.enabled ?? false,
+            position: index + 1
+          };
+        }
+      });
+
+      updateConfig({ sections: newSections });
+    } catch (error) {
+      console.error('Error saving sections order:', error);
+      throw error;
+    }
+  };
+
   const sections = [
     { key: 'hero' as const, name: 'Hero', icon: Home, description: 'Seção principal do site' },
     { key: 'features' as const, name: 'Features', icon: Star, description: 'Diferenciais e características' },
@@ -84,6 +124,15 @@ export default function AdminSettings() {
     { key: 'header' as const, name: 'Header', icon: Settings, description: 'Cabeçalho do site' },
     { key: 'footer' as const, name: 'Footer', icon: Settings, description: 'Rodapé do site' }
   ];
+
+  // Convert sections to SectionItem format for drag & drop
+  const sectionsForReorder: SectionItem[] = sections.map((section, index) => ({
+    id: section.key,
+    key: section.key,
+    label: section.name,
+    enabled: config.sections[section.key]?.enabled ?? false,
+    position: config.sections[section.key]?.position ?? index + 1
+  }));
 
   // Loading state para evitar hydration error
   if (!isClient) {
@@ -148,48 +197,66 @@ export default function AdminSettings() {
           {/* Seções */}
           <div className="lg:col-span-1">
             <Panel className="adm-panel adm-card--glass p-6">
-              <h2 className="text-xl font-semibold text-white mb-6 flex items-center">
-                <Settings className="w-5 h-5 mr-2 text-blue-400" />
-                Seções
-              </h2>
-              <div className="space-y-3">
-                {sections.map((section) => {
-                  const Icon = section.icon;
-                  const isActive = activeSection === section.key;
-                  const isEnabled = config.sections[section.key]?.enabled ?? false;
-                  
-                  return (
-                    <div
-                      key={section.key}
-                      className={`p-4 rounded-lg border transition-all duration-200 cursor-pointer ${
-                        isActive
-                          ? 'bg-blue-500/20 border-blue-500/30'
-                          : 'bg-slate-800/50 border-slate-600/30 hover:bg-slate-700/50'
-                      }`}
-                      onClick={() => setActiveSection(section.key)}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className={`p-2 rounded-lg ${
-                            isActive ? 'bg-blue-500/20 text-blue-400' : 'bg-slate-700/50 text-slate-400'
-                          }`}>
-                            <Icon className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <h3 className="text-white font-medium">{section.name}</h3>
-                            <p className="text-slate-400 text-sm">{section.description}</p>
-                          </div>
-                        </div>
-                        <Toggle
-                          checked={isEnabled}
-                          onChange={() => handleSectionToggle(section.key)}
-                          className="w-12 h-6"
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-white flex items-center">
+                  <Settings className="w-5 h-5 mr-2 text-blue-400" />
+                  Seções
+                </h2>
+                <div className="flex items-center space-x-3">
+                  <span className="text-sm text-slate-400">Drag & Drop</span>
+                  <Toggle
+                    checked={sectionsDnD}
+                    onChange={() => setSectionsDnD(!sectionsDnD)}
+                    className="w-12 h-6"
+                  />
+                </div>
               </div>
+              
+              {sectionsDnD ? (
+                <SectionsOrderList 
+                  initial={sectionsForReorder}
+                  onSave={handleSectionsReorder}
+                />
+              ) : (
+                <div className="space-y-3">
+                  {sections.map((section) => {
+                    const Icon = section.icon;
+                    const isActive = activeSection === section.key;
+                    const isEnabled = config.sections[section.key]?.enabled ?? false;
+                    
+                    return (
+                      <div
+                        key={section.key}
+                        className={`p-4 rounded-lg border transition-all duration-200 cursor-pointer ${
+                          isActive
+                            ? 'bg-blue-500/20 border-blue-500/30'
+                            : 'bg-slate-800/50 border-slate-600/30 hover:bg-slate-700/50'
+                        }`}
+                        onClick={() => setActiveSection(section.key)}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <div className={`p-2 rounded-lg ${
+                              isActive ? 'bg-blue-500/20 text-blue-400' : 'bg-slate-700/50 text-slate-400'
+                            }`}>
+                              <Icon className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <h3 className="text-white font-medium">{section.name}</h3>
+                              <p className="text-slate-400 text-sm">{section.description}</p>
+                            </div>
+                          </div>
+                          <Toggle
+                            checked={isEnabled}
+                            onChange={() => handleSectionToggle(section.key)}
+                            className="w-12 h-6"
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </Panel>
           </div>
 
@@ -244,6 +311,7 @@ export default function AdminSettings() {
                               ...config.sections,
                               hero: {
                                 enabled: config.sections.hero?.enabled ?? false,
+                                position: config.sections.hero?.position ?? 1,
                                 ...config.sections.hero,
                                 content: {
                                   ...config.sections.hero?.content,
@@ -269,6 +337,7 @@ export default function AdminSettings() {
                               ...config.sections,
                               hero: {
                                 enabled: config.sections.hero?.enabled ?? false,
+                                position: config.sections.hero?.position ?? 1,
                                 ...config.sections.hero,
                                 content: {
                                   ...config.sections.hero?.content,
@@ -292,9 +361,10 @@ export default function AdminSettings() {
                         onChange={(e) => updateConfig({
                           sections: {
                             ...config.sections,
-                            hero: {
-                              enabled: config.sections.hero?.enabled ?? false,
-                              ...config.sections.hero,
+                              hero: {
+                                enabled: config.sections.hero?.enabled ?? false,
+                                position: config.sections.hero?.position ?? 1,
+                                ...config.sections.hero,
                               content: {
                                 ...config.sections.hero?.content,
                                 subtitle: e.target.value
@@ -330,6 +400,7 @@ export default function AdminSettings() {
                                 ...config.sections,
                                 hero: {
                                   enabled: config.sections.hero?.enabled ?? false,
+                                  position: config.sections.hero?.position ?? 1,
                                   ...config.sections.hero,
                                   style: {
                                     ...config.sections.hero?.style,
@@ -348,6 +419,7 @@ export default function AdminSettings() {
                                 ...config.sections,
                                 hero: {
                                   enabled: config.sections.hero?.enabled ?? false,
+                                  position: config.sections.hero?.position ?? 1,
                                   ...config.sections.hero,
                                   style: {
                                     ...config.sections.hero?.style,
@@ -374,6 +446,7 @@ export default function AdminSettings() {
                               ...config.sections,
                               hero: {
                                 enabled: config.sections.hero?.enabled ?? false,
+                                position: config.sections.hero?.position ?? 1,
                                 ...config.sections.hero,
                                 style: {
                                   ...config.sections.hero?.style,
@@ -547,7 +620,7 @@ export default function AdminSettings() {
                         Itens do Carrossel
                       </label>
                       <div className="space-y-2">
-                        {config.content.carrossels?.items?.map((item, index) => (
+                        {config.content.carrossels?.items?.map((item) => (
                           <div key={item.id} className="p-3 bg-slate-800/50 rounded-lg border border-slate-600/30">
                             <div className="flex items-center justify-between">
                               <div>
@@ -619,7 +692,7 @@ export default function AdminSettings() {
                         Certificações Disponíveis
                       </label>
                       <div className="space-y-2">
-                        {config.content.certificacoes?.items?.map((item, index) => (
+                        {config.content.certificacoes?.items?.map((item) => (
                           <div key={item.id} className="p-3 bg-slate-800/50 rounded-lg border border-slate-600/30">
                             <div className="flex items-center justify-between">
                               <div>
@@ -668,7 +741,7 @@ export default function AdminSettings() {
                         Redes Sociais Disponíveis
                       </label>
                       <div className="space-y-2">
-                        {config.content['icones-flutuantes']?.items?.map((item, index) => (
+                        {config.content['icones-flutuantes']?.items?.map((item) => (
                           <div key={item.id} className="p-3 bg-slate-800/50 rounded-lg border border-slate-600/30">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center space-x-3">
@@ -818,6 +891,7 @@ export default function AdminSettings() {
                             ...config.sections,
                               hero: {
                                 enabled: config.sections.hero?.enabled ?? false,
+                                position: config.sections.hero?.position ?? 1,
                                 ...config.sections.hero,
                                 content: {
                                   ...config.sections.hero?.content,
@@ -843,6 +917,7 @@ export default function AdminSettings() {
                             ...config.sections,
                               hero: {
                                 enabled: config.sections.hero?.enabled ?? false,
+                                position: config.sections.hero?.position ?? 1,
                                 ...config.sections.hero,
                                 content: {
                                   ...config.sections.hero?.content,
@@ -866,9 +941,10 @@ export default function AdminSettings() {
                       onChange={(e) => updateConfig({
                         sections: {
                           ...config.sections,
-                            hero: {
-                              enabled: config.sections.hero?.enabled ?? false,
-                              ...config.sections.hero,
+                              hero: {
+                                enabled: config.sections.hero?.enabled ?? false,
+                                position: config.sections.hero?.position ?? 1,
+                                ...config.sections.hero,
                               content: {
                                 ...config.sections.hero?.content,
                                 subtitle: e.target.value
@@ -900,6 +976,7 @@ export default function AdminSettings() {
                               ...config.sections,
                               hero: {
                                 enabled: config.sections.hero?.enabled ?? false,
+                                position: config.sections.hero?.position ?? 1,
                                 ...config.sections.hero,
                                 style: {
                                   ...config.sections.hero?.style,
@@ -918,6 +995,7 @@ export default function AdminSettings() {
                               ...config.sections,
                               hero: {
                                 enabled: config.sections.hero?.enabled ?? false,
+                                position: config.sections.hero?.position ?? 1,
                                 ...config.sections.hero,
                                 style: {
                                   ...config.sections.hero?.style,
@@ -944,6 +1022,7 @@ export default function AdminSettings() {
                             ...config.sections,
                                 hero: {
                                   enabled: config.sections.hero?.enabled ?? false,
+                                  position: config.sections.hero?.position ?? 1,
                                   ...config.sections.hero,
                                   style: {
                                     ...config.sections.hero?.style,

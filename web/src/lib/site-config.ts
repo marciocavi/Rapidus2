@@ -10,6 +10,7 @@ export const SiteConfigSchema = z.object({
     'carrossels', 'certificacoes', 'icones-flutuantes'
   ]), z.object({
     enabled: z.boolean(),
+    position: z.number().default(0),
     title: z.string().optional(),
     subtitle: z.string().optional(),
     description: z.string().optional(),
@@ -212,20 +213,20 @@ export type SiteConfig = z.infer<typeof SiteConfigSchema>;
 
 export const defaultConfig: SiteConfig = {
   sections: {
-    hero: { enabled: true },
-    features: { enabled: true },
-    services: { enabled: true },
-    parceiros: { enabled: true },
-    instagram: { enabled: true },
-    blog: { enabled: true },
-    cta: { enabled: true },
-    stats: { enabled: true },
-    header: { enabled: true },
-    footer: { enabled: true },
-    advanced: { enabled: true },
-    carrossels: { enabled: false },
-    certificacoes: { enabled: false },
-    'icones-flutuantes': { enabled: false }
+    hero: { enabled: true, position: 1 },
+    features: { enabled: true, position: 2 },
+    services: { enabled: true, position: 3 },
+    parceiros: { enabled: true, position: 4 },
+    instagram: { enabled: true, position: 5 },
+    blog: { enabled: true, position: 6 },
+    cta: { enabled: true, position: 7 },
+    stats: { enabled: true, position: 8 },
+    header: { enabled: true, position: 9 },
+    footer: { enabled: true, position: 10 },
+    advanced: { enabled: true, position: 11 },
+    carrossels: { enabled: false, position: 12 },
+    certificacoes: { enabled: false, position: 13 },
+    'icones-flutuantes': { enabled: false, position: 14 }
   },
   theme: {
     primary: '#0b2743',

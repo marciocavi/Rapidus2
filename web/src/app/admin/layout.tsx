@@ -4,7 +4,6 @@ import '@/design/theme/modern-admin.css';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import Shell from '@/components/admin/ui/Shell';
 import { 
   Settings, 
   BarChart3, 
@@ -17,6 +16,7 @@ import {
   Home,
   ChevronRight
 } from 'lucide-react';
+import Shell from '@/components/admin/ui/Shell';
 
 interface SidebarItem {
   name: string;

@@ -1,12 +1,11 @@
 'use client';
 
-import { useSiteConfig } from '@/context/SiteConfigContext';
 import { useState } from 'react';
+import { useSiteConfig } from '@/context/SiteConfigContext';
 
 export default function HomePage() {
   const { config } = useSiteConfig();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [hoveredButton, setHoveredButton] = useState<string | null>(null);
 
   if (!config) {
     return (
@@ -89,15 +88,15 @@ export default function HomePage() {
                     backgroundColor: config.theme.button,
                     color: config.theme.text
                   }}
-                  onMouseEnter={() => setHoveredButton('primary')}
-                  onMouseLeave={() => setHoveredButton(null)}
+                  onMouseEnter={() => setHoveredCard(0)}
+                  onMouseLeave={() => setHoveredCard(null)}
                 >
                   {config.content.hero.primaryButton}
                 </button>
                 <button 
                   className="px-8 py-4 border-2 border-zinc-300 text-zinc-100 rounded-xl font-semibold hover:bg-white hover:bg-opacity-20 hover:border-zinc-200 transition-all duration-300 transform hover:scale-105"
-                  onMouseEnter={() => setHoveredButton('secondary')}
-                  onMouseLeave={() => setHoveredButton(null)}
+                  onMouseEnter={() => setHoveredCard(1)}
+                  onMouseLeave={() => setHoveredCard(null)}
                 >
                   {config.content.hero.secondaryButton}
                 </button>
@@ -366,8 +365,8 @@ export default function HomePage() {
                   backgroundColor: config.theme.button,
                   color: config.theme.text
                 }}
-                onMouseEnter={() => setHoveredButton('cta-primary')}
-                onMouseLeave={() => setHoveredButton(null)}
+                onMouseEnter={() => setHoveredCard(2)}
+                onMouseLeave={() => setHoveredCard(null)}
               >
                 {config.content.cta.primaryButton}
               </button>
@@ -648,7 +647,7 @@ export default function HomePage() {
           
           {/* Social Icons */}
           <div id="floating-icons" className="hidden absolute bottom-16 right-0 flex flex-col gap-3">
-            {config.content['icones-flutuantes'].items.map((item: any, index: number) => (
+            {config.content['icones-flutuantes'].items.map((item, index: number) => (
               <a
                 key={item.id}
                 href={item.url}
