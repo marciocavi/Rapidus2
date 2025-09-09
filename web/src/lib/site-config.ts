@@ -134,7 +134,7 @@ export const SiteConfigSchema = z.object({
         enabled: z.boolean()
       }))
     }),
-    iconesFlutuantes: z.object({
+    'icones-flutuantes': z.object({
       title: z.string(),
       items: z.array(z.object({
         id: z.string(),
@@ -386,7 +386,7 @@ export const defaultConfig: SiteConfig = {
         }
       ]
     },
-    iconesFlutuantes: {
+    'icones-flutuantes': {
       title: 'Redes Sociais',
       items: [
         {

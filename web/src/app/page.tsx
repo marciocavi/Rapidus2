@@ -648,10 +648,10 @@ export default function HomePage() {
           
           {/* Social Icons */}
           <div id="floating-icons" className="hidden absolute bottom-16 right-0 flex flex-col gap-3">
-            {config.content.iconesFlutuantes.items.map((item: any, index: number) => (
+            {config.content['icones-flutuantes'].items.map((item: any, index: number) => (
               <a
                 key={item.id}
-                href={item.link}
+                href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 group"
