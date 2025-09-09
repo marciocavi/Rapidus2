@@ -1,12 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { 
   Settings, 
   Palette, 
-  Type, 
-  Save, 
-  Eye,
+  Type,
   Home,
   Star,
   Wrench,
@@ -17,19 +15,14 @@ import {
   BarChart3,
   Images,
   Award,
-  Share2,
-  Image as ImageIcon,
-  Plus,
-  Trash2,
-  Loader2
+  Share2
 } from 'lucide-react';
 
 import { useSiteConfig } from '@/context/SiteConfigContext';
 import { SiteConfig } from '@/lib/site-config';
-import { Panel, Button, Toggle } from '@/components/admin/ui';
+import { Panel, Toggle } from '@/components/admin/ui';
 import { SectionsOrderList, SectionItem } from '@/components/admin/SectionsOrderList';
 import SectionPreviewBar from '@/components/admin/SectionPreviewBar';
-import ImageUpload from '@/components/admin/ImageUpload';
 import ColorPicker from '@/components/admin/ColorPicker';
 import FontSizePicker from '@/components/admin/FontSizePicker';
 import HeightPicker from '@/components/admin/HeightPicker';
@@ -43,13 +36,12 @@ export default function AdminSettings() {
   const { config, updateConfig, saveConfig } = useSiteConfig();
   const [message, setMessage] = useState<string>('');
   const [activeSection, setActiveSection] = useState<keyof SiteConfig['sections']>('hero');
-  const [isSaving, setIsSaving] = useState(false);
   const [isModernUI, setIsModernUI] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [sectionsDnD, setSectionsDnD] = useState(false);
   
   // Estado para preview em tempo real
-  const [draftProps, setDraftProps] = useState<Record<string, any>>({});
+  const [draftProps] = useState<Record<string, unknown>>({});
 
   // Evitar hydration error
   useEffect(() => {
@@ -74,6 +66,17 @@ export default function AdminSettings() {
     });
   };
 
+  const handleSave = useCallback(async () => {
+    try {
+      await saveConfig();
+      setMessage('Configurações salvas com sucesso!');
+      setTimeout(() => setMessage(''), 3000);
+    } catch {
+      setMessage('Erro ao salvar configurações');
+      setTimeout(() => setMessage(''), 3000);
+    }
+  }, [saveConfig]);
+
   // Listen for save event from header
   useEffect(() => {
     const handleAdminSave = () => {
@@ -82,21 +85,7 @@ export default function AdminSettings() {
 
     window.addEventListener('admin-save', handleAdminSave);
     return () => window.removeEventListener('admin-save', handleAdminSave);
-  }, []);
-
-  const handleSave = async () => {
-    setIsSaving(true);
-    try {
-      await saveConfig();
-      setMessage('Configurações salvas com sucesso!');
-      setTimeout(() => setMessage(''), 3000);
-    } catch {
-      setMessage('Erro ao salvar configurações');
-      setTimeout(() => setMessage(''), 3000);
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  }, [handleSave]);
 
   const handleSectionsReorder = async (items: SectionItem[]) => {
     try {

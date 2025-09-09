@@ -429,7 +429,7 @@ const IconesFlutuantesStub = (props: any) => (
   </div>
 );
 
-const HeaderStub = (props: any) => (
+const HeaderStub = (_props: unknown) => (
   <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-50">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between h-16">
@@ -453,7 +453,7 @@ const HeaderStub = (props: any) => (
   </header>
 );
 
-const FooterStub = (props: any) => (
+const FooterStub = (_props: unknown) => (
   <footer className="bg-zinc-900 border-t border-zinc-800">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">

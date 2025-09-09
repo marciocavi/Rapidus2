@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef } from 'react';
-import { Upload, X, Image as ImageIcon } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
+import Image from 'next/image';
 
 interface ImageUploadProps {
   value?: string;
@@ -54,11 +55,14 @@ export default function ImageUpload({ value, onChange, placeholder = "Clique par
       
       {value ? (
         <div className="relative group">
-          <img
-            src={value}
-            alt="Preview"
-            className="w-full h-24 object-cover rounded-md border border-slate-600/30"
-          />
+          <div className="relative w-full h-24 rounded-md border border-slate-600/30 overflow-hidden">
+            <Image
+              src={value}
+              alt="Preview"
+              fill
+              className="object-cover"
+            />
+          </div>
           <button
             onClick={handleRemove}
             className="absolute top-1 right-1 p-1 bg-red-500/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
