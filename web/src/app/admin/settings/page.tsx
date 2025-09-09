@@ -24,6 +24,8 @@ import { useSiteConfig } from '@/context/SiteConfigContext';
 import { SiteConfig } from '@/lib/site-config';
 import { Panel, Button, Toggle } from '@/components/admin/ui';
 import { SectionsOrderList, SectionItem } from '@/components/admin/SectionsOrderList';
+import SectionPreviewBar from '@/components/admin/SectionPreviewBar';
+import type { SectionKey } from '@/ui/sections/registry';
 
 export default function AdminSettings() {
   const { config, updateConfig, saveConfig } = useSiteConfig();
@@ -33,6 +35,9 @@ export default function AdminSettings() {
   const [isModernUI, setIsModernUI] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [sectionsDnD, setSectionsDnD] = useState(false);
+  
+  // Estado para preview em tempo real
+  const [draftProps, setDraftProps] = useState<Record<string, any>>({});
 
   // Evitar hydration error
   useEffect(() => {
@@ -181,6 +186,12 @@ export default function AdminSettings() {
             </div>
           </div>
         </Panel>
+
+        {/* Section Preview Bar */}
+        <SectionPreviewBar 
+          activeSection={activeSection as SectionKey} 
+          draftProps={draftProps} 
+        />
 
         {/* Message */}
         {message && (

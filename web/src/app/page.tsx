@@ -26,6 +26,7 @@ export default function HomePage() {
       }))
       .sort((a, b) => a.position - b.position);
     
+    console.log('Ordered sections:', sections.map(s => ({ key: s.key, position: s.position })));
     return sections;
   };
 

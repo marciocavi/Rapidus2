@@ -24,6 +24,14 @@ export function SiteConfigProvider({ children, initialConfig }: {
     setConfig(prev => {
       const updated = { ...prev, ...newConfig };
       console.log('Config updated:', updated);
+      
+      // Save to localStorage immediately for persistence across pages
+      try {
+        localStorage.setItem('siteConfig', JSON.stringify(updated));
+      } catch (error) {
+        console.warn('Failed to save config to localStorage:', error);
+      }
+      
       return updated;
     });
   };
@@ -61,14 +69,35 @@ export function SiteConfigProvider({ children, initialConfig }: {
     if (savedConfig) {
       try {
         const parsed = JSON.parse(savedConfig);
-        // Only use localStorage if it has the new structure
-        if (parsed.theme?.fontSize && parsed.content) {
+        // Use localStorage config if it exists and has sections
+        if (parsed.sections) {
+          console.log('Loading config from localStorage:', parsed);
           setConfig(parsed);
         }
-      } catch {
-        // Keep default if localStorage is invalid
+      } catch (error) {
+        console.warn('Failed to parse localStorage config:', error);
       }
     }
+  }, []);
+
+  // Listen for storage changes to sync across tabs
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'siteConfig' && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (parsed.sections) {
+            console.log('Config updated from another tab:', parsed);
+            setConfig(parsed);
+          }
+        } catch (error) {
+          console.warn('Failed to parse config from storage event:', error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   return (
