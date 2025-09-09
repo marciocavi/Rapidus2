@@ -22,6 +22,7 @@ import {
 
 import { useSiteConfig } from '@/context/SiteConfigContext';
 import { SiteConfig } from '@/lib/site-config';
+import { Panel, Field, Button, Toggle, Tabs } from '@/components/admin/ui';
 
 export default function AdminSettings() {
   const { config, updateConfig, saveConfig } = useSiteConfig();
@@ -100,7 +101,7 @@ export default function AdminSettings() {
     return (
       <div className="space-y-8" data-modern-admin="1">
         {/* Header */}
-        <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-xl border border-slate-600/30 rounded-xl p-6">
+        <Panel className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-xl border border-slate-600/30 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-4xl font-bold text-white mb-2">Configurações</h1>
@@ -111,7 +112,7 @@ export default function AdminSettings() {
                 <Eye className="w-4 h-4 inline mr-2" />
                 Ver Site
               </button>
-              <button
+              <Button
                 onClick={handleSave}
                 disabled={isSaving}
                 className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50"
@@ -127,10 +128,10 @@ export default function AdminSettings() {
                     Salvar
                   </>
                 )}
-              </button>
+              </Button>
             </div>
           </div>
-        </div>
+        </Panel>
 
         {/* Message */}
         {message && (
@@ -146,7 +147,7 @@ export default function AdminSettings() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Seções */}
           <div className="lg:col-span-1">
-            <div className="adm-panel adm-card--glass p-6">
+            <Panel className="adm-panel adm-card--glass p-6">
               <h2 className="text-xl font-semibold text-white mb-6 flex items-center">
                 <Settings className="w-5 h-5 mr-2 text-blue-400" />
                 Seções
@@ -179,32 +180,22 @@ export default function AdminSettings() {
                             <p className="text-slate-400 text-sm">{section.description}</p>
                           </div>
                         </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleSectionToggle(section.key);
-                          }}
-                          className={`w-12 h-6 rounded-full transition-all duration-200 ${
-                            isEnabled
-                              ? 'bg-gradient-to-r from-green-500 to-blue-500'
-                              : 'bg-slate-600'
-                          }`}
-                        >
-                          <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
-                            isEnabled ? 'translate-x-6' : 'translate-x-0.5'
-                          }`} />
-                        </button>
+                        <Toggle
+                          checked={isEnabled}
+                          onChange={() => handleSectionToggle(section.key)}
+                          className="w-12 h-6"
+                        />
                       </div>
                     </div>
                   );
                 })}
               </div>
-            </div>
+            </Panel>
           </div>
 
           {/* Configuração */}
           <div className="lg:col-span-2">
-            <div className="adm-panel adm-card--glass p-6">
+            <Panel className="adm-panel adm-card--glass p-6">
               <h2 className="text-xl font-semibold text-white mb-6 flex items-center">
                 <Palette className="w-5 h-5 mr-2 text-purple-400" />
                 Configuração - {sections.find(s => s.key === activeSection)?.name}
@@ -718,7 +709,7 @@ export default function AdminSettings() {
                   </p>
                 </div>
               )}
-            </div>
+            </Panel>
           </div>
         </div>
       </div>

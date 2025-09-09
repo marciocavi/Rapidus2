@@ -1,8 +1,10 @@
 'use client';
 
+import '@/design/theme/modern-admin.css';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import Shell from '@/components/admin/ui/Shell';
 import { 
   Settings, 
   BarChart3, 
@@ -89,7 +91,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (isModernUI) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" data-modern-admin="1">
+      <Shell modern={true}>
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" data-modern-admin="1">
         {/* Mobile sidebar overlay */}
         {sidebarOpen && (
           <div 
@@ -216,6 +219,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </main>
         </div>
       </div>
+      </Shell>
     );
   }
 
