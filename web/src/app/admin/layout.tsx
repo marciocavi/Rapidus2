@@ -201,6 +201,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
                   <span>Sistema Online</span>
                 </div>
+                <a
+                  href="/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3 py-1.5 text-xs bg-green-500/20 text-green-300 border border-green-500/30 rounded-md hover:bg-green-500/30 transition-colors"
+                >
+                  Ver Site
+                </a>
+                <button
+                  onClick={() => {
+                    // Trigger save event for the settings page
+                    window.dispatchEvent(new CustomEvent('admin-save'));
+                  }}
+                  className="px-3 py-1.5 text-xs bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-md hover:bg-blue-500/30 transition-colors"
+                >
+                  Salvar
+                </button>
                 <Link
                   href="/login"
                   className="px-3 py-1.5 text-xs bg-red-500/20 text-red-300 border border-red-500/30 rounded-md hover:bg-red-500/30 transition-colors"
