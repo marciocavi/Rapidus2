@@ -8,21 +8,53 @@ export type SectionKey = "hero" | "features" | "services" | "parceiros" | "insta
 
 // Componentes stub temporários para não quebrar o build
 const HeroStub = (props: any) => (
-  <section className="relative w-full h-24 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+  <section 
+    className="relative w-full h-24 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
+    style={{
+      backgroundColor: props.style?.backgroundColor,
+      backgroundImage: props.content?.backgroundImage ? `url(${props.content.backgroundImage})` : undefined,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}
+  >
     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
     <div className="relative z-10 flex flex-col items-center justify-center h-full text-center space-y-1 px-3">
-      <h1 className="font-bold text-white text-sm">
-        {props.title || "Transforme sua empresa com tecnologia"}
+      <h1 
+        className="font-bold text-white text-sm"
+        style={{
+          color: props.style?.titleColor,
+          fontSize: props.style?.titleSize ? undefined : '0.875rem'
+        }}
+      >
+        {props.content?.title || props.title || "Transforme sua empresa com tecnologia"}
       </h1>
-      <p className="text-slate-200 max-w-xs mx-auto leading-tight text-xs">
-        {props.subtitle || "Soluções inovadoras para acelerar seu crescimento digital"}
+      <p 
+        className="text-slate-200 max-w-xs mx-auto leading-tight text-xs"
+        style={{
+          color: props.style?.subtitleColor
+        }}
+      >
+        {props.content?.subtitle || props.subtitle || "Soluções inovadoras para acelerar seu crescimento digital"}
       </p>
       <div className="flex gap-1">
-        <button className="px-2 py-0.5 rounded text-xs font-semibold bg-blue-600 text-white">
-          {props.primaryButton || "Começar Agora"}
+        <button 
+          className="px-2 py-0.5 rounded text-xs font-semibold text-white"
+          style={{
+            backgroundColor: props.style?.primaryButtonColor || '#3B82F6',
+            color: props.style?.primaryButtonTextColor || '#FFFFFF'
+          }}
+        >
+          {props.content?.primaryButton || props.primaryButton || "Começar Agora"}
         </button>
-        <button className="px-2 py-0.5 border border-slate-300 text-slate-100 rounded text-xs font-semibold">
-          {props.secondaryButton || "Saiba Mais"}
+        <button 
+          className="px-2 py-0.5 border border-slate-300 text-slate-100 rounded text-xs font-semibold"
+          style={{
+            backgroundColor: props.style?.secondaryButtonColor,
+            color: props.style?.secondaryButtonTextColor,
+            borderColor: props.style?.secondaryButtonColor
+          }}
+        >
+          {props.content?.secondaryButton || props.secondaryButton || "Saiba Mais"}
         </button>
       </div>
     </div>
@@ -30,22 +62,34 @@ const HeroStub = (props: any) => (
 );
 
 const FeaturesStub = (props: any) => (
-  <section className="py-6 bg-slate-900">
+  <section 
+    className="py-6 bg-slate-900"
+    style={{ backgroundColor: props.style?.backgroundColor }}
+  >
     <div className="max-w-4xl mx-auto px-4">
       <div className="text-center mb-4">
-        <h2 className="font-bold text-white text-lg mb-2">
-          {props.title || "Por que escolher a Rapidus?"}
+        <h2 
+          className="font-bold text-white text-lg mb-2"
+          style={{ 
+            color: props.style?.titleColor,
+            fontSize: props.style?.titleSize ? undefined : '1.125rem'
+          }}
+        >
+          {props.content?.title || props.title || "Por que escolher a Rapidus?"}
         </h2>
-        <p className="text-slate-300 max-w-xl mx-auto text-sm">
-          {props.subtitle || "Oferecemos soluções completas para impulsionar seu negócio"}
+        <p 
+          className="text-slate-300 max-w-xl mx-auto text-sm"
+          style={{ color: props.style?.subtitleColor }}
+        >
+          {props.content?.subtitle || props.subtitle || "Oferecemos soluções completas para impulsionar seu negócio"}
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {[
+        {(props.content?.items || [
           { icon: "⚡", title: "Performance", desc: "Velocidade e eficiência" },
           { icon: "🔒", title: "Segurança", desc: "Proteção avançada" },
           { icon: "📈", title: "Crescimento", desc: "Resultados mensuráveis" }
-        ].map((feature, i) => (
+        ]).slice(0, 3).map((feature: any, i: number) => (
           <div key={i} className="p-3 bg-slate-800 rounded-md border border-slate-700 hover:border-slate-600 transition-colors">
             <div className="w-8 h-8 bg-blue-600 rounded-md flex items-center justify-center mb-2">
               <span className="text-sm">{feature.icon}</span>
@@ -60,20 +104,39 @@ const FeaturesStub = (props: any) => (
 );
 
 const ServicesStub = (props: any) => (
-  <div className="py-16">
+  <div 
+    className="py-16"
+    style={{ backgroundColor: props.style?.backgroundColor }}
+  >
     <div className="text-center mb-12">
-      <h2 className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent text-3xl">
-        {props.title || "Services"}
+      <h2 
+        className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent text-3xl"
+        style={{ 
+          color: props.style?.titleColor,
+          fontSize: props.style?.titleSize ? undefined : '1.875rem'
+        }}
+      >
+        {props.content?.title || props.title || "Services"}
       </h2>
+      <p 
+        className="text-zinc-400 text-sm mt-4"
+        style={{ color: props.style?.subtitleColor }}
+      >
+        {props.content?.subtitle || props.subtitle || "Soluções completas para seu negócio"}
+      </p>
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {[1, 2, 3].map((i) => (
+      {(props.content?.items || [
+        { title: "Service 1", description: "Description for service 1" },
+        { title: "Service 2", description: "Description for service 2" },
+        { title: "Service 3", description: "Description for service 3" }
+      ]).slice(0, 3).map((service: any, i: number) => (
         <div key={i} className="p-8 border border-zinc-800 rounded-xl">
           <div className="w-20 h-20 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
             <span className="text-3xl">🔧</span>
           </div>
-          <h3 className="font-semibold text-zinc-100 mb-2">Service {i}</h3>
-          <p className="text-zinc-400">Description for service {i}</p>
+          <h3 className="font-semibold text-zinc-100 mb-2">{service.title}</h3>
+          <p className="text-zinc-400">{service.description}</p>
         </div>
       ))}
     </div>
@@ -81,16 +144,38 @@ const ServicesStub = (props: any) => (
 );
 
 const PartnersStub = (props: any) => (
-  <div className="py-16">
+  <div 
+    className="py-16"
+    style={{ backgroundColor: props.style?.backgroundColor }}
+  >
     <div className="text-center mb-12">
-      <h2 className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent text-3xl">
-        {props.title || "Partners"}
+      <h2 
+        className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent text-3xl"
+        style={{ 
+          color: props.style?.titleColor,
+          fontSize: props.style?.titleSize ? undefined : '1.875rem'
+        }}
+      >
+        {props.content?.title || props.title || "Partners"}
       </h2>
+      <p 
+        className="text-zinc-400 text-sm mt-4"
+        style={{ color: props.style?.subtitleColor }}
+      >
+        {props.content?.subtitle || props.subtitle || "Nossos parceiros de confiança"}
+      </p>
     </div>
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-      {[1, 2, 3, 4, 5, 6].map((i) => (
+      {(props.content?.items || [
+        { title: "Partner 1" },
+        { title: "Partner 2" },
+        { title: "Partner 3" },
+        { title: "Partner 4" },
+        { title: "Partner 5" },
+        { title: "Partner 6" }
+      ]).slice(0, 6).map((partner: any, i: number) => (
         <div key={i} className="flex items-center justify-center p-6 border border-zinc-800 rounded-xl">
-          <span className="text-zinc-400 font-medium text-sm">Partner {i}</span>
+          <span className="text-zinc-400 font-medium text-sm">{partner.title}</span>
         </div>
       ))}
     </div>
@@ -98,14 +183,34 @@ const PartnersStub = (props: any) => (
 );
 
 const InstagramStub = (props: any) => (
-  <div className="py-16">
+  <div 
+    className="py-16"
+    style={{ backgroundColor: props.style?.backgroundColor }}
+  >
     <div className="text-center mb-12">
-      <h2 className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent text-3xl">
-        {props.title || "Instagram"}
+      <h2 
+        className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent text-3xl"
+        style={{ 
+          color: props.style?.titleColor,
+          fontSize: props.style?.titleSize ? undefined : '1.875rem'
+        }}
+      >
+        {props.content?.title || props.title || "Instagram"}
       </h2>
+      <p 
+        className="text-zinc-400 text-sm mt-4"
+        style={{ color: props.style?.subtitleColor }}
+      >
+        {props.content?.subtitle || props.subtitle || "Siga-nos no Instagram"}
+      </p>
     </div>
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {[1, 2, 3, 4].map((i) => (
+      {(props.content?.items || [
+        { image: "" },
+        { image: "" },
+        { image: "" },
+        { image: "" }
+      ]).slice(0, 4).map((post: any, i: number) => (
         <div key={i} className="aspect-square rounded-xl overflow-hidden border border-zinc-800">
           <div className="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-700 flex items-center justify-center">
             <span className="text-zinc-400 text-4xl">📷</span>
@@ -117,21 +222,40 @@ const InstagramStub = (props: any) => (
 );
 
 const BlogStub = (props: any) => (
-  <div className="py-16">
+  <div 
+    className="py-16"
+    style={{ backgroundColor: props.style?.backgroundColor }}
+  >
     <div className="text-center mb-12">
-      <h2 className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent text-3xl">
-        {props.title || "Blog"}
+      <h2 
+        className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent text-3xl"
+        style={{ 
+          color: props.style?.titleColor,
+          fontSize: props.style?.titleSize ? undefined : '1.875rem'
+        }}
+      >
+        {props.content?.title || props.title || "Blog"}
       </h2>
+      <p 
+        className="text-zinc-400 text-sm mt-4"
+        style={{ color: props.style?.subtitleColor }}
+      >
+        {props.content?.subtitle || props.subtitle || "Últimas notícias e artigos"}
+      </p>
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {[1, 2, 3].map((i) => (
+      {(props.content?.items || [
+        { title: "Blog Post 1", description: "Excerpt for blog post 1" },
+        { title: "Blog Post 2", description: "Excerpt for blog post 2" },
+        { title: "Blog Post 3", description: "Excerpt for blog post 3" }
+      ]).slice(0, 3).map((post: any, i: number) => (
         <article key={i} className="border border-zinc-800 rounded-xl overflow-hidden">
           <div className="aspect-video bg-gradient-to-br from-zinc-800 to-zinc-700 flex items-center justify-center">
             <span className="text-zinc-400 text-4xl">📝</span>
           </div>
           <div className="p-6">
-            <h3 className="font-semibold text-zinc-100 mb-2">Blog Post {i}</h3>
-            <p className="text-zinc-400 mb-4">Excerpt for blog post {i}</p>
+            <h3 className="font-semibold text-zinc-100 mb-2">{post.title}</h3>
+            <p className="text-zinc-400 mb-4">{post.description}</p>
             <button className="text-zinc-300 hover:text-zinc-100">Ler mais →</button>
           </div>
         </article>
@@ -141,20 +265,53 @@ const BlogStub = (props: any) => (
 );
 
 const CtaStub = (props: any) => (
-  <div className="py-16">
-    <div className="bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-800 rounded-2xl p-12 border border-zinc-700 text-center">
-      <h2 className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent mb-6 text-3xl">
-        {props.title || "Call to Action"}
+  <div 
+    className="py-16"
+    style={{ backgroundColor: props.style?.backgroundColor }}
+  >
+    <div 
+      className="bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-800 rounded-2xl p-12 border border-zinc-700 text-center"
+      style={{ 
+        backgroundColor: props.style?.backgroundColor,
+        backgroundImage: props.content?.backgroundImage ? `url(${props.content.backgroundImage})` : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}
+    >
+      <h2 
+        className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent mb-6 text-3xl"
+        style={{ 
+          color: props.style?.titleColor,
+          fontSize: props.style?.titleSize ? undefined : '1.875rem'
+        }}
+      >
+        {props.content?.title || props.title || "Call to Action"}
       </h2>
-      <p className="text-zinc-300 mb-8 max-w-2xl mx-auto">
-        {props.subtitle || "CTA subtitle here"}
+      <p 
+        className="text-zinc-300 mb-8 max-w-2xl mx-auto"
+        style={{ color: props.style?.subtitleColor }}
+      >
+        {props.content?.subtitle || props.subtitle || "CTA subtitle here"}
       </p>
       <div className="flex gap-4 justify-center">
-        <button className="px-8 py-4 rounded-xl font-semibold bg-blue-600 text-white">
-          {props.primaryButton || "Primary CTA"}
+        <button 
+          className="px-8 py-4 rounded-xl font-semibold text-white"
+          style={{
+            backgroundColor: props.style?.primaryButtonColor || '#2563EB',
+            color: props.style?.primaryButtonTextColor || '#FFFFFF'
+          }}
+        >
+          {props.content?.primaryButton || props.primaryButton || "Primary CTA"}
         </button>
-        <button className="px-8 py-4 border-2 border-zinc-300 text-zinc-100 rounded-xl font-semibold">
-          {props.secondaryButton || "Secondary CTA"}
+        <button 
+          className="px-8 py-4 border-2 border-zinc-300 text-zinc-100 rounded-xl font-semibold"
+          style={{
+            backgroundColor: props.style?.secondaryButtonColor,
+            color: props.style?.secondaryButtonTextColor,
+            borderColor: props.style?.secondaryButtonColor
+          }}
+        >
+          {props.content?.secondaryButton || props.secondaryButton || "Secondary CTA"}
         </button>
       </div>
     </div>
@@ -162,22 +319,47 @@ const CtaStub = (props: any) => (
 );
 
 const StatsStub = (props: any) => (
-  <div className="py-16">
+  <div 
+    className="py-16"
+    style={{ backgroundColor: props.style?.backgroundColor }}
+  >
     <div className="text-center mb-12">
-      <h2 className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent text-3xl">
-        Statistics
+      <h2 
+        className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent text-3xl"
+        style={{ 
+          color: props.style?.titleColor,
+          fontSize: props.style?.titleSize ? undefined : '1.875rem'
+        }}
+      >
+        {props.content?.title || props.title || "Statistics"}
       </h2>
+      <p 
+        className="text-zinc-400 text-sm mt-4"
+        style={{ color: props.style?.subtitleColor }}
+      >
+        {props.content?.subtitle || props.subtitle || "Nossos números"}
+      </p>
     </div>
     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-      {[
+      {(props.content?.items || [
         { value: "1,234", label: "Users" },
         { value: "567", label: "Projects" },
         { value: "89", label: "Reviews" },
         { value: "99%", label: "Satisfaction" }
-      ].map((stat, i) => (
+      ]).slice(0, 4).map((stat: any, i: number) => (
         <div key={i} className="text-center p-6 border border-zinc-800 rounded-xl">
-          <div className="font-bold text-zinc-100 mb-2 text-3xl">{stat.value}</div>
-          <div className="text-zinc-400">{stat.label}</div>
+          <div 
+            className="font-bold text-zinc-100 mb-2 text-3xl"
+            style={{ color: props.style?.titleColor }}
+          >
+            {stat.value}
+          </div>
+          <div 
+            className="text-zinc-400"
+            style={{ color: props.style?.subtitleColor }}
+          >
+            {stat.label}
+          </div>
         </div>
       ))}
     </div>
