@@ -16,7 +16,6 @@ import {
   Home,
   ChevronRight
 } from 'lucide-react';
-import Shell from '@/components/admin/ui/Shell';
 
 interface SidebarItem {
   name: string;
@@ -91,8 +90,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (isModernUI) {
     return (
-      <Shell modern={true}>
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" data-modern-admin="1">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" data-modern-admin="1">
         {/* Mobile sidebar overlay */}
         {sidebarOpen && (
           <div 
@@ -166,7 +164,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* Main content */}
-        <div className="lg:pl-64">
+        <div className="lg:ml-64">
           {/* Header */}
           <header className="bg-slate-800/50 backdrop-blur-xl border-b border-slate-700/50 sticky top-0 z-30">
             <div className="flex items-center justify-between px-6 py-4">
@@ -219,7 +217,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </main>
         </div>
       </div>
-      </Shell>
     );
   }
 
