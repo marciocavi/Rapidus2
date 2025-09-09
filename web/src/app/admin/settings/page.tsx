@@ -163,7 +163,7 @@ export default function AdminSettings() {
 
   if (isModernUI) {
     return (
-      <div className="space-y-3" data-modern-admin="1">
+      <div className="space-y-0" data-modern-admin="1">
         {/* Section Preview Bar */}
         <SectionPreviewBar 
           activeSection={activeSection as SectionKey} 

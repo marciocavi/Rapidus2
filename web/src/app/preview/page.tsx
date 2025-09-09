@@ -31,7 +31,7 @@ export default function PreviewPage() {
 
   // Renderiza apenas a seção, sem nenhum layout adicional
   return (
-    <div className="w-full h-full bg-slate-950">
+    <div className="w-full h-full">
       <SectionComp {...payload.props} />
     </div>
   );

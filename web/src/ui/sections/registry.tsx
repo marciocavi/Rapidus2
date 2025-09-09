@@ -8,20 +8,20 @@ export type SectionKey = "hero" | "features" | "services" | "parceiros" | "insta
 
 // Componentes stub temporários para não quebrar o build
 const HeroStub = (props: any) => (
-  <section className="relative w-full h-32 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+  <section className="relative w-full h-24 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-    <div className="relative z-10 flex flex-col items-center justify-center h-full text-center space-y-2 px-4">
-      <h1 className="font-bold text-white text-lg md:text-xl">
+    <div className="relative z-10 flex flex-col items-center justify-center h-full text-center space-y-1 px-3">
+      <h1 className="font-bold text-white text-sm">
         {props.title || "Transforme sua empresa com tecnologia"}
       </h1>
-      <p className="text-slate-200 max-w-md mx-auto leading-relaxed text-xs md:text-sm">
+      <p className="text-slate-200 max-w-xs mx-auto leading-tight text-xs">
         {props.subtitle || "Soluções inovadoras para acelerar seu crescimento digital"}
       </p>
-      <div className="flex gap-2">
-        <button className="px-3 py-1 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors text-xs">
+      <div className="flex gap-1">
+        <button className="px-2 py-0.5 rounded text-xs font-semibold bg-blue-600 text-white">
           {props.primaryButton || "Começar Agora"}
         </button>
-        <button className="px-3 py-1 border border-slate-300 text-slate-100 rounded-md font-semibold hover:bg-slate-100 hover:text-slate-900 transition-colors text-xs">
+        <button className="px-2 py-0.5 border border-slate-300 text-slate-100 rounded text-xs font-semibold">
           {props.secondaryButton || "Saiba Mais"}
         </button>
       </div>

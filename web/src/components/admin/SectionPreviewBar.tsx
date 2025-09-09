@@ -6,7 +6,7 @@ import type { SectionKey } from "@/ui/sections/registry";
 
 const HEADER_HEIGHT = 64; // ajuste para a altura real do header do Admin
 const BASE_WIDTH = 300;   // largura ainda menor
-const BASE_HEIGHT = 150;  // altura ainda menor
+const BASE_HEIGHT = 120;  // altura ajustada para o HeroStub menor
 
 type Props = {
   activeSection: SectionKey;
@@ -57,10 +57,10 @@ export default function SectionPreviewBar({ activeSection, draftProps }: Props) 
 
   return (
     <div className="sticky z-30 border-b border-white/10 bg-slate-900" style={{ top: HEADER_HEIGHT }}>
-        <div ref={wrapRef} className="mx-auto w-full max-w-[400px] px-2 py-1">
-          <div className="mb-1">
-            <h3 className="text-xs font-medium text-slate-300">Preview</h3>
-          </div>
+      <div ref={wrapRef} className="mx-auto w-full max-w-[400px] px-2 py-0">
+        <div className="mb-1">
+          <h3 className="text-xs font-medium text-slate-300">Preview</h3>
+        </div>
         <div
           className="relative overflow-hidden rounded-md shadow-lg ring-1 ring-white/10 bg-slate-800"
           style={{ height: scaledHeight }}
