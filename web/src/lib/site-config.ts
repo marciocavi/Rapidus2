@@ -20,15 +20,36 @@ export const SiteConfigSchema = z.object({
       description: z.string().optional(),
       primaryButton: z.string().optional(),
       secondaryButton: z.string().optional(),
+      primaryButtonLink: z.string().optional(),
+      secondaryButtonLink: z.string().optional(),
+      primaryButtonIcon: z.string().optional(),
+      secondaryButtonIcon: z.string().optional(),
       image: z.string().optional(),
       backgroundImage: z.string().optional(),
+      backgroundVideo: z.string().optional(),
+      height: z.string().optional(), // 100%, 70%, custom
+      layout: z.string().optional(), // centralizado, lado a lado
+      animation: z.string().optional(), // entrada, parallax, rolagem
+      columns: z.number().optional(), // 2, 3, 4
+      displayType: z.string().optional(), // grid, carrossel, lista
+      showAuthor: z.boolean().optional(),
+      showDate: z.boolean().optional(),
+      showStock: z.boolean().optional(),
+      showPrice: z.boolean().optional(),
       items: z.array(z.object({
         title: z.string().optional(),
         description: z.string().optional(),
         image: z.string().optional(),
         icon: z.string().optional(),
         link: z.string().optional(),
-        url: z.string().optional()
+        url: z.string().optional(),
+        price: z.string().optional(),
+        author: z.string().optional(),
+        date: z.string().optional(),
+        category: z.string().optional(),
+        tags: z.array(z.string()).optional(),
+        inStock: z.boolean().optional(),
+        featured: z.boolean().optional()
       })).optional()
     }).optional(),
     style: z.object({
@@ -38,16 +59,31 @@ export const SiteConfigSchema = z.object({
       subtitleColor: z.string().optional(),
       titleSize: z.string().optional(),
       subtitleSize: z.string().optional(),
+      titleAlignment: z.string().optional(), // left, center, right
+      subtitleAlignment: z.string().optional(),
       primaryButtonColor: z.string().optional(),
       primaryButtonTextColor: z.string().optional(),
+      primaryButtonHoverColor: z.string().optional(),
       secondaryButtonColor: z.string().optional(),
       secondaryButtonTextColor: z.string().optional(),
+      secondaryButtonHoverColor: z.string().optional(),
       backgroundImage: z.string().optional(),
       backgroundOpacity: z.number().optional(),
+      backgroundGradient: z.string().optional(),
       padding: z.string().optional(),
       margin: z.string().optional(),
       borderRadius: z.string().optional(),
-      shadow: z.string().optional()
+      shadow: z.string().optional(),
+      borderColor: z.string().optional(),
+      borderWidth: z.string().optional(),
+      cardStyle: z.string().optional(), // flat, elevated, outlined
+      animationType: z.string().optional(), // fade, slide, bounce
+      animationDuration: z.string().optional(),
+      hoverEffect: z.string().optional(), // scale, glow, shadow
+      textTransform: z.string().optional(), // uppercase, lowercase, capitalize
+      fontWeight: z.string().optional(), // normal, bold, light
+      lineHeight: z.string().optional(),
+      letterSpacing: z.string().optional()
     }).optional()
   })),
   theme: z.object({

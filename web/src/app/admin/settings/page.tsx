@@ -32,6 +32,11 @@ import SectionPreviewBar from '@/components/admin/SectionPreviewBar';
 import ImageUpload from '@/components/admin/ImageUpload';
 import ColorPicker from '@/components/admin/ColorPicker';
 import FontSizePicker from '@/components/admin/FontSizePicker';
+import HeightPicker from '@/components/admin/HeightPicker';
+import LayoutPicker from '@/components/admin/LayoutPicker';
+import AnimationPicker from '@/components/admin/AnimationPicker';
+import ColumnsPicker from '@/components/admin/ColumnsPicker';
+import DisplayTypePicker from '@/components/admin/DisplayTypePicker';
 import type { SectionKey } from '@/ui/sections/registry';
 
 export default function AdminSettings() {
@@ -454,6 +459,63 @@ export default function AdminSettings() {
                           placeholder="3rem"
                         />
                       </div>
+
+                      <HeightPicker
+                        label="Altura do Hero"
+                        value={config.sections.hero?.content?.height || '100%'}
+                        onChange={(height) => updateConfig({
+                          sections: {
+                            ...config.sections,
+                            hero: {
+                              enabled: config.sections.hero?.enabled ?? false,
+                              position: config.sections.hero?.position ?? 1,
+                              ...config.sections.hero,
+                              content: {
+                                ...config.sections.hero?.content,
+                                height: height
+                              }
+                            }
+                          }
+                        })}
+                      />
+
+                      <LayoutPicker
+                        label="Layout do Hero"
+                        value={config.sections.hero?.content?.layout || 'centralizado'}
+                        onChange={(layout) => updateConfig({
+                          sections: {
+                            ...config.sections,
+                            hero: {
+                              enabled: config.sections.hero?.enabled ?? false,
+                              position: config.sections.hero?.position ?? 1,
+                              ...config.sections.hero,
+                              content: {
+                                ...config.sections.hero?.content,
+                                layout: layout
+                              }
+                            }
+                          }
+                        })}
+                      />
+
+                      <AnimationPicker
+                        label="Animação"
+                        value={config.sections.hero?.content?.animation || 'entrada'}
+                        onChange={(animation) => updateConfig({
+                          sections: {
+                            ...config.sections,
+                            hero: {
+                              enabled: config.sections.hero?.enabled ?? false,
+                              position: config.sections.hero?.position ?? 1,
+                              ...config.sections.hero,
+                              content: {
+                                ...config.sections.hero?.content,
+                                animation: animation
+                              }
+                            }
+                          }
+                        })}
+                      />
                     </div>
                   </div>
                 </div>
@@ -622,6 +684,44 @@ export default function AdminSettings() {
                               style: {
                                 ...config.sections.features?.style,
                                 backgroundColor: color
+                              }
+                            }
+                          }
+                        })}
+                      />
+
+                      <ColumnsPicker
+                        label="Quantidade de Colunas"
+                        value={config.sections.features?.content?.columns || 3}
+                        onChange={(columns) => updateConfig({
+                          sections: {
+                            ...config.sections,
+                            features: {
+                              enabled: config.sections.features?.enabled ?? false,
+                              position: config.sections.features?.position ?? 2,
+                              ...config.sections.features,
+                              content: {
+                                ...config.sections.features?.content,
+                                columns: columns
+                              }
+                            }
+                          }
+                        })}
+                      />
+
+                      <DisplayTypePicker
+                        label="Tipo de Exibição"
+                        value={config.sections.features?.content?.displayType || 'grid'}
+                        onChange={(displayType) => updateConfig({
+                          sections: {
+                            ...config.sections,
+                            features: {
+                              enabled: config.sections.features?.enabled ?? false,
+                              position: config.sections.features?.position ?? 2,
+                              ...config.sections.features,
+                              content: {
+                                ...config.sections.features?.content,
+                                displayType: displayType
                               }
                             }
                           }
