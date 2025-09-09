@@ -17,12 +17,37 @@ export const SiteConfigSchema = z.object({
     content: z.object({
       title: z.string().optional(),
       subtitle: z.string().optional(),
+      description: z.string().optional(),
       primaryButton: z.string().optional(),
-      secondaryButton: z.string().optional()
+      secondaryButton: z.string().optional(),
+      image: z.string().optional(),
+      backgroundImage: z.string().optional(),
+      items: z.array(z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        image: z.string().optional(),
+        icon: z.string().optional(),
+        link: z.string().optional(),
+        url: z.string().optional()
+      })).optional()
     }).optional(),
     style: z.object({
+      backgroundColor: z.string().optional(),
+      textColor: z.string().optional(),
+      titleColor: z.string().optional(),
+      subtitleColor: z.string().optional(),
+      titleSize: z.string().optional(),
+      subtitleSize: z.string().optional(),
       primaryButtonColor: z.string().optional(),
-      titleSize: z.string().optional()
+      primaryButtonTextColor: z.string().optional(),
+      secondaryButtonColor: z.string().optional(),
+      secondaryButtonTextColor: z.string().optional(),
+      backgroundImage: z.string().optional(),
+      backgroundOpacity: z.number().optional(),
+      padding: z.string().optional(),
+      margin: z.string().optional(),
+      borderRadius: z.string().optional(),
+      shadow: z.string().optional()
     }).optional()
   })),
   theme: z.object({

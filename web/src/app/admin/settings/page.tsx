@@ -17,7 +17,11 @@ import {
   BarChart3,
   Images,
   Award,
-  Share2
+  Share2,
+  Image as ImageIcon,
+  Plus,
+  Trash2,
+  Loader2
 } from 'lucide-react';
 
 import { useSiteConfig } from '@/context/SiteConfigContext';
@@ -25,6 +29,9 @@ import { SiteConfig } from '@/lib/site-config';
 import { Panel, Button, Toggle } from '@/components/admin/ui';
 import { SectionsOrderList, SectionItem } from '@/components/admin/SectionsOrderList';
 import SectionPreviewBar from '@/components/admin/SectionPreviewBar';
+import ImageUpload from '@/components/admin/ImageUpload';
+import ColorPicker from '@/components/admin/ColorPicker';
+import FontSizePicker from '@/components/admin/FontSizePicker';
 import type { SectionKey } from '@/ui/sections/registry';
 
 export default function AdminSettings() {
