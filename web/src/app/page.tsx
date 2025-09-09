@@ -27,16 +27,9 @@ export default function HomePage() {
       {/* Hero Section */}
       {config.sections.hero?.enabled && (
         <section className="relative mx-4 sm:mx-6 lg:mx-8">
-          {/* Banner Image */}
-          {config.content.hero.bannerImage && config.content.hero.bannerImage.trim() !== '' && (
-            <div className="relative w-full h-96 overflow-hidden rounded-xl shadow-2xl">
-              <Image
-                src={config.content.hero.bannerImage}
-                alt={config.content.hero.bannerAlt || 'Banner principal'}
-                fill
-                className="object-cover transition-transform duration-700 hover:scale-105"
-                priority
-              />
+          {/* Hero Placeholder */}
+          <div className="relative w-full h-96 overflow-hidden rounded-xl shadow-2xl bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-800">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
               
               {/* Hero Content Overlay */}
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center space-y-8 px-6 bg-transparent">
@@ -162,16 +155,12 @@ export default function HomePage() {
                 onMouseLeave={() => setHoveredCard(null)}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="relative w-full h-48 rounded-xl overflow-hidden mb-6">
-                  <Image
-                    src={config.images && 'featureImages' in config.images ? (config.images as { featureImages: string[] }).featureImages[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`}
-                    alt={`${item.title} - Vistoria veicular`}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
-                  <div className="absolute top-4 left-4 w-12 h-12 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center">
-                    <span className="text-xl">{item.icon}</span>
+                <div className="relative w-full h-48 rounded-xl overflow-hidden mb-6 bg-gradient-to-br from-zinc-800 to-zinc-700 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
+                      <span className="text-2xl">{item.icon}</span>
+                    </div>
+                    <div className="text-zinc-300 text-sm font-medium">{item.title}</div>
                   </div>
                 </div>
                 <h3 
@@ -219,12 +208,14 @@ export default function HomePage() {
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 <div className="relative w-full h-64 rounded-xl overflow-hidden mb-6">
-                  <Image
-                    src={config.images && 'serviceImages' in config.images ? (config.images as { serviceImages: string[] }).serviceImages[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80`}
-                    alt={`${service.title} - Serviço de vistoria veicular`}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
+                  <div className="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-700 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="w-20 h-20 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <span className="text-3xl">🔧</span>
+                      </div>
+                      <div className="text-zinc-300 text-sm font-medium">{service.title}</div>
+                    </div>
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/15 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 right-4">
                     <h3 
@@ -304,13 +295,14 @@ export default function HomePage() {
                 className="group relative overflow-hidden rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all duration-300 transform hover:scale-105"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <Image
-                  src={config.images && 'instagramPosts' in config.images ? (config.images as { instagramPosts: string[] }).instagramPosts[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`}
-                  alt={`Post ${index + 1} - Instagram`}
-                  width={300}
-                  height={256}
-                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
-                />
+                <div className="w-full h-64 bg-gradient-to-br from-zinc-800 to-zinc-700 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
+                      <span className="text-2xl">📷</span>
+                    </div>
+                    <div className="text-zinc-300 text-sm font-medium">Instagram Post</div>
+                  </div>
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                   <span className="text-white text-sm font-medium">{post.caption}</span>
                 </div>
@@ -344,13 +336,14 @@ export default function HomePage() {
                 className="group border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 transform hover:scale-105"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={config.images && 'blogThumbnails' in config.images ? (config.images as { blogThumbnails: string[] }).blogThumbnails[index] : `https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80`}
-                    alt={article.title}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
+                <div className="relative h-48 overflow-hidden bg-gradient-to-br from-zinc-800 to-zinc-700 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
+                      <span className="text-2xl">📝</span>
+                    </div>
+                    <div className="text-zinc-300 text-sm font-medium">{article.title}</div>
+                  </div>
+                </div>
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1 bg-zinc-900 bg-opacity-80 text-zinc-100 text-xs font-medium rounded-full">
                       {article.category}
@@ -482,15 +475,14 @@ export default function HomePage() {
                 className="group border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 transform hover:scale-105"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className="relative h-64 overflow-hidden">
-                  {item.image && item.image.trim() !== '' && (
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                  )}
+                <div className="relative h-64 overflow-hidden bg-gradient-to-br from-zinc-800 to-zinc-700 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-20 h-20 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
+                      <span className="text-3xl">🎠</span>
+                    </div>
+                    <div className="text-zinc-300 text-sm font-medium">{item.title}</div>
+                  </div>
+                </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 right-4">
                     <h3 
@@ -548,15 +540,14 @@ export default function HomePage() {
                 className="group border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 transform hover:scale-105"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="relative h-48 overflow-hidden">
-                  {item.image && item.image.trim() !== '' && (
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                  )}
+                <div className="relative h-48 overflow-hidden bg-gradient-to-br from-zinc-800 to-zinc-700 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
+                      <span className="text-2xl">🏆</span>
+                    </div>
+                    <div className="text-zinc-300 text-sm font-medium">{item.title}</div>
+                  </div>
+                </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1 bg-zinc-900 bg-opacity-80 text-zinc-100 text-xs font-medium rounded-full">
