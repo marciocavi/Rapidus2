@@ -100,17 +100,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         )}
 
         {/* Sidebar */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-slate-800/90 backdrop-blur-xl border-r border-slate-700/50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        <div className={`fixed inset-y-0 left-0 z-50 w-56 bg-slate-800/90 backdrop-blur-xl border-r border-slate-700/50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}>
           <div className="flex flex-col h-full">
             {/* Logo */}
-            <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">R</span>
+            <div className="flex items-center justify-between p-4 border-b border-slate-700/50">
+              <div className="flex items-center space-x-2">
+                <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-md flex items-center justify-center">
+                  <span className="text-white font-bold text-xs">R</span>
                 </div>
-                <span className="text-xl font-bold text-white">Rapidus</span>
+                <span className="text-lg font-bold text-white">Rapidus</span>
               </div>
               <button
                 onClick={() => setSidebarOpen(false)}
@@ -121,7 +121,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 p-4 space-y-2">
+            <nav className="flex-1 p-3 space-y-1">
               {sidebarItems.map((item) => {
                 const isActive = pathname === item.href;
                 const Icon = item.icon;
@@ -130,16 +130,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+                    className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-all duration-200 group ${
                       isActive
                         ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 border border-blue-500/30'
                         : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
                     }`}
                   >
-                    <Icon className={`w-5 h-5 ${isActive ? 'text-blue-400' : 'text-slate-400 group-hover:text-white'}`} />
-                    <span className="font-medium">{item.name}</span>
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-blue-400' : 'text-slate-400 group-hover:text-white'}`} />
+                    <span className="font-medium text-sm">{item.name}</span>
                     {item.badge && (
-                      <span className="ml-auto px-2 py-1 text-xs bg-red-500 text-white rounded-full">
+                      <span className="ml-auto px-1 py-0.5 text-xs bg-red-500 text-white rounded-full">
                         {item.badge}
                       </span>
                     )}
@@ -149,13 +149,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </nav>
 
             {/* User info */}
-            <div className="p-4 border-t border-slate-700/50">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">A</span>
+            <div className="p-3 border-t border-slate-700/50">
+              <div className="flex items-center space-x-2">
+                <div className="w-6 h-6 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-xs">A</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">Admin</p>
+                  <p className="text-xs font-medium text-white truncate">Admin</p>
                   <p className="text-xs text-slate-400 truncate">admin@rapidus.com</p>
                 </div>
               </div>
@@ -164,23 +164,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* Main content */}
-        <div className="lg:ml-64">
+        <div className="lg:ml-56">
           {/* Header */}
           <header className="bg-slate-800/50 backdrop-blur-xl border-b border-slate-700/50 sticky top-0 z-30">
-            <div className="flex items-center justify-between px-6 py-4">
-              <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-between px-4 py-3">
+              <div className="flex items-center space-x-3">
                 <button
                   onClick={() => setSidebarOpen(true)}
                   className="lg:hidden text-slate-400 hover:text-white"
                 >
-                  <Menu className="w-6 h-6" />
+                  <Menu className="w-5 h-5" />
                 </button>
                 
                 {/* Breadcrumbs */}
-                <nav className="flex items-center space-x-2 text-sm">
+                <nav className="flex items-center space-x-1 text-xs">
                   {breadcrumbs.map((crumb, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      {index > 0 && <ChevronRight className="w-4 h-4 text-slate-500" />}
+                    <div key={index} className="flex items-center space-x-1">
+                      {index > 0 && <ChevronRight className="w-3 h-3 text-slate-500" />}
                       {crumb.href ? (
                         <Link
                           href={crumb.href}
@@ -196,14 +196,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </nav>
               </div>
 
-              <div className="flex items-center space-x-4">
-                <div className="hidden md:flex items-center space-x-2 text-sm text-slate-400">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <div className="flex items-center space-x-3">
+                <div className="hidden md:flex items-center space-x-1 text-xs text-slate-400">
+                  <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
                   <span>Sistema Online</span>
                 </div>
                 <Link
                   href="/login"
-                  className="px-4 py-2 text-sm bg-red-500/20 text-red-300 border border-red-500/30 rounded-lg hover:bg-red-500/30 transition-colors"
+                  className="px-3 py-1.5 text-xs bg-red-500/20 text-red-300 border border-red-500/30 rounded-md hover:bg-red-500/30 transition-colors"
                 >
                   Sair
                 </Link>
@@ -212,7 +212,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </header>
 
           {/* Page content */}
-          <main className="p-6">
+          <main className="p-4">
             {children}
           </main>
         </div>

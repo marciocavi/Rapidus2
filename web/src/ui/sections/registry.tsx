@@ -8,20 +8,20 @@ export type SectionKey = "hero" | "features" | "services" | "parceiros" | "insta
 
 // Componentes stub temporários para não quebrar o build
 const HeroStub = (props: any) => (
-  <section className="relative w-full h-64 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+  <section className="relative w-full h-32 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-    <div className="relative z-10 flex flex-col items-center justify-center h-full text-center space-y-4 px-6">
-      <h1 className="font-bold text-white text-2xl md:text-3xl">
+    <div className="relative z-10 flex flex-col items-center justify-center h-full text-center space-y-2 px-4">
+      <h1 className="font-bold text-white text-lg md:text-xl">
         {props.title || "Transforme sua empresa com tecnologia"}
       </h1>
-      <p className="text-slate-200 max-w-lg mx-auto leading-relaxed text-sm md:text-base">
+      <p className="text-slate-200 max-w-md mx-auto leading-relaxed text-xs md:text-sm">
         {props.subtitle || "Soluções inovadoras para acelerar seu crescimento digital"}
       </p>
-      <div className="flex gap-3">
-        <button className="px-6 py-2 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors text-sm">
+      <div className="flex gap-2">
+        <button className="px-3 py-1 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors text-xs">
           {props.primaryButton || "Começar Agora"}
         </button>
-        <button className="px-6 py-2 border-2 border-slate-300 text-slate-100 rounded-lg font-semibold hover:bg-slate-100 hover:text-slate-900 transition-colors text-sm">
+        <button className="px-3 py-1 border border-slate-300 text-slate-100 rounded-md font-semibold hover:bg-slate-100 hover:text-slate-900 transition-colors text-xs">
           {props.secondaryButton || "Saiba Mais"}
         </button>
       </div>
@@ -30,28 +30,28 @@ const HeroStub = (props: any) => (
 );
 
 const FeaturesStub = (props: any) => (
-  <section className="py-12 bg-slate-900">
-    <div className="max-w-6xl mx-auto px-6">
-      <div className="text-center mb-8">
-        <h2 className="font-bold text-white text-2xl mb-4">
+  <section className="py-6 bg-slate-900">
+    <div className="max-w-4xl mx-auto px-4">
+      <div className="text-center mb-4">
+        <h2 className="font-bold text-white text-lg mb-2">
           {props.title || "Por que escolher a Rapidus?"}
         </h2>
-        <p className="text-slate-300 max-w-2xl mx-auto">
+        <p className="text-slate-300 max-w-xl mx-auto text-sm">
           {props.subtitle || "Oferecemos soluções completas para impulsionar seu negócio"}
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {[
-          { icon: "⚡", title: "Performance", desc: "Velocidade e eficiência em todas as soluções" },
-          { icon: "🔒", title: "Segurança", desc: "Proteção avançada para seus dados" },
-          { icon: "📈", title: "Crescimento", desc: "Resultados mensuráveis e escaláveis" }
+          { icon: "⚡", title: "Performance", desc: "Velocidade e eficiência" },
+          { icon: "🔒", title: "Segurança", desc: "Proteção avançada" },
+          { icon: "📈", title: "Crescimento", desc: "Resultados mensuráveis" }
         ].map((feature, i) => (
-          <div key={i} className="p-6 bg-slate-800 rounded-lg border border-slate-700 hover:border-slate-600 transition-colors">
-            <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
-              <span className="text-xl">{feature.icon}</span>
+          <div key={i} className="p-3 bg-slate-800 rounded-md border border-slate-700 hover:border-slate-600 transition-colors">
+            <div className="w-8 h-8 bg-blue-600 rounded-md flex items-center justify-center mb-2">
+              <span className="text-sm">{feature.icon}</span>
             </div>
-            <h3 className="font-semibold text-white mb-2">{feature.title}</h3>
-            <p className="text-slate-300 text-sm">{feature.desc}</p>
+            <h3 className="font-semibold text-white mb-1 text-sm">{feature.title}</h3>
+            <p className="text-slate-300 text-xs">{feature.desc}</p>
           </div>
         ))}
       </div>

@@ -5,8 +5,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { SectionKey } from "@/ui/sections/registry";
 
 const HEADER_HEIGHT = 64; // ajuste para a altura real do header do Admin
-const BASE_WIDTH = 600;   // largura adequada para preview
-const BASE_HEIGHT = 300;  // altura adequada para preview
+const BASE_WIDTH = 400;   // largura menor para monitores pequenos
+const BASE_HEIGHT = 200;  // altura menor para monitores pequenos
 
 type Props = {
   activeSection: SectionKey;
@@ -57,12 +57,12 @@ export default function SectionPreviewBar({ activeSection, draftProps }: Props) 
 
   return (
     <div className="sticky z-30 border-b border-white/10 bg-slate-900" style={{ top: HEADER_HEIGHT }}>
-      <div ref={wrapRef} className="mx-auto w-full max-w-[800px] px-4 py-2">
-        <div className="mb-2">
-          <h3 className="text-sm font-medium text-slate-300">Preview da Seção</h3>
+      <div ref={wrapRef} className="mx-auto w-full max-w-[600px] px-3 py-1">
+        <div className="mb-1">
+          <h3 className="text-xs font-medium text-slate-300">Preview da Seção</h3>
         </div>
         <div
-          className="relative overflow-hidden rounded-lg shadow-lg ring-1 ring-white/10 bg-slate-800"
+          className="relative overflow-hidden rounded-md shadow-lg ring-1 ring-white/10 bg-slate-800"
           style={{ height: scaledHeight }}
         >
           <div className="origin-top-left" style={{ width: BASE_WIDTH, height: BASE_HEIGHT, transform: `scale(${scale})` }}>
