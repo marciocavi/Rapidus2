@@ -210,6 +210,7 @@ export default function AdminSettings() {
                 Configuração - {sections.find(s => s.key === activeSection)?.name}
               </h2>
               
+              {/* Configurações específicas das seções */}
               {activeSection === 'hero' && (
                 <div className="space-y-6">
                   {/* Toggle da seção */}
@@ -399,8 +400,312 @@ export default function AdminSettings() {
                 </div>
               )}
 
+              {/* Header Section */}
+              {activeSection === 'header' && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-600/30">
+                    <div>
+                      <h3 className="text-white font-medium">Seção Header</h3>
+                      <p className="text-slate-400 text-sm">Cabeçalho do site com navegação</p>
+                    </div>
+                    <button
+                      onClick={() => handleSectionToggle('header')}
+                      className={`w-12 h-6 rounded-full transition-all duration-200 ${
+                        config.sections.header?.enabled
+                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
+                          : 'bg-slate-600'
+                      }`}
+                    >
+                      <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
+                        config.sections.header?.enabled ? 'translate-x-6' : 'translate-x-0.5'
+                      }`} />
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-white">Configurações do Header</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                          Texto do Logo
+                        </label>
+                        <input
+                          type="text"
+                          value="Rapidus"
+                          className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                          readOnly
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                          Botão CTA
+                        </label>
+                        <input
+                          type="text"
+                          value="Solicitar Orçamento"
+                          className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Footer Section */}
+              {activeSection === 'footer' && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-600/30">
+                    <div>
+                      <h3 className="text-white font-medium">Seção Footer</h3>
+                      <p className="text-slate-400 text-sm">Rodapé do site com informações</p>
+                    </div>
+                    <button
+                      onClick={() => handleSectionToggle('footer')}
+                      className={`w-12 h-6 rounded-full transition-all duration-200 ${
+                        config.sections.footer?.enabled
+                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
+                          : 'bg-slate-600'
+                      }`}
+                    >
+                      <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
+                        config.sections.footer?.enabled ? 'translate-x-6' : 'translate-x-0.5'
+                      }`} />
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-white">Configurações do Footer</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                          Descrição da Empresa
+                        </label>
+                        <textarea
+                          value="Especialistas em vistoria veicular com mais de 10 anos de experiência no mercado."
+                          className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500 h-20"
+                          readOnly
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                          Copyright
+                        </label>
+                        <input
+                          type="text"
+                          value="© 2024 Rapidus. Todos os direitos reservados."
+                          className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Carrosséis Section */}
+              {activeSection === 'carrossels' && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-600/30">
+                    <div>
+                      <h3 className="text-white font-medium">Seção Carrosséis</h3>
+                      <p className="text-slate-400 text-sm">Carrosséis de produtos/serviços</p>
+                    </div>
+                    <button
+                      onClick={() => handleSectionToggle('carrossels')}
+                      className={`w-12 h-6 rounded-full transition-all duration-200 ${
+                        config.sections.carrossels?.enabled
+                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
+                          : 'bg-slate-600'
+                      }`}
+                    >
+                      <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
+                        config.sections.carrossels?.enabled ? 'translate-x-6' : 'translate-x-0.5'
+                      }`} />
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-white">Configurações dos Carrosséis</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                          Título da Seção
+                        </label>
+                        <input
+                          type="text"
+                          value={config.content.carrossels?.title || 'Nossos Carrosséis'}
+                          className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                          readOnly
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                          Subtítulo
+                        </label>
+                        <input
+                          type="text"
+                          value={config.content.carrossels?.subtitle || 'Apresente seus produtos e serviços'}
+                          className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Itens do Carrossel
+                      </label>
+                      <div className="space-y-2">
+                        {config.content.carrossels?.items?.map((item, index) => (
+                          <div key={item.id} className="p-3 bg-slate-800/50 rounded-lg border border-slate-600/30">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <h4 className="text-white font-medium">{item.title}</h4>
+                                <p className="text-slate-400 text-sm">{item.description}</p>
+                              </div>
+                              <div className={`w-3 h-3 rounded-full ${
+                                item.enabled ? 'bg-green-500' : 'bg-slate-600'
+                              }`} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Certificações Section */}
+              {activeSection === 'certificacoes' && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-600/30">
+                    <div>
+                      <h3 className="text-white font-medium">Seção Certificações</h3>
+                      <p className="text-slate-400 text-sm">Selos e certificações</p>
+                    </div>
+                    <button
+                      onClick={() => handleSectionToggle('certificacoes')}
+                      className={`w-12 h-6 rounded-full transition-all duration-200 ${
+                        config.sections.certificacoes?.enabled
+                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
+                          : 'bg-slate-600'
+                      }`}
+                    >
+                      <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
+                        config.sections.certificacoes?.enabled ? 'translate-x-6' : 'translate-x-0.5'
+                      }`} />
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-white">Configurações das Certificações</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                          Título da Seção
+                        </label>
+                        <input
+                          type="text"
+                          value={config.content.certificacoes?.title || 'Selos e Certificações'}
+                          className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                          readOnly
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                          Subtítulo
+                        </label>
+                        <input
+                          type="text"
+                          value={config.content.certificacoes?.subtitle || 'Nossas certificações de qualidade'}
+                          className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Certificações Disponíveis
+                      </label>
+                      <div className="space-y-2">
+                        {config.content.certificacoes?.items?.map((item, index) => (
+                          <div key={item.id} className="p-3 bg-slate-800/50 rounded-lg border border-slate-600/30">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <h4 className="text-white font-medium">{item.title}</h4>
+                                <p className="text-slate-400 text-sm">{item.description}</p>
+                                <p className="text-slate-500 text-xs">Org: {item.organization}</p>
+                              </div>
+                              <div className={`w-3 h-3 rounded-full ${
+                                item.enabled ? 'bg-green-500' : 'bg-slate-600'
+                              }`} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Ícones Flutuantes Section */}
+              {activeSection === 'icones-flutuantes' && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-600/30">
+                    <div>
+                      <h3 className="text-white font-medium">Seção Ícones Flutuantes</h3>
+                      <p className="text-slate-400 text-sm">Redes sociais flutuantes</p>
+                    </div>
+                    <button
+                      onClick={() => handleSectionToggle('icones-flutuantes')}
+                      className={`w-12 h-6 rounded-full transition-all duration-200 ${
+                        config.sections['icones-flutuantes']?.enabled
+                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
+                          : 'bg-slate-600'
+                      }`}
+                    >
+                      <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
+                        config.sections['icones-flutuantes']?.enabled ? 'translate-x-6' : 'translate-x-0.5'
+                      }`} />
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-white">Configurações dos Ícones Flutuantes</h3>
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Redes Sociais Disponíveis
+                      </label>
+                      <div className="space-y-2">
+                        {config.content['icones-flutuantes']?.items?.map((item, index) => (
+                          <div key={item.id} className="p-3 bg-slate-800/50 rounded-lg border border-slate-600/30">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-3">
+                                <div 
+                                  className="w-8 h-8 rounded-full flex items-center justify-center text-white"
+                                  style={{ backgroundColor: item.color }}
+                                >
+                                  <span className="text-sm">{item.icon}</span>
+                                </div>
+                                <div>
+                                  <h4 className="text-white font-medium">{item.name}</h4>
+                                  <p className="text-slate-400 text-sm">{item.url}</p>
+                                </div>
+                              </div>
+                              <div className={`w-3 h-3 rounded-full ${
+                                item.enabled ? 'bg-green-500' : 'bg-slate-600'
+                              }`} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Outras seções */}
-              {activeSection !== 'hero' && (
+              {!['hero', 'header', 'footer', 'carrossels', 'certificacoes', 'icones-flutuantes'].includes(activeSection) && (
                 <div className="text-center py-12">
                   <div className="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Settings className="w-8 h-8 text-slate-400" />
