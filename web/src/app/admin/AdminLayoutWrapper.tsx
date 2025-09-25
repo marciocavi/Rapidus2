@@ -9,7 +9,7 @@ interface AdminLayoutWrapperProps {
 
 export default function AdminLayoutWrapper({ children }: AdminLayoutWrapperProps) {
   const pathname = usePathname();
-  const isAdminRoute = pathname.startsWith('/admin');
+  const isAdminRoute = pathname?.startsWith('/admin') ?? false;
 
   // Se for rota admin, não renderiza header/footer global
   if (isAdminRoute) {

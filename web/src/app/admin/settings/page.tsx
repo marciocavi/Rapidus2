@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { 
   Settings, 
-  Palette, 
-  Type,
   Home,
   Star,
   Wrench,
@@ -21,52 +20,35 @@ import {
 import { useSiteConfig } from '@/context/SiteConfigContext';
 import { SiteConfig } from '@/lib/site-config';
 import { Panel, Toggle } from '@/components/admin/ui';
-import { SectionsOrderList, SectionItem } from '@/components/admin/SectionsOrderList';
-import SectionPreviewBar from '@/components/admin/SectionPreviewBar';
-import ColorPicker from '@/components/admin/ColorPicker';
-import FontSizePicker from '@/components/admin/FontSizePicker';
-import HeightPicker from '@/components/admin/HeightPicker';
-import LayoutPicker from '@/components/admin/LayoutPicker';
-import AnimationPicker from '@/components/admin/AnimationPicker';
-import ColumnsPicker from '@/components/admin/ColumnsPicker';
-import DisplayTypePicker from '@/components/admin/DisplayTypePicker';
-import type { SectionKey } from '@/ui/sections/registry';
+import HeroAdmin from '@/components/admin/sections/Hero';
+import FeaturesAdmin from '@/components/admin/sections/Features';
+import ServicesAdmin from '@/components/admin/sections/Services';
 
 export default function AdminSettings() {
   const { config, updateConfig, saveConfig } = useSiteConfig();
   const [message, setMessage] = useState<string>('');
-  const [activeSection, setActiveSection] = useState<keyof SiteConfig['sections']>('hero');
-  const [isModernUI, setIsModernUI] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [sectionsDnD, setSectionsDnD] = useState(false);
-  
-  // Estado para preview em tempo real
-  const [draftProps] = useState<Record<string, unknown>>({});
+  const [activeSection, setActiveSection] = useState<string>('hero');
 
   // Evitar hydration error
   useEffect(() => {
     setIsClient(true);
-    const envFlag = process.env.NEXT_PUBLIC_MODERN_ADMIN_UI === '1';
-    const localStorageFlag = localStorage.getItem('modern-admin-ui') === 'true';
-    setIsModernUI(envFlag || localStorageFlag);
   }, []);
 
   const handleSectionToggle = (section: keyof SiteConfig['sections']) => {
-    const currentSection = config.sections[section];
-    if (!currentSection) return;
-    
     updateConfig({
       sections: {
         ...config.sections,
         [section]: {
-          ...currentSection,
-          enabled: !currentSection.enabled
+          ...config.sections[section],
+          enabled: !config.sections[section]?.enabled
         }
       }
     });
   };
 
-  const handleSave = useCallback(async () => {
+  const handleSave = async () => {
     try {
       await saveConfig();
       setMessage('Configurações salvas com sucesso!');
@@ -75,1414 +57,169 @@ export default function AdminSettings() {
       setMessage('Erro ao salvar configurações');
       setTimeout(() => setMessage(''), 3000);
     }
-  }, [saveConfig]);
-
-  // Listen for save event from header
-  useEffect(() => {
-    const handleAdminSave = () => {
-      handleSave();
-    };
-
-    window.addEventListener('admin-save', handleAdminSave);
-    return () => window.removeEventListener('admin-save', handleAdminSave);
-  }, [handleSave]);
-
-  const handleSectionsReorder = async (items: SectionItem[]) => {
-    try {
-      const response = await fetch('/api/sections/reorder', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          order: items.map((item, index) => ({
-            id: item.id,
-            position: index + 1
-          }))
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to save sections order');
-      }
-
-      // Update local config with new order
-      const newSections = { ...config.sections };
-      items.forEach((item, index) => {
-        if (newSections[item.key as keyof SiteConfig['sections']]) {
-          newSections[item.key as keyof SiteConfig['sections']] = {
-            ...newSections[item.key as keyof SiteConfig['sections']],
-            enabled: newSections[item.key as keyof SiteConfig['sections']]?.enabled ?? false,
-            position: index + 1
-          };
-        }
-      });
-
-      updateConfig({ sections: newSections });
-    } catch (error) {
-      console.error('Error saving sections order:', error);
-      throw error;
-    }
   };
 
   const sections = [
-    { key: 'hero' as const, name: 'Hero', icon: Home, description: 'Seção principal do site' },
-    { key: 'features' as const, name: 'Features', icon: Star, description: 'Diferenciais e características' },
-    { key: 'services' as const, name: 'Services', icon: Wrench, description: 'Serviços oferecidos' },
-    { key: 'parceiros' as const, name: 'Parceiros', icon: Heart, description: 'Logos dos parceiros' },
-    { key: 'instagram' as const, name: 'Instagram', icon: Instagram, description: 'Posts do Instagram' },
-    { key: 'blog' as const, name: 'Blog', icon: FileText, description: 'Artigos do blog' },
-    { key: 'cta' as const, name: 'CTA', icon: Megaphone, description: 'Call to action' },
-    { key: 'stats' as const, name: 'Stats', icon: BarChart3, description: 'Estatísticas' },
-    { key: 'carrossels' as const, name: 'Carrosséis', icon: Images, description: 'Carrosséis de produtos/serviços' },
-    { key: 'certificacoes' as const, name: 'Certificações', icon: Award, description: 'Selos e certificações' },
-    { key: 'icones-flutuantes' as const, name: 'Ícones Flutuantes', icon: Share2, description: 'Redes sociais flutuantes' },
-    { key: 'header' as const, name: 'Header', icon: Settings, description: 'Cabeçalho do site' },
-    { key: 'footer' as const, name: 'Footer', icon: Settings, description: 'Rodapé do site' }
+    { key: 'hero', label: 'Hero', icon: Home, description: 'Seção principal do site' },
+    { key: 'features', label: 'Features', icon: Star, description: 'Diferenciais e características' },
+    { key: 'services', label: 'Services', icon: Wrench, description: 'Serviços oferecidos' },
+    { key: 'parceiros', label: 'Parceiros', icon: Heart, description: 'Logos dos parceiros' },
+    { key: 'instagram', label: 'Instagram', icon: Instagram, description: 'Posts do Instagram' },
+    { key: 'blog', label: 'Blog', icon: FileText, description: 'Artigos do blog' },
+    { key: 'cta', label: 'CTA', icon: Megaphone, description: 'Call to action' },
+    { key: 'stats', label: 'Stats', icon: BarChart3, description: 'Estatísticas' },
+    { key: 'carrossels', label: 'Carrosséis', icon: Images, description: 'Carrosséis de conteúdo' },
+    { key: 'certificacoes', label: 'Certificações', icon: Award, description: 'Certificações e selos' },
+    { key: 'iconesFlutuantes', label: 'Ícones Flutuantes', icon: Share2, description: 'Redes sociais flutuantes' },
+    { key: 'header', label: 'Header', icon: Settings, description: 'Cabeçalho do site' },
+    { key: 'footer', label: 'Footer', icon: Settings, description: 'Rodapé do site' }
   ];
 
-  // Convert sections to SectionItem format for drag & drop
-  const sectionsForReorder: SectionItem[] = sections.map((section, index) => ({
-    id: section.key,
-    key: section.key,
-    label: section.name,
-    enabled: config.sections[section.key]?.enabled ?? false,
-    position: config.sections[section.key]?.position ?? index + 1
-  }));
-
-  // Loading state para evitar hydration error
   if (!isClient) {
-    return (
-      <div className="space-y-8">
-        <div className="animate-pulse">
-          <div className="h-8 bg-zinc-800 rounded w-1/3 mb-4"></div>
-          <div className="h-4 bg-zinc-800 rounded w-1/2"></div>
-        </div>
-      </div>
-    );
+    return <div className="min-h-screen bg-neutral-dark-bg flex items-center justify-center">
+      <div className="text-white">Carregando...</div>
+    </div>;
   }
 
-  if (isModernUI) {
-    return (
-      <div className="space-y-0" data-modern-admin="1">
-        {/* Section Preview Bar */}
-        <SectionPreviewBar 
-          activeSection={activeSection as SectionKey} 
-          draftProps={draftProps} 
-        />
-
-        {/* Message */}
-        {message && (
-          <div className={`p-4 rounded-lg border ${
-            message.includes('sucesso') 
-              ? 'bg-green-500/20 text-green-300 border-green-500/30' 
-              : 'bg-red-500/20 text-red-300 border-red-500/30'
-          }`}>
-            {message}
+  return (
+    <div className="min-h-screen bg-neutral-dark-bg">
+      <div className="flex">
+        {/* Sidebar */}
+        <div className="w-64 bg-zinc-900 border-r border-zinc-800 min-h-screen">
+          <div className="p-6">
+            <div className="flex items-center space-x-3 mb-8">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">R</span>
+              </div>
+              <span className="text-white font-semibold">Rapidus</span>
+            </div>
+            
+            <nav className="space-y-2">
+              <a href="/admin" className="flex items-center space-x-3 px-3 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors">
+                <Home className="w-5 h-5" />
+                <span>Dashboard</span>
+              </a>
+              <a href="/admin/settings" className="flex items-center space-x-3 px-3 py-2 text-white bg-zinc-800 rounded-lg">
+                <Settings className="w-5 h-5" />
+                <span>Configurações</span>
+              </a>
+              <a href="/admin/analytics" className="flex items-center space-x-3 px-3 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors">
+                <BarChart3 className="w-5 h-5" />
+                <span>Analytics</span>
+              </a>
+            </nav>
           </div>
-        )}
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
-          {/* Seções */}
-          <div className="lg:col-span-1">
-            <Panel className="adm-panel adm-card--glass p-3">
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="text-sm font-semibold text-white flex items-center">
-                  <Settings className="w-3 h-3 mr-1 text-blue-400" />
-                  Seções
-                </h2>
-                <div className="flex items-center space-x-2">
-                  <span className="text-xs text-slate-400">Drag & Drop</span>
+        {/* Main Content */}
+        <div className="flex-1 p-6">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-2xl font-bold text-white">Configurações</h1>
+              <p className="text-zinc-400">Gerencie as configurações do seu site</p>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              {message && (
+                <div className="px-4 py-2 bg-green-500/20 text-green-400 rounded-lg">
+                  {message}
+                </div>
+              )}
+              <Link 
+                href="/" 
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
+                Ver Site
+              </Link>
+              <button 
+                onClick={handleSave}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Salvar
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Sections List */}
+            <div className="lg:col-span-1">
+              <Panel header={<h3 className="text-lg font-semibold text-white">Seções</h3>} className="h-fit">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-sm text-zinc-400">Drag & Drop</span>
                   <Toggle
                     checked={sectionsDnD}
-                    onChange={() => setSectionsDnD(!sectionsDnD)}
-                    className="w-10 h-5"
+                    onChange={setSectionsDnD}
                   />
                 </div>
-              </div>
-              
-              {sectionsDnD ? (
-                <SectionsOrderList 
-                  initial={sectionsForReorder}
-                  onSave={handleSectionsReorder}
-                />
-              ) : (
-                <div className="space-y-3">
+                
+                <div className="space-y-2">
                   {sections.map((section) => {
                     const Icon = section.icon;
                     const isActive = activeSection === section.key;
-                    const isEnabled = config.sections[section.key]?.enabled ?? false;
+                    const isEnabled = config.sections[section.key as keyof SiteConfig['sections']]?.enabled ?? false;
                     
                     return (
                       <div
                         key={section.key}
-                        className={`p-4 rounded-lg border transition-all duration-200 cursor-pointer ${
-                          isActive
-                            ? 'bg-blue-500/20 border-blue-500/30'
-                            : 'bg-slate-800/50 border-slate-600/30 hover:bg-slate-700/50'
+                        className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                          isActive 
+                            ? 'border-blue-500 bg-blue-500/10' 
+                            : 'border-zinc-800 hover:border-zinc-700'
                         }`}
                         onClick={() => setActiveSection(section.key)}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-3">
-                            <div className={`p-2 rounded-lg ${
-                              isActive ? 'bg-blue-500/20 text-blue-400' : 'bg-slate-700/50 text-slate-400'
-                            }`}>
-                              <Icon className="w-4 h-4" />
-                            </div>
+                            <Icon className="w-5 h-5 text-zinc-400" />
                             <div>
-                              <h3 className="text-white font-medium">{section.name}</h3>
-                              <p className="text-slate-400 text-sm">{section.description}</p>
+                              <h3 className="text-white font-medium">{section.label}</h3>
+                              <p className="text-zinc-400 text-sm">{section.description}</p>
                             </div>
                           </div>
-                          <Toggle
-                            checked={isEnabled}
-                            onChange={() => handleSectionToggle(section.key)}
-                            className="w-12 h-6"
-                          />
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleSectionToggle(section.key as keyof SiteConfig['sections']);
+                            }}
+                            className={`w-6 h-6 rounded-full transition-colors ${
+                              isEnabled ? 'bg-green-500' : 'bg-zinc-600'
+                            }`}
+                          >
+                            <div className={`w-4 h-4 bg-white rounded-full transition-transform ${
+                              isEnabled ? 'translate-x-3' : 'translate-x-0.5'
+                            }`} />
+                          </button>
                         </div>
                       </div>
                     );
                   })}
                 </div>
-              )}
-            </Panel>
-          </div>
-
-          {/* Configuração */}
-          <div className="lg:col-span-2">
-            <Panel className="adm-panel adm-card--glass p-3">
-              <h2 className="text-sm font-semibold text-white mb-3 flex items-center">
-                <Palette className="w-3 h-3 mr-1 text-purple-400" />
-                Configuração - {sections.find(s => s.key === activeSection)?.name}
-              </h2>
-              
-              {/* Configurações específicas das seções */}
-              {activeSection === 'hero' && (
-                <div className="space-y-3">
-                  {/* Toggle da seção */}
-                  <div className="flex items-center justify-between p-2 bg-slate-800/50 rounded-md border border-slate-600/30">
-                    <div>
-                      <h3 className="text-white font-medium text-sm">Seção Hero</h3>
-                      <p className="text-slate-400 text-xs">Configurações da seção principal do site</p>
-                    </div>
-                    <button
-                      onClick={() => handleSectionToggle('hero')}
-                      className={`w-8 h-4 rounded-full transition-all duration-200 ${
-                        config.sections.hero?.enabled
-                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
-                          : 'bg-slate-600'
-                      }`}
-                    >
-                      <div className={`w-3 h-3 bg-white rounded-full transition-transform duration-200 ${
-                        config.sections.hero?.enabled ? 'translate-x-4' : 'translate-x-0.5'
-                      }`} />
-                    </button>
-                  </div>
-
-                  {/* Conteúdo */}
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-semibold text-white flex items-center">
-                      <Type className="w-3 h-3 mr-1 text-blue-400" />
-                      Conteúdo
-                    </h3>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      <div>
-                        <label className="block text-xs font-medium text-slate-300 mb-1">
-                          Título Principal
-                        </label>
-                        <input
-                          type="text"
-                          value={config.sections.hero?.content?.title || ''}
-                          onChange={(e) => updateConfig({
-                            sections: {
-                              ...config.sections,
-                              hero: {
-                                enabled: config.sections.hero?.enabled ?? false,
-                                position: config.sections.hero?.position ?? 1,
-                                ...config.sections.hero,
-                                content: {
-                                  ...config.sections.hero?.content,
-                                  title: e.target.value
-                                }
-                              }
-                            }
-                          })}
-                          className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-                          placeholder="Digite o título principal"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                          Botão Primário
-                        </label>
-                        <input
-                          type="text"
-                          value={config.sections.hero?.content?.primaryButton || ''}
-                          onChange={(e) => updateConfig({
-                            sections: {
-                              ...config.sections,
-                              hero: {
-                                enabled: config.sections.hero?.enabled ?? false,
-                                position: config.sections.hero?.position ?? 1,
-                                ...config.sections.hero,
-                                content: {
-                                  ...config.sections.hero?.content,
-                                  primaryButton: e.target.value
-                                }
-                              }
-                            }
-                          })}
-                          className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-                          placeholder="Texto do botão"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">
-                        Subtítulo
-                      </label>
-                      <textarea
-                        value={config.sections.hero?.content?.subtitle || ''}
-                        onChange={(e) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                              hero: {
-                                enabled: config.sections.hero?.enabled ?? false,
-                                position: config.sections.hero?.position ?? 1,
-                                ...config.sections.hero,
-                              content: {
-                                ...config.sections.hero?.content,
-                                subtitle: e.target.value
-                              }
-                            }
-                          }
-                        })}
-                        rows={3}
-                        className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-                        placeholder="Digite o subtítulo"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Estilo */}
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-white flex items-center">
-                      <Palette className="w-5 h-5 mr-2 text-purple-400" />
-                      Estilo
-                    </h3>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                          Cor do Botão Primário
-                        </label>
-                        <div className="flex items-center space-x-3">
-                          <input
-                            type="color"
-                            value={config.sections.hero?.style?.primaryButtonColor || '#2E6BD6'}
-                            onChange={(e) => updateConfig({
-                              sections: {
-                                ...config.sections,
-                                hero: {
-                                  enabled: config.sections.hero?.enabled ?? false,
-                                  position: config.sections.hero?.position ?? 1,
-                                  ...config.sections.hero,
-                                  style: {
-                                    ...config.sections.hero?.style,
-                                    primaryButtonColor: e.target.value
-                                  }
-                                }
-                              }
-                            })}
-                            className="w-12 h-12 rounded-lg border border-slate-600/30 cursor-pointer"
-                          />
-                          <input
-                            type="text"
-                            value={config.sections.hero?.style?.primaryButtonColor || '#2E6BD6'}
-                            onChange={(e) => updateConfig({
-                              sections: {
-                                ...config.sections,
-                                hero: {
-                                  enabled: config.sections.hero?.enabled ?? false,
-                                  position: config.sections.hero?.position ?? 1,
-                                  ...config.sections.hero,
-                                  style: {
-                                    ...config.sections.hero?.style,
-                                    primaryButtonColor: e.target.value
-                                  }
-                                }
-                              }
-                            })}
-                            className="flex-1 px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-                            placeholder="#2E6BD6"
-                          />
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                          Tamanho do Título
-                        </label>
-                        <input
-                          type="text"
-                          value={config.sections.hero?.style?.titleSize || '3rem'}
-                          onChange={(e) => updateConfig({
-                            sections: {
-                              ...config.sections,
-                              hero: {
-                                enabled: config.sections.hero?.enabled ?? false,
-                                position: config.sections.hero?.position ?? 1,
-                                ...config.sections.hero,
-                                style: {
-                                  ...config.sections.hero?.style,
-                                  titleSize: e.target.value
-                                }
-                              }
-                            }
-                          })}
-                          className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-                          placeholder="3rem"
-                        />
-                      </div>
-
-                      <HeightPicker
-                        label="Altura do Hero"
-                        value={config.sections.hero?.content?.height || '100%'}
-                        onChange={(height) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            hero: {
-                              enabled: config.sections.hero?.enabled ?? false,
-                              position: config.sections.hero?.position ?? 1,
-                              ...config.sections.hero,
-                              content: {
-                                ...config.sections.hero?.content,
-                                height: height
-                              }
-                            }
-                          }
-                        })}
-                      />
-
-                      <LayoutPicker
-                        label="Layout do Hero"
-                        value={config.sections.hero?.content?.layout || 'centralizado'}
-                        onChange={(layout) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            hero: {
-                              enabled: config.sections.hero?.enabled ?? false,
-                              position: config.sections.hero?.position ?? 1,
-                              ...config.sections.hero,
-                              content: {
-                                ...config.sections.hero?.content,
-                                layout: layout
-                              }
-                            }
-                          }
-                        })}
-                      />
-
-                      <AnimationPicker
-                        label="Animação"
-                        value={config.sections.hero?.content?.animation || 'entrada'}
-                        onChange={(animation) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            hero: {
-                              enabled: config.sections.hero?.enabled ?? false,
-                              position: config.sections.hero?.position ?? 1,
-                              ...config.sections.hero,
-                              content: {
-                                ...config.sections.hero?.content,
-                                animation: animation
-                              }
-                            }
-                          }
-                        })}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Features Section */}
-              {activeSection === 'features' && (
-                <div className="space-y-3">
-                  {/* Toggle da seção */}
-                  <div className="flex items-center justify-between p-2 bg-slate-800/50 rounded-md border border-slate-600/30">
-                    <div>
-                      <h3 className="text-white font-medium text-sm">Seção Features</h3>
-                      <p className="text-slate-400 text-xs">Diferenciais e características</p>
-                    </div>
-                    <button
-                      onClick={() => handleSectionToggle('features')}
-                      className={`w-8 h-4 rounded-full transition-all duration-200 ${
-                        config.sections.features?.enabled
-                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
-                          : 'bg-slate-600'
-                      }`}
-                    >
-                      <div className={`w-3 h-3 bg-white rounded-full transition-transform duration-200 ${
-                        config.sections.features?.enabled ? 'translate-x-4' : 'translate-x-0.5'
-                      }`} />
-                    </button>
-                  </div>
-
-                  {/* Conteúdo */}
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-semibold text-white flex items-center">
-                      <Type className="w-3 h-3 mr-1 text-blue-400" />
-                      Conteúdo
-                    </h3>
-                    
-                    <div className="grid grid-cols-1 gap-2">
-                      <div>
-                        <label className="block text-xs font-medium text-slate-300 mb-1">
-                          Título da Seção
-                        </label>
-                        <input
-                          type="text"
-                          value={config.sections.features?.content?.title || ''}
-                          onChange={(e) => updateConfig({
-                            sections: {
-                              ...config.sections,
-                              features: {
-                                enabled: config.sections.features?.enabled ?? false,
-                                position: config.sections.features?.position ?? 2,
-                                ...config.sections.features,
-                                content: {
-                                  ...config.sections.features?.content,
-                                  title: e.target.value
-                                }
-                              }
-                            }
-                          })}
-                          className="w-full px-2 py-1 bg-slate-800 border border-slate-600/30 rounded-md text-white text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50"
-                          placeholder="Título da seção"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-xs font-medium text-slate-300 mb-1">
-                          Subtítulo
-                        </label>
-                        <input
-                          type="text"
-                          value={config.sections.features?.content?.subtitle || ''}
-                          onChange={(e) => updateConfig({
-                            sections: {
-                              ...config.sections,
-                              features: {
-                                enabled: config.sections.features?.enabled ?? false,
-                                position: config.sections.features?.position ?? 2,
-                                ...config.sections.features,
-                                content: {
-                                  ...config.sections.features?.content,
-                                  subtitle: e.target.value
-                                }
-                              }
-                            }
-                          })}
-                          className="w-full px-2 py-1 bg-slate-800 border border-slate-600/30 rounded-md text-white text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50"
-                          placeholder="Subtítulo da seção"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Estilo */}
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-semibold text-white flex items-center">
-                      <Palette className="w-3 h-3 mr-1 text-purple-400" />
-                      Estilo
-                    </h3>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      <ColorPicker
-                        label="Cor do Título"
-                        value={config.sections.features?.style?.titleColor || '#FFFFFF'}
-                        onChange={(color) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            features: {
-                              enabled: config.sections.features?.enabled ?? false,
-                              position: config.sections.features?.position ?? 2,
-                              ...config.sections.features,
-                              style: {
-                                ...config.sections.features?.style,
-                                titleColor: color
-                              }
-                            }
-                          }
-                        })}
-                      />
-
-                      <ColorPicker
-                        label="Cor do Subtítulo"
-                        value={config.sections.features?.style?.subtitleColor || '#E2E8F0'}
-                        onChange={(color) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            features: {
-                              enabled: config.sections.features?.enabled ?? false,
-                              position: config.sections.features?.position ?? 2,
-                              ...config.sections.features,
-                              style: {
-                                ...config.sections.features?.style,
-                                subtitleColor: color
-                              }
-                            }
-                          }
-                        })}
-                      />
-
-                      <FontSizePicker
-                        label="Tamanho do Título"
-                        value={config.sections.features?.style?.titleSize || 'text-lg'}
-                        onChange={(size) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            features: {
-                              enabled: config.sections.features?.enabled ?? false,
-                              position: config.sections.features?.position ?? 2,
-                              ...config.sections.features,
-                              style: {
-                                ...config.sections.features?.style,
-                                titleSize: size
-                              }
-                            }
-                          }
-                        })}
-                      />
-
-                      <ColorPicker
-                        label="Cor de Fundo"
-                        value={config.sections.features?.style?.backgroundColor || '#1E293B'}
-                        onChange={(color) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            features: {
-                              enabled: config.sections.features?.enabled ?? false,
-                              position: config.sections.features?.position ?? 2,
-                              ...config.sections.features,
-                              style: {
-                                ...config.sections.features?.style,
-                                backgroundColor: color
-                              }
-                            }
-                          }
-                        })}
-                      />
-
-                      <ColumnsPicker
-                        label="Quantidade de Colunas"
-                        value={config.sections.features?.content?.columns || 3}
-                        onChange={(columns) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            features: {
-                              enabled: config.sections.features?.enabled ?? false,
-                              position: config.sections.features?.position ?? 2,
-                              ...config.sections.features,
-                              content: {
-                                ...config.sections.features?.content,
-                                columns: columns
-                              }
-                            }
-                          }
-                        })}
-                      />
-
-                      <DisplayTypePicker
-                        label="Tipo de Exibição"
-                        value={config.sections.features?.content?.displayType || 'grid'}
-                        onChange={(displayType) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            features: {
-                              enabled: config.sections.features?.enabled ?? false,
-                              position: config.sections.features?.position ?? 2,
-                              ...config.sections.features,
-                              content: {
-                                ...config.sections.features?.content,
-                                displayType: displayType
-                              }
-                            }
-                          }
-                        })}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Services Section */}
-              {activeSection === 'services' && (
-                <div className="space-y-3">
-                  {/* Toggle da seção */}
-                  <div className="flex items-center justify-between p-2 bg-slate-800/50 rounded-md border border-slate-600/30">
-                    <div>
-                      <h3 className="text-white font-medium text-sm">Seção Services</h3>
-                      <p className="text-slate-400 text-xs">Nossos serviços</p>
-                    </div>
-                    <button
-                      onClick={() => handleSectionToggle('services')}
-                      className={`w-8 h-4 rounded-full transition-all duration-200 ${
-                        config.sections.services?.enabled
-                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
-                          : 'bg-slate-600'
-                      }`}
-                    >
-                      <div className={`w-3 h-3 bg-white rounded-full transition-transform duration-200 ${
-                        config.sections.services?.enabled ? 'translate-x-4' : 'translate-x-0.5'
-                      }`} />
-                    </button>
-                  </div>
-
-                  {/* Conteúdo */}
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-semibold text-white flex items-center">
-                      <Type className="w-3 h-3 mr-1 text-blue-400" />
-                      Conteúdo
-                    </h3>
-                    
-                    <div className="grid grid-cols-1 gap-2">
-                      <div>
-                        <label className="block text-xs font-medium text-slate-300 mb-1">
-                          Título da Seção
-                        </label>
-                        <input
-                          type="text"
-                          value={config.sections.services?.content?.title || ''}
-                          onChange={(e) => updateConfig({
-                            sections: {
-                              ...config.sections,
-                              services: {
-                                enabled: config.sections.services?.enabled ?? false,
-                                position: config.sections.services?.position ?? 3,
-                                ...config.sections.services,
-                                content: {
-                                  ...config.sections.services?.content,
-                                  title: e.target.value
-                                }
-                              }
-                            }
-                          })}
-                          className="w-full px-2 py-1 bg-slate-800 border border-slate-600/30 rounded-md text-white text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50"
-                          placeholder="Título da seção"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-xs font-medium text-slate-300 mb-1">
-                          Subtítulo
-                        </label>
-                        <input
-                          type="text"
-                          value={config.sections.services?.content?.subtitle || ''}
-                          onChange={(e) => updateConfig({
-                            sections: {
-                              ...config.sections,
-                              services: {
-                                enabled: config.sections.services?.enabled ?? false,
-                                position: config.sections.services?.position ?? 3,
-                                ...config.sections.services,
-                                content: {
-                                  ...config.sections.services?.content,
-                                  subtitle: e.target.value
-                                }
-                              }
-                            }
-                          })}
-                          className="w-full px-2 py-1 bg-slate-800 border border-slate-600/30 rounded-md text-white text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50"
-                          placeholder="Subtítulo da seção"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Estilo */}
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-semibold text-white flex items-center">
-                      <Palette className="w-3 h-3 mr-1 text-purple-400" />
-                      Estilo
-                    </h3>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      <ColorPicker
-                        label="Cor do Título"
-                        value={config.sections.services?.style?.titleColor || '#FFFFFF'}
-                        onChange={(color) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            services: {
-                              enabled: config.sections.services?.enabled ?? false,
-                              position: config.sections.services?.position ?? 3,
-                              ...config.sections.services,
-                              style: {
-                                ...config.sections.services?.style,
-                                titleColor: color
-                              }
-                            }
-                          }
-                        })}
-                      />
-
-                      <ColorPicker
-                        label="Cor do Subtítulo"
-                        value={config.sections.services?.style?.subtitleColor || '#E2E8F0'}
-                        onChange={(color) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            services: {
-                              enabled: config.sections.services?.enabled ?? false,
-                              position: config.sections.services?.position ?? 3,
-                              ...config.sections.services,
-                              style: {
-                                ...config.sections.services?.style,
-                                subtitleColor: color
-                              }
-                            }
-                          }
-                        })}
-                      />
-
-                      <FontSizePicker
-                        label="Tamanho do Título"
-                        value={config.sections.services?.style?.titleSize || 'text-3xl'}
-                        onChange={(size) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            services: {
-                              enabled: config.sections.services?.enabled ?? false,
-                              position: config.sections.services?.position ?? 3,
-                              ...config.sections.services,
-                              style: {
-                                ...config.sections.services?.style,
-                                titleSize: size
-                              }
-                            }
-                          }
-                        })}
-                      />
-
-                      <ColorPicker
-                        label="Cor de Fundo"
-                        value={config.sections.services?.style?.backgroundColor || '#0F172A'}
-                        onChange={(color) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                            services: {
-                              enabled: config.sections.services?.enabled ?? false,
-                              position: config.sections.services?.position ?? 3,
-                              ...config.sections.services,
-                              style: {
-                                ...config.sections.services?.style,
-                                backgroundColor: color
-                              }
-                            }
-                          }
-                        })}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Header Section */}
-              {activeSection === 'header' && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-600/30">
-                    <div>
-                      <h3 className="text-white font-medium">Seção Header</h3>
-                      <p className="text-slate-400 text-sm">Cabeçalho do site com navegação</p>
-                    </div>
-                    <button
-                      onClick={() => handleSectionToggle('header')}
-                      className={`w-12 h-6 rounded-full transition-all duration-200 ${
-                        config.sections.header?.enabled
-                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
-                          : 'bg-slate-600'
-                      }`}
-                    >
-                      <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
-                        config.sections.header?.enabled ? 'translate-x-6' : 'translate-x-0.5'
-                      }`} />
-                    </button>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-white">Configurações do Header</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                          Texto do Logo
-                        </label>
-                        <input
-                          type="text"
-                          value="Rapidus"
-                          className="w-full px-2 py-1 bg-slate-800 border border-slate-600 rounded-md text-white text-xs focus:outline-none focus:border-blue-500"
-                          readOnly
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                          Botão CTA
-                        </label>
-                        <input
-                          type="text"
-                          value="Solicitar Orçamento"
-                          className="w-full px-2 py-1 bg-slate-800 border border-slate-600 rounded-md text-white text-xs focus:outline-none focus:border-blue-500"
-                          readOnly
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Footer Section */}
-              {activeSection === 'footer' && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-600/30">
-                    <div>
-                      <h3 className="text-white font-medium">Seção Footer</h3>
-                      <p className="text-slate-400 text-sm">Rodapé do site com informações</p>
-                    </div>
-                    <button
-                      onClick={() => handleSectionToggle('footer')}
-                      className={`w-12 h-6 rounded-full transition-all duration-200 ${
-                        config.sections.footer?.enabled
-                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
-                          : 'bg-slate-600'
-                      }`}
-                    >
-                      <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
-                        config.sections.footer?.enabled ? 'translate-x-6' : 'translate-x-0.5'
-                      }`} />
-                    </button>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-white">Configurações do Footer</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                          Descrição da Empresa
-                        </label>
-                        <textarea
-                          value="Especialistas em vistoria veicular com mais de 10 anos de experiência no mercado."
-                          className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500 h-20"
-                          readOnly
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                          Copyright
-                        </label>
-                        <input
-                          type="text"
-                          value="© 2024 Rapidus. Todos os direitos reservados."
-                          className="w-full px-2 py-1 bg-slate-800 border border-slate-600 rounded-md text-white text-xs focus:outline-none focus:border-blue-500"
-                          readOnly
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Carrosséis Section */}
-              {activeSection === 'carrossels' && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-600/30">
-                    <div>
-                      <h3 className="text-white font-medium">Seção Carrosséis</h3>
-                      <p className="text-slate-400 text-sm">Carrosséis de produtos/serviços</p>
-                    </div>
-                    <button
-                      onClick={() => handleSectionToggle('carrossels')}
-                      className={`w-12 h-6 rounded-full transition-all duration-200 ${
-                        config.sections.carrossels?.enabled
-                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
-                          : 'bg-slate-600'
-                      }`}
-                    >
-                      <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
-                        config.sections.carrossels?.enabled ? 'translate-x-6' : 'translate-x-0.5'
-                      }`} />
-                    </button>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-white">Configurações dos Carrosséis</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                          Título da Seção
-                        </label>
-                        <input
-                          type="text"
-                          value={config.content.carrossels?.title || 'Nossos Carrosséis'}
-                          className="w-full px-2 py-1 bg-slate-800 border border-slate-600 rounded-md text-white text-xs focus:outline-none focus:border-blue-500"
-                          readOnly
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                          Subtítulo
-                        </label>
-                        <input
-                          type="text"
-                          value={config.content.carrossels?.subtitle || 'Apresente seus produtos e serviços'}
-                          className="w-full px-2 py-1 bg-slate-800 border border-slate-600 rounded-md text-white text-xs focus:outline-none focus:border-blue-500"
-                          readOnly
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <label className="block text-sm font-medium text-slate-300 mb-2">
-                        Itens do Carrossel
-                      </label>
-                      <div className="space-y-2">
-                        {config.content.carrossels?.items?.map((item) => (
-                          <div key={item.id} className="p-3 bg-slate-800/50 rounded-lg border border-slate-600/30">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <h4 className="text-white font-medium">{item.title}</h4>
-                                <p className="text-slate-400 text-sm">{item.description}</p>
-                              </div>
-                              <div className={`w-3 h-3 rounded-full ${
-                                item.enabled ? 'bg-green-500' : 'bg-slate-600'
-                              }`} />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Certificações Section */}
-              {activeSection === 'certificacoes' && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-600/30">
-                    <div>
-                      <h3 className="text-white font-medium">Seção Certificações</h3>
-                      <p className="text-slate-400 text-sm">Selos e certificações</p>
-                    </div>
-                    <button
-                      onClick={() => handleSectionToggle('certificacoes')}
-                      className={`w-12 h-6 rounded-full transition-all duration-200 ${
-                        config.sections.certificacoes?.enabled
-                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
-                          : 'bg-slate-600'
-                      }`}
-                    >
-                      <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
-                        config.sections.certificacoes?.enabled ? 'translate-x-6' : 'translate-x-0.5'
-                      }`} />
-                    </button>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-white">Configurações das Certificações</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                          Título da Seção
-                        </label>
-                        <input
-                          type="text"
-                          value={config.content.certificacoes?.title || 'Selos e Certificações'}
-                          className="w-full px-2 py-1 bg-slate-800 border border-slate-600 rounded-md text-white text-xs focus:outline-none focus:border-blue-500"
-                          readOnly
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                          Subtítulo
-                        </label>
-                        <input
-                          type="text"
-                          value={config.content.certificacoes?.subtitle || 'Nossas certificações de qualidade'}
-                          className="w-full px-2 py-1 bg-slate-800 border border-slate-600 rounded-md text-white text-xs focus:outline-none focus:border-blue-500"
-                          readOnly
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <label className="block text-sm font-medium text-slate-300 mb-2">
-                        Certificações Disponíveis
-                      </label>
-                      <div className="space-y-2">
-                        {config.content.certificacoes?.items?.map((item) => (
-                          <div key={item.id} className="p-3 bg-slate-800/50 rounded-lg border border-slate-600/30">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <h4 className="text-white font-medium">{item.title}</h4>
-                                <p className="text-slate-400 text-sm">{item.description}</p>
-                                <p className="text-slate-500 text-xs">Org: {item.organization}</p>
-                              </div>
-                              <div className={`w-3 h-3 rounded-full ${
-                                item.enabled ? 'bg-green-500' : 'bg-slate-600'
-                              }`} />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Ícones Flutuantes Section */}
-              {activeSection === 'icones-flutuantes' && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-600/30">
-                    <div>
-                      <h3 className="text-white font-medium">Seção Ícones Flutuantes</h3>
-                      <p className="text-slate-400 text-sm">Redes sociais flutuantes</p>
-                    </div>
-                    <button
-                      onClick={() => handleSectionToggle('icones-flutuantes')}
-                      className={`w-12 h-6 rounded-full transition-all duration-200 ${
-                        config.sections['icones-flutuantes']?.enabled
-                          ? 'bg-gradient-to-r from-green-500 to-blue-500'
-                          : 'bg-slate-600'
-                      }`}
-                    >
-                      <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-200 ${
-                        config.sections['icones-flutuantes']?.enabled ? 'translate-x-6' : 'translate-x-0.5'
-                      }`} />
-                    </button>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-white">Configurações dos Ícones Flutuantes</h3>
-                    <div className="mt-4">
-                      <label className="block text-sm font-medium text-slate-300 mb-2">
-                        Redes Sociais Disponíveis
-                      </label>
-                      <div className="space-y-2">
-                        {config.content['icones-flutuantes']?.items?.map((item) => (
-                          <div key={item.id} className="p-3 bg-slate-800/50 rounded-lg border border-slate-600/30">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center space-x-3">
-                                <div 
-                                  className="w-8 h-8 rounded-full flex items-center justify-center text-white"
-                                  style={{ backgroundColor: item.color }}
-                                >
-                                  <span className="text-sm">{item.icon}</span>
-                                </div>
-                                <div>
-                                  <h4 className="text-white font-medium">{item.name}</h4>
-                                  <p className="text-slate-400 text-sm">{item.url}</p>
-                                </div>
-                              </div>
-                              <div className={`w-3 h-3 rounded-full ${
-                                item.enabled ? 'bg-green-500' : 'bg-slate-600'
-                              }`} />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Outras seções */}
-              {!['hero', 'header', 'footer', 'carrossels', 'certificacoes', 'icones-flutuantes'].includes(activeSection) && (
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Settings className="w-8 h-8 text-slate-400" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
-                    Configuração de {sections.find(s => s.key === activeSection)?.name}
-                  </h3>
-                  <p className="text-slate-400">
-                    As configurações específicas desta seção serão implementadas em breve.
-                  </p>
-                </div>
-              )}
-            </Panel>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Layout original (fallback)
-  return (
-    <div className="space-y-8">
-      <div className="space-y-4">
-        <div>
-          <h2 className="text-2xl font-semibold text-white">Configurações</h2>
-          <p className="text-zinc-400">Configure e personalize seu site</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Seções */}
-        <div className="lg:col-span-1">
-          <div className="p-6 border border-zinc-800 rounded-lg">
-            <h2 className="text-xl font-semibold text-white mb-6">Seções</h2>
-            <div className="space-y-3">
-              {sections.map((section) => {
-                const Icon = section.icon;
-                const isActive = activeSection === section.key;
-                const isEnabled = config.sections[section.key]?.enabled ?? false;
-                
-                return (
-                  <div
-                    key={section.key}
-                    className={`p-4 rounded-lg border transition-colors cursor-pointer ${
-                      isActive
-                        ? 'bg-zinc-800 border-zinc-700'
-                        : 'bg-zinc-900 border-zinc-800 hover:bg-zinc-800'
-                    }`}
-                    onClick={() => setActiveSection(section.key)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <Icon className="w-5 h-5 text-zinc-400" />
-                        <div>
-                          <h3 className="text-white font-medium">{section.name}</h3>
-                          <p className="text-zinc-400 text-sm">{section.description}</p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSectionToggle(section.key);
-                        }}
-                        className={`w-12 h-6 rounded-full transition-colors ${
-                          isEnabled ? 'bg-green-500' : 'bg-zinc-600'
-                        }`}
-                      >
-                        <div className={`w-5 h-5 bg-white rounded-full transition-transform ${
-                          isEnabled ? 'translate-x-6' : 'translate-x-0.5'
-                        }`} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+              </Panel>
             </div>
-          </div>
-        </div>
 
-        {/* Configuração */}
-        <div className="lg:col-span-2">
-          <div className="p-6 border border-zinc-800 rounded-lg">
-            <h2 className="text-xl font-semibold text-white mb-6">
-              Configuração - {sections.find(s => s.key === activeSection)?.name}
-            </h2>
-            
-            {activeSection === 'hero' && (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between p-4 bg-zinc-900 rounded-lg">
-                  <div>
-                    <h3 className="text-white font-medium">Seção Hero</h3>
-                    <p className="text-zinc-400 text-sm">Configurações da seção principal do site</p>
-                  </div>
-                  <button
-                    onClick={() => handleSectionToggle('hero')}
-                    className={`w-12 h-6 rounded-full transition-colors ${
-                      config.sections.hero?.enabled ? 'bg-green-500' : 'bg-zinc-600'
-                    }`}
-                  >
-                    <div className={`w-5 h-5 bg-white rounded-full transition-transform ${
-                      config.sections.hero?.enabled ? 'translate-x-6' : 'translate-x-0.5'
-                    }`} />
-                  </button>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-white">Conteúdo</h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-zinc-300 mb-2">
-                        Título Principal
-                      </label>
-                      <input
-                        type="text"
-                        value={config.sections.hero?.content?.title || ''}
-                        onChange={(e) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                              hero: {
-                                enabled: config.sections.hero?.enabled ?? false,
-                                position: config.sections.hero?.position ?? 1,
-                                ...config.sections.hero,
-                                content: {
-                                  ...config.sections.hero?.content,
-                                  title: e.target.value
-                                }
-                              }
-                          }
-                        })}
-                        className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg text-white placeholder-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                        placeholder="Digite o título principal"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-zinc-300 mb-2">
-                        Botão Primário
-                      </label>
-                      <input
-                        type="text"
-                        value={config.sections.hero?.content?.primaryButton || ''}
-                        onChange={(e) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                              hero: {
-                                enabled: config.sections.hero?.enabled ?? false,
-                                position: config.sections.hero?.position ?? 1,
-                                ...config.sections.hero,
-                                content: {
-                                  ...config.sections.hero?.content,
-                                  primaryButton: e.target.value
-                                }
-                              }
-                          }
-                        })}
-                        className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg text-white placeholder-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                        placeholder="Texto do botão"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-300 mb-2">
-                      Subtítulo
-                    </label>
-                    <textarea
-                      value={config.sections.hero?.content?.subtitle || ''}
-                      onChange={(e) => updateConfig({
-                        sections: {
-                          ...config.sections,
-                              hero: {
-                                enabled: config.sections.hero?.enabled ?? false,
-                                position: config.sections.hero?.position ?? 1,
-                                ...config.sections.hero,
-                              content: {
-                                ...config.sections.hero?.content,
-                                subtitle: e.target.value
-                              }
-                            }
-                        }
-                      })}
-                      rows={3}
-                      className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg text-white placeholder-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                      placeholder="Digite o subtítulo"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-white">Estilo</h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-zinc-300 mb-2">
-                        Cor do Botão Primário
-                      </label>
-                      <div className="flex items-center space-x-3">
-                        <input
-                          type="color"
-                          value={config.sections.hero?.style?.primaryButtonColor || '#2E6BD6'}
-                          onChange={(e) => updateConfig({
-                            sections: {
-                              ...config.sections,
-                              hero: {
-                                enabled: config.sections.hero?.enabled ?? false,
-                                position: config.sections.hero?.position ?? 1,
-                                ...config.sections.hero,
-                                style: {
-                                  ...config.sections.hero?.style,
-                                  primaryButtonColor: e.target.value
-                                }
-                              }
-                            }
-                          })}
-                          className="w-12 h-12 rounded-lg border border-zinc-800 cursor-pointer"
-                        />
-                        <input
-                          type="text"
-                          value={config.sections.hero?.style?.primaryButtonColor || '#2E6BD6'}
-                          onChange={(e) => updateConfig({
-                            sections: {
-                              ...config.sections,
-                              hero: {
-                                enabled: config.sections.hero?.enabled ?? false,
-                                position: config.sections.hero?.position ?? 1,
-                                ...config.sections.hero,
-                                style: {
-                                  ...config.sections.hero?.style,
-                                  primaryButtonColor: e.target.value
-                                }
-                              }
-                            }
-                          })}
-                          className="flex-1 px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg text-white placeholder-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                          placeholder="#2E6BD6"
-                        />
+            {/* Section Configuration */}
+            <div className="lg:col-span-2">
+              <Panel header={<h3 className="text-lg font-semibold text-white">Configurações das Seções</h3>} className="min-h-[600px]">
+                {activeSection === 'hero' && <HeroAdmin />}
+                {activeSection === 'features' && <FeaturesAdmin />}
+                {activeSection === 'services' && <ServicesAdmin />}
+                {activeSection !== 'hero' && activeSection !== 'features' && activeSection !== 'services' && (
+                  <div className="flex items-center justify-center h-64">
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Settings className="w-8 h-8 text-zinc-400" />
                       </div>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-zinc-300 mb-2">
-                        Tamanho do Título
-                      </label>
-                      <input
-                        type="text"
-                        value={config.sections.hero?.style?.titleSize || '3rem'}
-                        onChange={(e) => updateConfig({
-                          sections: {
-                            ...config.sections,
-                                hero: {
-                                  enabled: config.sections.hero?.enabled ?? false,
-                                  position: config.sections.hero?.position ?? 1,
-                                  ...config.sections.hero,
-                                  style: {
-                                    ...config.sections.hero?.style,
-                                    titleSize: e.target.value
-                                  }
-                                }
-                          }
-                        })}
-                        className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg text-white placeholder-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                        placeholder="3rem"
-                      />
+                      <h3 className="text-white font-medium mb-2">Configurações em Desenvolvimento</h3>
+                      <p className="text-zinc-400 text-sm">
+                        As configurações para a seção &quot;{sections.find(s => s.key === activeSection)?.label}&quot; 
+                        estão sendo desenvolvidas.
+                      </p>
                     </div>
                   </div>
-                </div>
-              </div>
-            )}
-
-            {activeSection !== 'hero' && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Settings className="w-8 h-8 text-zinc-400" />
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-2">
-                  Configuração de {sections.find(s => s.key === activeSection)?.name}
-                </h3>
-                <p className="text-zinc-400">
-                  As configurações específicas desta seção serão implementadas em breve.
-                </p>
-              </div>
-            )}
+                )}
+              </Panel>
+            </div>
           </div>
         </div>
       </div>

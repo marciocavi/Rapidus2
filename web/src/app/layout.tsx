@@ -20,6 +20,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Rapidus',
   description: 'Base app',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 };
 
 export const viewport: Viewport = { themeColor: '#000000' };
@@ -28,7 +33,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const initialConfig = await loadSiteConfig();
 
   return (
-    <html lang="pt-BR" className="dark scroll-smooth">
+    <html lang="pt-BR" data-scroll-behavior="smooth" className="dark scroll-smooth">
       <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-neutral-dark-bg text-neutral-dark-onSurfaceHigh antialiased`}>
         <SiteConfigProvider initialConfig={initialConfig}>
           <AdminLayoutWrapper>

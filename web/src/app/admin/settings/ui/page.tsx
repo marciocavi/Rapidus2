@@ -1,11 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
 import { 
   Settings, 
   Check, 
@@ -17,6 +12,11 @@ import {
   Mail,
   Lock
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
 
 export default function UIPlayground() {
   const [switchValue, setSwitchValue] = useState(false);

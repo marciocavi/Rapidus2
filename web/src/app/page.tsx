@@ -5,7 +5,7 @@ import { useSiteConfig } from '@/context/SiteConfigContext';
 
 export default function HomePage() {
   const { config } = useSiteConfig();
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [, setHoveredCard] = useState<number | null>(null);
 
   if (!config) {
     return (
@@ -18,7 +18,7 @@ export default function HomePage() {
   // Função para ordenar seções baseada na posição
   const getOrderedSections = () => {
     const sections = Object.entries(config.sections)
-      .filter(([_, section]) => section?.enabled)
+      .filter(([, section]) => section?.enabled)
       .map(([key, section]) => ({
         key,
         section,
@@ -33,7 +33,7 @@ export default function HomePage() {
   const orderedSections = getOrderedSections();
 
   // Componente para renderizar seções dinamicamente
-  const renderSection = (sectionKey: string, section: any) => {
+  const renderSection = (sectionKey: string) => {
     switch (sectionKey) {
       case 'header':
         return (
@@ -138,7 +138,7 @@ export default function HomePage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {config.content.features.items.map((feature: any, index: number) => (
+              {config.content.features.items.map((feature: Record<string, unknown>, index: number) => (
                 <div 
                   key={index}
                   className="group p-8 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
@@ -148,21 +148,21 @@ export default function HomePage() {
                     <div className="w-20 h-20 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
                       <span className="text-3xl">⚡</span>
                     </div>
-                    <div className="text-zinc-300 text-sm font-medium">{feature.title}</div>
+                    <div className="text-zinc-300 text-sm font-medium">{feature.title as string}</div>
                   </div>
                   
                   <h3 
                     className="font-semibold text-zinc-100 group-hover:text-zinc-50 transition-colors duration-300"
                     style={{ fontSize: config.theme.fontSize?.h3 || '1.5rem' }}
                   >
-                    {feature.title}
+                    {feature.title as string}
                   </h3>
                   
                   <p 
                     className="text-zinc-400 group-hover:text-zinc-300 leading-relaxed transition-colors duration-300"
                     style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
                   >
-                    {feature.description}
+                    {feature.description as string}
                   </p>
                 </div>
               ))}
@@ -183,7 +183,7 @@ export default function HomePage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {config.content.services.items.map((service: any, index: number) => (
+              {config.content.services.items.map((service: Record<string, unknown>, index: number) => (
                 <div 
                   key={index}
                   className="group p-8 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
@@ -193,21 +193,21 @@ export default function HomePage() {
                     <div className="w-20 h-20 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
                       <span className="text-3xl">🔧</span>
                     </div>
-                    <div className="text-zinc-300 text-sm font-medium">{service.title}</div>
+                    <div className="text-zinc-300 text-sm font-medium">{service.title as string}</div>
                   </div>
                   
                   <h3 
                     className="font-semibold text-zinc-100 group-hover:text-zinc-50 transition-colors duration-300"
                     style={{ fontSize: config.theme.fontSize?.h3 || '1.5rem' }}
                   >
-                    {service.title}
+                    {service.title as string}
                   </h3>
                   
                   <p 
                     className="text-zinc-400 group-hover:text-zinc-300 leading-relaxed transition-colors duration-300"
                     style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
                   >
-                    {service.description}
+                    {service.description as string}
                   </p>
                 </div>
               ))}
@@ -284,7 +284,7 @@ export default function HomePage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {config.content.blog.articles.map((post: any, index: number) => (
+              {config.content.blog.articles.map((post: Record<string, unknown>, index: number) => (
                 <article 
                   key={index}
                   className="group border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 transform hover:scale-105"
@@ -299,18 +299,18 @@ export default function HomePage() {
                       className="font-semibold text-zinc-100 group-hover:text-zinc-50 transition-colors duration-300 mb-2"
                       style={{ fontSize: config.theme.fontSize?.h3 || '1.5rem' }}
                     >
-                      {post.title}
+                      {post.title as string}
                     </h3>
                     
                     <p 
                       className="text-zinc-400 group-hover:text-zinc-300 leading-relaxed transition-colors duration-300 mb-4"
                       style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
                     >
-                      {post.excerpt}
+                      {post.excerpt as string}
                     </p>
                     
                     <div className="flex items-center justify-between">
-                      <span className="text-zinc-500 text-sm">{post.date}</span>
+                      <span className="text-zinc-500 text-sm">{post.date as string}</span>
                       <button 
                         className="text-zinc-300 hover:text-zinc-100 transition-colors duration-300"
                         style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
@@ -382,7 +382,7 @@ export default function HomePage() {
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {config.content.stats.items.map((stat: any, index: number) => (
+              {config.content.stats.items.map((stat: Record<string, unknown>, index: number) => (
                 <div 
                   key={index}
                   className="text-center p-6 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-all duration-300"
@@ -392,13 +392,13 @@ export default function HomePage() {
                     className="font-bold text-zinc-100 mb-2"
                     style={{ fontSize: config.theme.fontSize?.h1 || '3rem' }}
                   >
-                    {stat.value}
+                    {stat.value as string}
                   </div>
                   <div 
                     className="text-zinc-400"
                     style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
                   >
-                    {stat.label}
+                    {stat.label as string}
                   </div>
                 </div>
               ))}
@@ -419,7 +419,7 @@ export default function HomePage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {config.content.carrossels.items.map((carrossel: any, index: number) => (
+              {config.content.carrossels.items.map((carrossel: Record<string, unknown>, index: number) => (
                 <div 
                   key={index}
                   className="group border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 transform hover:scale-105"
@@ -434,14 +434,14 @@ export default function HomePage() {
                       className="font-semibold text-zinc-100 group-hover:text-zinc-50 transition-colors duration-300 mb-2"
                       style={{ fontSize: config.theme.fontSize?.h3 || '1.5rem' }}
                     >
-                      {carrossel.title}
+                      {carrossel.title as string}
                     </h3>
                     
                     <p 
                       className="text-zinc-400 group-hover:text-zinc-300 leading-relaxed transition-colors duration-300"
                       style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
                     >
-                      {carrossel.description}
+                      {carrossel.description as string}
                     </p>
                   </div>
                 </div>
@@ -451,7 +451,7 @@ export default function HomePage() {
         );
 
       case 'certificacoes':
-        return (
+  return (
           <section key="certificacoes" id="certificacoes" className="mx-4 sm:mx-6 lg:mx-8 py-16">
             <div className="text-center animate-in fade-in slide-in-from-bottom-4 duration-1000 mb-12">
               <h2 
@@ -463,7 +463,7 @@ export default function HomePage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {config.content.certificacoes.items.map((certificacao: any, index: number) => (
+              {config.content.certificacoes.items.map((certificacao: Record<string, unknown>, index: number) => (
                 <div 
                   key={index}
                   className="group border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 transform hover:scale-105"
@@ -478,14 +478,14 @@ export default function HomePage() {
                       className="font-semibold text-zinc-100 group-hover:text-zinc-50 transition-colors duration-300 mb-2"
                       style={{ fontSize: config.theme.fontSize?.h3 || '1.5rem' }}
                     >
-                      {certificacao.title}
+                      {certificacao.title as string}
                     </h3>
                     
                     <p 
                       className="text-zinc-400 group-hover:text-zinc-300 leading-relaxed transition-colors duration-300"
                       style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
                     >
-                      {certificacao.description}
+                      {certificacao.description as string}
                     </p>
                   </div>
                 </div>
@@ -504,20 +504,20 @@ export default function HomePage() {
               >
                 {config.content['icones-flutuantes'].title}
               </h2>
-            </div>
+        </div>
             
             <div className="flex flex-wrap justify-center gap-6">
-              {config.content['icones-flutuantes'].items.map((item: any, index: number) => (
-                <a 
+              {config.content['icones-flutuantes'].items.map((item: Record<string, unknown>, index: number) => (
+        <a
                   key={index}
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={item.url as string}
+          target="_blank"
+          rel="noopener noreferrer"
                   className="group w-16 h-16 border border-zinc-800 rounded-full flex items-center justify-center hover:border-zinc-700 transition-all duration-300 transform hover:scale-110"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <span className="text-zinc-400 group-hover:text-zinc-200 text-2xl transition-colors duration-300">
-                    {item.icon}
+                    {item.icon as string}
                   </span>
                 </a>
               ))}
@@ -574,7 +574,7 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
-          </footer>
+      </footer>
         );
 
       default:
@@ -585,7 +585,7 @@ export default function HomePage() {
   return (
     <div className="space-y-12" style={{ fontFamily: config.theme.font }}>
       {/* Renderizar seções na ordem definida */}
-      {orderedSections.map(({ key, section }) => renderSection(key, section))}
+      {orderedSections.map(({ key }) => renderSection(key))}
     </div>
   );
 }

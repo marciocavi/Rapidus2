@@ -1,0 +1,25 @@
+[data-modern-admin="1"] .ana-neon {
+  --neon-cyan: #22d3ee;
+  --neon-magenta: #e879f9;
+  --neon-lime: #a3e635;
+  --neon-purple: #8b5cf6;
+  --neon-amber: #f59e0b;
+}
+
+[data-modern-admin="1"] .ana-glow {
+  filter: drop-shadow(0 0 10px rgba(139,92,246,.35));
+}
+
+[data-modern-admin="1"] .ana-text {
+  color: var(--textPrimary);
+  text-shadow: 0 0 6px rgba(139,92,246,.25);
+}
+
+[data-modern-admin="1"] .ana-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+}
+
+
+

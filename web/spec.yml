@@ -1,0 +1,84 @@
+# spec.yml
+project:
+  name: rapidus-admin-website
+  minimal_node: "18.17.0"
+
+required_files:
+  - path: src/theme/tokens.ts
+  - path: src/styles/theme.css
+  - path: src/utils/textStyle.ts
+  - path: src/components/admin/TextStylePicker.tsx
+  - path: src/sections/Hero/index.tsx
+  - path: src/sections/Stats/index.tsx
+  - path: src/pages/admin/sections/Hero.tsx
+  - path: src/pages/admin/sections/Stats.tsx
+  - path: src/server/api/stats/index.ts
+  - path: prisma/schema.prisma
+  - path: tests/textStyle.spec.ts
+  - path: tests/stats-api.spec.ts
+  - path: docs/MANIFEST.md
+
+css_vars_must_include:
+  - --ff-heading
+  - --ff-body
+  - --fs-display-2xl
+  - --fs-h1
+  - --fs-body
+  - --color-text-primary
+  - --color-surface-base
+  - --color-brand-primary
+  - --color-link
+  - --color-link-hover
+
+prisma_model_must_include:
+  model: SiteStat
+  fields:
+    - id String @id
+    - ativo Boolean
+    - ordem Int
+    - titulo String
+    - valorRaw String
+    - formatOn Boolean
+    - decimais Int
+    - sepMilhar String
+    - sepDecimal String
+    - abreviar Boolean
+    - prefixo String
+    - sufixo String
+    - icone String
+    - cor String
+    - descricao String
+    - destaque Boolean
+    - animacaoContador Boolean
+    - tag String
+
+api_routes_must_exist:
+  - method: GET
+    path: /api/stats
+  - method: PATCH
+    path: /api/stats/reorder
+  - method: POST
+    path: /api/stats
+  - method: PATCH
+    path: /api/stats/:id
+  - method: DELETE
+    path: /api/stats/:id
+
+admin_ui_requirements:
+  - "Stats tem drag & drop com dnd-kit"
+  - "Prévia ao vivo aplicando tokens"
+  - "Exportar/Importar JSON"
+  - "Validação inline e toasts"
+  - "Switch Dark/Light no preview"
+
+render_requirements:
+  - "Grid responsivo 4/3/2/1 colunas para Stats"
+  - "Animação contador somente se numérico e formatOn=true"
+  - "Fallback '—' quando valor vazio"
+  - "Acessibilidade AA em contraste"
+
+tests_must_pass:
+  - file: tests/textStyle.spec.ts
+  - file: tests/stats-api.spec.ts
+
+

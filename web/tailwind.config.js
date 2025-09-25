@@ -1,0 +1,81 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/sections/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/ui/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: 'var(--color-primary)',
+        secondary: 'var(--color-secondary)',
+        accent: 'var(--color-accent)',
+        background: 'var(--color-background)',
+        surface: 'var(--color-surface)',
+        text: {
+          primary: 'var(--color-text-primary)',
+          secondary: 'var(--color-text-secondary)',
+          muted: 'var(--color-text-muted)',
+          inverse: 'var(--color-text-inverse)',
+        },
+        border: 'var(--color-border)',
+        input: 'var(--color-input)',
+        ring: 'var(--color-ring)',
+      },
+      fontFamily: {
+        heading: ['var(--font-heading)', 'system-ui', 'sans-serif'],
+        body: ['var(--font-body)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'monospace'],
+      },
+      fontSize: {
+        'display-2xl': 'var(--fs-display-2xl)',
+        'h1': 'var(--fs-h1)',
+        'h2': 'var(--fs-h2)',
+        'h3': 'var(--fs-h3)',
+        'h4': 'var(--fs-h4)',
+        'body': 'var(--fs-body)',
+        'body-sm': 'var(--fs-body-sm)',
+        'caption': 'var(--fs-caption)',
+      },
+      fontWeight: {
+        light: '300',
+        normal: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
+        extrabold: '800',
+      },
+      lineHeight: {
+        tight: '1.1',
+        snug: '1.2',
+        normal: '1.5',
+        relaxed: '1.6',
+        loose: '1.8',
+      },
+      letterSpacing: {
+        tighter: '-0.05em',
+        tight: '-0.025em',
+        normal: '0em',
+        wide: '0.025em',
+        wider: '0.05em',
+        widest: '0.1em',
+      },
+      textShadow: {
+        sm: '0 1px 2px rgba(0, 0, 0, 0.05)',
+        md: '0 2px 4px rgba(0, 0, 0, 0.1)',
+        lg: '0 4px 8px rgba(0, 0, 0, 0.15)',
+        xl: '0 8px 16px rgba(0, 0, 0, 0.2)',
+      },
+      boxShadow: {
+        sm: 'var(--shadow-sm)',
+        md: 'var(--shadow-md)',
+        lg: 'var(--shadow-lg)',
+        xl: 'var(--shadow-xl)',
+      },
+    },
+  },
+  plugins: [],
+}

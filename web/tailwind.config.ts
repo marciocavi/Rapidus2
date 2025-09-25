@@ -39,14 +39,14 @@ const config: Config = {
         semantic: colors.semantic,
         
         // Charts Colors
-        charts: colors.charts,
+        charts: colors.charts as any,
       },
 
       // Design Tokens - Tipografia
       fontFamily: typography.fontFamily,
       fontSize: typography.fontSize,
-      fontWeight: typography.fontWeight,
-      lineHeight: typography.lineHeight,
+      fontWeight: typography.fontWeight as any,
+      lineHeight: typography.lineHeight as any,
       letterSpacing: typography.letterSpacing,
 
       // Design Tokens - Espaçamento
@@ -69,7 +69,7 @@ const config: Config = {
       },
 
       // Design Tokens - Z-Index
-      zIndex: zIndex,
+      zIndex: zIndex as any,
 
       // Grid System
       maxWidth: {

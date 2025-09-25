@@ -39,3 +39,6 @@ export default function AnimationPicker({ label, value, onChange }: AnimationPic
     </div>
   );
 }
+
+
+

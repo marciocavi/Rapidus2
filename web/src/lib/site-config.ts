@@ -1,8 +1,23 @@
 import { z } from 'zod';
+import { TextStyle } from '../theme/tokens.js';
 
 export type SectionKey = 
   | 'hero' | 'features' | 'services' | 'parceiros' | 'instagram' | 'blog' | 'cta' | 'stats' | 'header' | 'footer' | 'advanced'
   | 'carrossels' | 'certificacoes' | 'icones-flutuantes';
+
+// Schema para TextStyle
+const TextStyleSchema = z.object({
+  family: z.enum(['heading', 'body', 'mono']).optional(),
+  size: z.enum(['display-2xl', 'h1', 'h2', 'h3', 'h4', 'body', 'body-sm', 'caption']).optional(),
+  weight: z.enum(['light', 'normal', 'medium', 'semibold', 'bold', 'extrabold']).optional(),
+  line: z.enum(['tight', 'snug', 'normal', 'relaxed', 'loose']).optional(),
+  tracking: z.enum(['tighter', 'tight', 'normal', 'wide', 'wider', 'widest']).optional(),
+  color: z.string().optional(),
+  transform: z.enum(['none', 'uppercase', 'lowercase', 'capitalize']).optional(),
+  align: z.enum(['left', 'center', 'right', 'justify']).optional(),
+  maxWidthCh: z.number().optional(),
+  shadow: z.enum(['none', 'sm', 'md', 'lg', 'xl']).optional(),
+});
 
 export const SiteConfigSchema = z.object({
   sections: z.record(z.enum([
@@ -25,6 +40,7 @@ export const SiteConfigSchema = z.object({
       primaryButtonIcon: z.string().optional(),
       secondaryButtonIcon: z.string().optional(),
       image: z.string().optional(),
+      caption: z.string().optional(),
       backgroundImage: z.string().optional(),
       backgroundVideo: z.string().optional(),
       height: z.string().optional(), // 100%, 70%, custom
@@ -83,7 +99,31 @@ export const SiteConfigSchema = z.object({
       textTransform: z.string().optional(), // uppercase, lowercase, capitalize
       fontWeight: z.string().optional(), // normal, bold, light
       lineHeight: z.string().optional(),
-      letterSpacing: z.string().optional()
+      letterSpacing: z.string().optional(),
+      // Campos de TextStyle
+      titleStyle: TextStyleSchema.optional(),
+      subtitleStyle: TextStyleSchema.optional(),
+      descriptionStyle: TextStyleSchema.optional(),
+      buttonStyle: TextStyleSchema.optional(),
+      captionStyle: TextStyleSchema.optional(),
+      itemTitleStyle: TextStyleSchema.optional(),
+      itemDescriptionStyle: TextStyleSchema.optional(),
+      priceStyle: TextStyleSchema.optional(),
+      postTitleStyle: TextStyleSchema.optional(),
+      postSummaryStyle: TextStyleSchema.optional(),
+      metadataStyle: TextStyleSchema.optional(),
+      statValueStyle: TextStyleSchema.optional(),
+      statTitleStyle: TextStyleSchema.optional(),
+      statDescriptionStyle: TextStyleSchema.optional(),
+      certificationTitleStyle: TextStyleSchema.optional(),
+      certificationDescriptionStyle: TextStyleSchema.optional(),
+      tooltipStyle: TextStyleSchema.optional(),
+      brandStyle: TextStyleSchema.optional(),
+      menuStyle: TextStyleSchema.optional(),
+      ctaButtonStyle: TextStyleSchema.optional(),
+      columnTitleStyle: TextStyleSchema.optional(),
+      linkStyle: TextStyleSchema.optional(),
+      copyrightStyle: TextStyleSchema.optional()
     }).optional()
   })),
   theme: z.object({

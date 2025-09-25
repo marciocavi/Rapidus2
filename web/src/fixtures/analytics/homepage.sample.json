@@ -1,0 +1,26 @@
+{
+  "summary": {
+    "views": 12450,
+    "users": 4350,
+    "sessions": 5100,
+    "engagementRate": 0.62,
+    "avgSessionDurationSec": 95
+  },
+  "timeSeries": [
+    { "date": "2025-09-01", "views": 400, "users": 220, "sessions": 300 },
+    { "date": "2025-09-02", "views": 520, "users": 260, "sessions": 340 },
+    { "date": "2025-09-03", "views": 610, "users": 300, "sessions": 410 }
+  ],
+  "topChannels": [
+    { "channel": "Organic Search", "sessions": 2000 },
+    { "channel": "Direct", "sessions": 1500 },
+    { "channel": "Referral", "sessions": 900 }
+  ],
+  "topEvents": [
+    { "eventName": "click_cta", "eventCount": 320 },
+    { "eventName": "video_start", "eventCount": 180 }
+  ]
+}
+
+
+

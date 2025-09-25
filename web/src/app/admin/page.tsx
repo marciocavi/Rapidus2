@@ -20,6 +20,7 @@ import { StatCard, MiniLineChart, RadialGauge } from '@/components/admin/dashboa
 
 export default function AdminHome() {
   const [isModernUI, setIsModernUI] = useState(false);
+  const [adminTheme, setAdminTheme] = useState<'dark' | 'light'>('dark');
   const [isClient, setIsClient] = useState(false);
 
   // Evitar hydration error
@@ -27,7 +28,13 @@ export default function AdminHome() {
     setIsClient(true);
     const envFlag = process.env.NEXT_PUBLIC_MODERN_ADMIN_UI === '1';
     const localStorageFlag = localStorage.getItem('modern-admin-ui') === 'true';
-    setIsModernUI(envFlag || localStorageFlag);
+    setIsModernUI(envFlag || localStorageFlag || true);
+
+    const envTheme = process.env.NEXT_PUBLIC_ADMIN_THEME;
+    const storedTheme = localStorage.getItem('admin-theme');
+    const themeValue = envTheme === 'light' || envTheme === 'dark' ? envTheme
+      : (storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : 'dark');
+    setAdminTheme(themeValue as 'dark' | 'light');
   }, []);
 
   // Dados para os gráficos
@@ -68,6 +75,15 @@ export default function AdminHome() {
       color: 'from-blue-500 to-blue-600',
       bgColor: 'bg-blue-500/10',
       borderColor: 'border-blue-500/20'
+    },
+    {
+      name: 'Analytics (Home)',
+      href: '/admin/analytics',
+      icon: BarChart3,
+      description: 'KPIs da página inicial via GA4',
+      color: 'from-cyan-500 to-purple-600',
+      bgColor: 'bg-cyan-500/10',
+      borderColor: 'border-cyan-500/20'
     },
     {
       name: 'Analytics',
@@ -112,6 +128,12 @@ export default function AdminHome() {
     setIsModernUI(!current);
   };
 
+  const toggleTheme = () => {
+    const next = adminTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('admin-theme', next);
+    setAdminTheme(next);
+  };
+
   // Loading state para evitar hydration error
   if (!isClient) {
     return (
@@ -126,9 +148,9 @@ export default function AdminHome() {
 
   if (isModernUI) {
     return (
-      <div className="space-y-8" data-modern-admin="1">
+      <div className="space-y-8" data-modern-admin="1" data-admin-theme={adminTheme}>
         {/* Welcome Section */}
-        <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-xl border border-slate-600/30 rounded-xl p-6">
+        <div className="adm-panel p-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-4xl font-bold text-white mb-2">Bem-vindo ao Rapidus</h1>
@@ -140,6 +162,12 @@ export default function AdminHome() {
                 className="px-4 py-2 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-lg hover:bg-purple-500/30 transition-colors text-sm"
               >
                 Interface Neon: ON
+              </button>
+              <button
+                onClick={toggleTheme}
+                className="px-4 py-2 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-lg hover:bg-blue-500/30 transition-colors text-sm"
+              >
+                Tema: {adminTheme === 'dark' ? 'Dark' : 'Light'}
               </button>
               <div className="hidden md:flex items-center space-x-2 text-sm text-slate-400">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
