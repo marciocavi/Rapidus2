@@ -4,6 +4,17 @@ import { fileURLToPath } from "node:url";
 
 import { IngestResult, RawInstagramProfile } from "./types.js";
 
+export interface ResolveProfileOptions {
+  source?: "fixture" | "api";
+  instagramAccessToken?: string;
+  instagramUserId?: string;
+}
+
+interface FetchProfileOptions {
+  accessToken?: string;
+  userId?: string;
+}
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export async function loadProfileFromFixture(username: string): Promise<IngestResult> {
@@ -25,17 +36,42 @@ export async function loadProfileFromFixture(username: string): Promise<IngestRe
   };
 }
 
-export async function fetchProfileFromAPI(username: string): Promise<IngestResult> {
-  throw new Error(`fetchProfileFromAPI not implemented. Attempted username: ${username}`);
+export async function fetchProfileFromAPI(
+  username: string,
+  options: FetchProfileOptions = {}
+): Promise<IngestResult> {
+  const accessToken = options.accessToken ?? process.env.INSTAGRAM_ACCESS_TOKEN;
+  const userId = options.userId ?? process.env.INSTAGRAM_USER_ID;
+
+  if (!accessToken) {
+    throw new Error(
+      "Instagram access token não fornecido. Use --ig-access-token ou defina INSTAGRAM_ACCESS_TOKEN."
+    );
+  }
+
+  if (!userId) {
+    throw new Error(
+      "Instagram user ID não fornecido. Use --ig-user-id ou defina INSTAGRAM_USER_ID."
+    );
+  }
+
+  throw new Error(
+    "fetchProfileFromAPI ainda não foi implementado. Forneça uma integração com a Instagram Basic Display/Graph API."
+  );
 }
 
 export async function resolveProfile(
   username: string,
-  source: "fixture" | "api" = "fixture"
+  options: ResolveProfileOptions = {}
 ): Promise<IngestResult> {
+  const source = options.source ?? "fixture";
+
   if (source === "fixture") {
     return loadProfileFromFixture(username);
   }
 
-  return fetchProfileFromAPI(username);
+  return fetchProfileFromAPI(username, {
+    accessToken: options.instagramAccessToken,
+    userId: options.instagramUserId
+  });
 }

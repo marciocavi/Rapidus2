@@ -1,6 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { analyzeProfile } from "../src/index.js";
+import * as indexModule from "../src/index.js";
+
+const { analyzeProfile } = indexModule;
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe("analyzeProfile", () => {
   it("gera insights a partir de fixture (fallback heurístico)", async () => {
@@ -21,5 +27,45 @@ describe("analyzeProfile", () => {
     expect(result.insights.keywords.length).toBeGreaterThan(0);
     expect(result.insights.summary).toContain("Mesmo sem temas específicos destacados nos posts");
     expect(result.insights.ctas.length).toBeGreaterThan(0);
+  });
+});
+
+describe("CLI", () => {
+  it("propaga flags do Instagram para analyzeProfile", async () => {
+    const analyzeSpy = vi.fn().mockResolvedValue({
+      insights: {},
+      siteConfig: {},
+      storedAt: undefined
+    });
+
+    const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+
+    await indexModule.runCli(
+      [
+        "demo_artist",
+        "--source",
+        "api",
+        "--ig-access-token",
+        "token-test",
+        "--ig-user-id",
+        "123456"
+      ],
+      { analyzeProfile: analyzeSpy }
+    );
+
+    expect(analyzeSpy).toHaveBeenCalledTimes(1);
+    const optionsArg = analyzeSpy.mock.calls[0]?.find(
+      (arg) => typeof arg === "object" && arg !== null && "instagramAccessToken" in arg
+    );
+
+    expect(optionsArg).toEqual(
+      expect.objectContaining({
+        instagramAccessToken: "token-test",
+        instagramUserId: "123456",
+        source: "api"
+      })
+    );
+
+    consoleSpy.mockRestore();
   });
 });

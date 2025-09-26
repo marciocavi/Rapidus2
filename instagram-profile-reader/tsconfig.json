@@ -3,6 +3,12 @@
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "msw/node": ["tests/helpers/msw-node.ts"],
+      "openai": ["tests/helpers/openai.ts"],
+      "undici": ["tests/helpers/undici.ts"]
+    },
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
@@ -10,6 +16,6 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["src", "tests"],
+  "include": ["src", "tests", "types"],
   "exclude": ["dist", "node_modules"]
-}
+} 

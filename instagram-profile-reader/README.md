@@ -1,8 +1,6 @@
 # Instagram Profile Reader (Starter Kit)
 
-Este pacote é um ponto de partida seguro para a prova de conceito do "leitor de perfil do Instagram". Ele foi pensado para ser
-executado em um repositório separado do projeto Rapidus, permitindo que você evolua a funcionalidade sem risco para a aplicação
-principal.
+Este pacote é um ponto de partida seguro para a prova de conceito do "leitor de perfil do Instagram". Ele foi pensado para ser executado em um repositório separado do projeto Rapidus, permitindo que você evolua a funcionalidade sem risco para a aplicação principal.
 
 ## Principais ideias
 - Trabalhar inicialmente apenas com *fixtures* em `src/ingest/fixtures/`.
@@ -11,10 +9,9 @@ principal.
 
 ## Requisitos
 - Node.js 20+
-- - PNPM, Yarn ou NPM (use o gerenciador que preferir)
+- PNPM, Yarn ou NPM (use o gerenciador que preferir)
 
 ## Como rodar a aplicação completa (Backend + Frontend)
-
 ```bash
 npm install
 npm run dev:full
@@ -25,18 +22,18 @@ Após executar, o backend estará rodando em `http://localhost:3001` e o fronten
 ```
 src/
   analysis/
-    text.ts        # sumarização textual heurística + integração futura com LLM
-    vision.ts      # consolidação de paleta com base nas cores fornecidas nos fixtures
-    heuristics.ts  # CTA e seções prioritárias
+    text.ts # sumarização textual heurística + integração futura com LLM
+    vision.ts # consolidação de paleta com base nas cores fornecidas nos fixtures
+    heuristics.ts # CTA e seções prioritárias
   ingest/
-    instagram.ts   # carrega fixture e prepara adaptadores futuros para API real
-    types.ts       # tipagens compartilhadas
+    instagram.ts # carrega fixture e prepara adaptadores futuros para API real
+    types.ts # tipagens compartilhadas
   synthesis/
-    insights.ts    # junta tudo e valida com Zod
+    insights.ts # junta tudo e valida com Zod
     site-config.ts # converte insights para sugestão de SiteConfig
   storage/
-    file-cache.ts  # utilitário simples para persistir resultados
-  index.ts         # CLI e função programática analyzeProfile
+    file-cache.ts # utilitário simples para persistir resultados
+  index.ts # CLI e função programática analyzeProfile
 prompts/
   profile-summary.md
 tests/
@@ -61,6 +58,18 @@ npm run build
 # Rodar a ferramenta de linha de comando (CLI)
 npm run dev -- demo_artist
 ```
+
+## Credenciais para testar a API do Instagram
+
+Para executar `npm run dev -- <usuario> --source api` com dados reais, forneça credenciais válidas da Instagram Basic Display API ou da Graph API com o escopo mínimo `user_profile`/`user_media`. A CLI aceita as credenciais diretamente pelas flags:
+
+```bash
+npm run dev -- demo_artist --source api \
+  --ig-access-token "SEU_TOKEN_DE_ACESSO" \
+  --ig-user-id "ID_NUMERICO_DO_USUARIO"
+```
+
+Como alternativa, defina as variáveis de ambiente `INSTAGRAM_ACCESS_TOKEN` e `INSTAGRAM_USER_ID` antes de rodar a CLI. As flags prevalecem sobre as variáveis, permitindo alternar contas de teste com facilidade. Nunca faça commit de credenciais reais no repositório.
 
 Os artefatos persistidos ficam em `output/`:
 - `<username>.insights.json`: objeto `ProfileInsights` validado.

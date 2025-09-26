@@ -10,13 +10,19 @@ export interface AnalyzeProfileOptions {
   source?: "fixture" | "api";
   persist?: boolean;
   apiKey?: string;
+  instagramAccessToken?: string;
+  instagramUserId?: string;
 }
 
 export async function analyzeProfile(
   username: string,
   options: AnalyzeProfileOptions = {}
 ) {
-  const ingest = await resolveProfile(username, options.source ?? "fixture");
+  const ingest = await resolveProfile(username, {
+    source: options.source ?? "fixture",
+    instagramAccessToken: options.instagramAccessToken,
+    instagramUserId: options.instagramUserId
+  });
   const insights = await buildProfileInsights(ingest.profile, {
     username,
     apiKey: options.apiKey
@@ -49,8 +55,13 @@ export async function analyzeProfile(
   return { insights, siteConfig };
 }
 
-export async function runCli(rawArgs: string[]) {
+export interface RunCliDependencies {
+  analyzeProfile?: typeof analyzeProfile;
+}
+
+export async function runCli(rawArgs: string[], deps: RunCliDependencies = {}) {
   const program = new Command();
+  const analyze = deps.analyzeProfile ?? analyzeProfile;
 
   program
     .name("instagram-profile-reader")
@@ -59,11 +70,27 @@ export async function runCli(rawArgs: string[]) {
     .option("--source <source>", "origem dos dados (fixture|api)", "fixture")
     .option("--persist", "salva resultados em output/", false)
     .option("--api-key <key>", "Chave da API da OpenAI")
-    .action(async (username: string, options: { source: "fixture" | "api"; persist?: boolean; apiKey?: string }) => {
-      const result = await analyzeProfile(username, {
+    .option(
+      "--ig-access-token <token>",
+      "Token de acesso autorizado do Instagram (Basic Display / Graph API)"
+    )
+    .option("--ig-user-id <id>", "ID do usuário do Instagram a ser consultado via API")
+    .action(async (
+      username: string,
+      options: {
+        source: "fixture" | "api";
+        persist?: boolean;
+        apiKey?: string;
+        igAccessToken?: string;
+        igUserId?: string;
+      }
+    ) => {
+      const result = await analyze(username, {
         source: options.source,
         persist: options.persist,
-        apiKey: options.apiKey
+        apiKey: options.apiKey,
+        instagramAccessToken: options.igAccessToken,
+        instagramUserId: options.igUserId
       });
       console.log(JSON.stringify({ insights: result.insights, siteConfig: result.siteConfig }, null, 2));
       if (result.storedAt) {
@@ -71,7 +98,7 @@ export async function runCli(rawArgs: string[]) {
       }
     });
 
-  await program.parseAsync(rawArgs);
+  await program.parseAsync(rawArgs, { from: "user" });
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
