@@ -5,9 +5,7 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "msw/node": ["tests/helpers/msw-node.ts"],
-      "openai": ["tests/helpers/openai.ts"],
-      "undici": ["tests/helpers/undici.ts"]
+      "openai": ["tests/stubs/openai.ts"]
     },
     "outDir": "dist",
     "strict": true,

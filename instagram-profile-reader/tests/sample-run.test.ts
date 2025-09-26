@@ -55,7 +55,7 @@ describe("CLI", () => {
 
     expect(analyzeSpy).toHaveBeenCalledTimes(1);
     const optionsArg = analyzeSpy.mock.calls[0]?.find(
-      (arg) => typeof arg === "object" && arg !== null && "instagramAccessToken" in arg
+      (arg: unknown) => typeof arg === "object" && arg !== null && "instagramAccessToken" in arg
     );
 
     expect(optionsArg).toEqual(
