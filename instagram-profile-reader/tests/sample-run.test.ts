@@ -13,4 +13,13 @@ describe("analyzeProfile", () => {
     expect(result.insights.toneOfVoice).toBe("Criativo e acolhedor"); // Verifica a saída da heurística
     expect(result.siteConfig.branding.palette.length).toBeGreaterThanOrEqual(3);
   });
+
+  it("mantém a validação para perfis minimalistas", async () => {
+    const result = await analyzeProfile("silent_account", { source: "fixture", persist: false });
+
+    expect(result.insights.username).toBe("silent_account");
+    expect(result.insights.keywords.length).toBeGreaterThan(0);
+    expect(result.insights.summary).toContain("Mesmo sem temas específicos destacados nos posts");
+    expect(result.insights.ctas.length).toBeGreaterThan(0);
+  });
 });

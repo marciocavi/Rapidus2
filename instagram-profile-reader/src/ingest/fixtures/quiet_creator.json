@@ -1,0 +1,41 @@
+{
+  "username": "quiet_creator",
+  "fullName": "Quiet Creator",
+  "bio": "Artista visual que explora texturas orgânicas e estudos cromáticos minimalistas.",
+  "followers": 1250,
+  "following": 410,
+  "categories": ["art", "design"],
+  "recentHighlights": ["Processo", "Coleções"],
+  "posts": [
+    {
+      "id": "qc_post_1",
+      "caption": "Estudo cromático inspirado em paisagens naturais e na transição das estações.",
+      "likeCount": 182,
+      "commentCount": 9,
+      "publishedAt": "2024-09-10T12:00:00.000Z",
+      "imageUrls": ["fixtures/images/quiet_creator/post_1.jpg"],
+      "dominantColors": ["#6B7280", "#D1D5DB", "#F9FAFB"],
+      "keywords": ["estudo cromático", "paisagens", "transição"]
+    },
+    {
+      "id": "qc_post_2",
+      "caption": "Composição minimalista explorando camadas de tinta acrílica e fibras naturais.",
+      "likeCount": 205,
+      "commentCount": 11,
+      "publishedAt": "2024-08-22T10:30:00.000Z",
+      "imageUrls": ["fixtures/images/quiet_creator/post_2.jpg"],
+      "dominantColors": ["#1F2937", "#F3F4F6", "#E5E7EB"],
+      "keywords": ["composição", "minimalista", "camadas"]
+    },
+    {
+      "id": "qc_post_3",
+      "caption": "Texturas criadas com pigmentos naturais e elementos coletados em trilhas.",
+      "likeCount": 167,
+      "commentCount": 7,
+      "publishedAt": "2024-07-18T09:15:00.000Z",
+      "imageUrls": ["fixtures/images/quiet_creator/post_3.jpg"],
+      "dominantColors": ["#374151", "#9CA3AF", "#F3F4F6"],
+      "keywords": ["texturas", "pigmentos naturais", "arte orgânica"]
+    }
+  ]
+}

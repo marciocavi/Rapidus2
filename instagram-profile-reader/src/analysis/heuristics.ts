@@ -49,6 +49,10 @@ export function deriveHeuristics(profile: RawInstagramProfile): HeuristicInsight
     ctas.add("Envie uma mensagem no Instagram");
   }
 
+  if (ctas.size === 0) {
+    ctas.add("Entre em contato pelo Instagram");
+  }
+
   const totalSignals = workshopScore + productScore + testimonialScore;
   const confidence = Math.min(1, 0.3 + totalSignals * 0.15);
 

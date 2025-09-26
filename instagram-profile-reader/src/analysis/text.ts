@@ -58,13 +58,33 @@ function summarizeWithHeuristics(profile: RawInstagramProfile): TextInsights {
   const normalizedBio = normalizeText(profile.bio);
   const normalizedCaptions = captions.map(normalizeText);
 
-  const keywords = Array.from(
-    new Set([
-      ...topKeywords([normalizedBio, ...normalizedCaptions], 8),
-      ...(profile.categories ?? []).map((category) => category.toLowerCase()),
-      ...profile.posts.flatMap((post) => post.keywords ?? [])
-    ])
-  );
+  const collectedKeywords = new Set([
+    ...topKeywords([normalizedBio, ...normalizedCaptions], 8),
+    ...(profile.categories ?? []).map((category) => category.toLowerCase()),
+    ...profile.posts.flatMap((post) => post.keywords ?? [])
+  ]);
+
+  let keywords = Array.from(collectedKeywords);
+  const hasSpecificKeywords = keywords.length > 0;
+
+  if (!hasSpecificKeywords) {
+    const fallbackKeywords = new Set<string>();
+    const normalizedUsername = normalizeText(profile.username).toLowerCase();
+    const normalizedFullName = normalizeText(profile.fullName).toLowerCase();
+
+    if (normalizedUsername) fallbackKeywords.add(normalizedUsername);
+    if (normalizedFullName && normalizedFullName !== normalizedUsername) {
+      fallbackKeywords.add(normalizedFullName);
+    }
+    for (const category of profile.categories ?? []) {
+      const normalizedCategory = normalizeText(category).toLowerCase();
+      if (normalizedCategory) fallbackKeywords.add(normalizedCategory);
+    }
+
+    fallbackKeywords.add("perfil");
+
+    keywords = Array.from(fallbackKeywords);
+  }
 
   const headlineIdeas = [
     `${profile.fullName}: ${keywords.slice(0, 3).join(" • ")}`.trim(),
@@ -72,9 +92,16 @@ function summarizeWithHeuristics(profile: RawInstagramProfile): TextInsights {
     `Explore o universo de ${profile.username}`
   ];
 
-  const summary = `${profile.fullName} se apresenta como ${normalizedBio}. Os posts recentes destacam ${keywords
-    .slice(0, 3)
-    .join(", ")}.`;
+  const displayName = profile.fullName || profile.username;
+  const bioSummary = normalizedBio
+    ? `${displayName} se apresenta como ${normalizedBio}.`
+    : `${displayName} mantém uma presença discreta no Instagram.`;
+
+  const postsSummary = hasSpecificKeywords
+    ? ` Os posts recentes destacam ${keywords.slice(0, 3).join(", ")}.`
+    : ` Mesmo sem temas específicos destacados nos posts, ${profile.username} segue construindo sua presença.`;
+
+  const summary = `${bioSummary}${postsSummary}`.trim();
 
   return {
     toneOfVoice: inferToneOfVoice(profile),
