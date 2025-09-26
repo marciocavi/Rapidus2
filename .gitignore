@@ -1,0 +1,15 @@
+# Arquivos de ambiente e segredos - NUNCA ENVIE PARA O GITHUB!
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Arquivos de sistema operacional
+Thumbs.db
+.DS_Store
+
+# Arquivos de configuração de editores de código e IDEs
+.vscode/
+.idea/
+*.suo
+*.user
