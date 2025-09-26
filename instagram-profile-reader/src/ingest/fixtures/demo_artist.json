@@ -1,0 +1,42 @@
+{
+  "username": "demo_artist",
+  "fullName": "Demo Artist",
+  "bio": "Ilustradora freelancer. Artes vibrantes, workshops e comissões abertas!",
+  "followers": 12500,
+  "following": 320,
+  "externalUrl": "https://demo-artist.com",
+  "categories": ["art", "illustration"],
+  "recentHighlights": ["Workshops", "Bastidores"],
+  "posts": [
+    {
+      "id": "post_01",
+      "caption": "Explorando novas paletas neon ✨ Qual combinação você mais curte? #digitalart #neon",
+      "likeCount": 1800,
+      "commentCount": 120,
+      "publishedAt": "2024-11-05T10:00:00.000Z",
+      "imageUrls": ["fixtures/images/demo_artist/post_01.jpg"],
+      "dominantColors": ["#2E1A78", "#FF6EC7", "#0FF0FC"],
+      "keywords": ["paleta", "neon", "digitalart"]
+    },
+    {
+      "id": "post_02",
+      "caption": "Making of do mural que entregamos essa semana! 🧡 Processo completo salvo nos destaques.",
+      "likeCount": 2300,
+      "commentCount": 95,
+      "publishedAt": "2024-10-28T18:30:00.000Z",
+      "imageUrls": ["fixtures/images/demo_artist/post_02.jpg"],
+      "dominantColors": ["#F75C03", "#F1C40F", "#1A2238"],
+      "keywords": ["mural", "processo", "making of"]
+    },
+    {
+      "id": "post_03",
+      "caption": "Agenda de workshops 2025 aberta! Vagas limitadas para o módulo avançado.",
+      "likeCount": 1950,
+      "commentCount": 210,
+      "publishedAt": "2024-10-10T09:15:00.000Z",
+      "imageUrls": ["fixtures/images/demo_artist/post_03.jpg"],
+      "dominantColors": ["#FFB400", "#FF6F00", "#1A237E"],
+      "keywords": ["workshop", "agenda", "inscrições"]
+    }
+  ]
+}

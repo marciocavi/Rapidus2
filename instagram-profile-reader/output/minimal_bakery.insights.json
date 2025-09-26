@@ -1,0 +1,67 @@
+{
+  "username": "minimal_bakery",
+  "toneOfVoice": "Aconchegante e artesanal",
+  "headlineIdeas": [
+    "Minimal Bakery: padaria • artesanal • fermentação",
+    "Projetos recentes de Minimal Bakery",
+    "Explore o universo de minimal_bakery"
+  ],
+  "palette": [
+    {
+      "hex": "#f4c095",
+      "name": "burlywood"
+    },
+    {
+      "hex": "#8c6239",
+      "name": "sienna"
+    },
+    {
+      "hex": "#fdf6e3",
+      "name": "oldlace"
+    },
+    {
+      "hex": "#e0c097",
+      "name": "burlywood"
+    },
+    {
+      "hex": "#5c3d2e",
+      "name": "darkolivegreen"
+    },
+    {
+      "hex": "#faebd7",
+      "name": "antiquewhite"
+    }
+  ],
+  "sectionsPriority": [
+    "banner",
+    "instagram",
+    "portfolio"
+  ],
+  "ctas": [
+    "Peça um orçamento personalizado",
+    "Envie uma mensagem no Instagram"
+  ],
+  "keywords": [
+    "padaria",
+    "artesanal",
+    "fermentação",
+    "natural",
+    "cafés",
+    "especiais",
+    "encomendas",
+    "via",
+    "food",
+    "bakery",
+    "croissant",
+    "pistache",
+    "cardápio",
+    "degustação",
+    "eventos"
+  ],
+  "confidence": 0.44999999999999996,
+  "rawReferenceIds": [
+    "post_a",
+    "post_b"
+  ],
+  "summary": "Minimal Bakery se apresenta como Padaria artesanal, fermentação natural e cafés especiais. Encomendas via DM 💌. Os posts recentes destacam padaria, artesanal, fermentação."
+}

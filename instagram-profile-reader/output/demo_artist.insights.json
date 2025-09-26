@@ -1,0 +1,71 @@
+{
+  "username": "demo_artist",
+  "toneOfVoice": "Criativo e acolhedor",
+  "headlineIdeas": [
+    "Demo Artist: workshops • neon • ilustradora",
+    "Projetos recentes de Demo Artist",
+    "Explore o universo de demo_artist"
+  ],
+  "palette": [
+    {
+      "hex": "#2e1a78",
+      "name": "midnightblue"
+    },
+    {
+      "hex": "#ff6ec7",
+      "name": "hotpink"
+    },
+    {
+      "hex": "#0ff0fc",
+      "name": "aqua"
+    },
+    {
+      "hex": "#f75c03",
+      "name": "orangered"
+    },
+    {
+      "hex": "#f1c40f",
+      "name": "gold"
+    },
+    {
+      "hex": "#1a2238",
+      "name": "darkslategray"
+    }
+  ],
+  "sectionsPriority": [
+    "banner",
+    "instagram",
+    "planos"
+  ],
+  "ctas": [
+    "Visite o site oficial",
+    "Reserve sua vaga no workshop"
+  ],
+  "keywords": [
+    "workshops",
+    "neon",
+    "ilustradora",
+    "freelancer",
+    "artes",
+    "vibrantes",
+    "comissões",
+    "abertas",
+    "art",
+    "illustration",
+    "paleta",
+    "digitalart",
+    "mural",
+    "processo",
+    "making of",
+    "workshop",
+    "agenda",
+    "inscrições"
+  ],
+  "confidence": 0.44999999999999996,
+  "rawReferenceIds": [
+    "post_01",
+    "post_02",
+    "post_03"
+  ],
+  "summary": "Demo Artist se apresenta como Ilustradora freelancer. Artes vibrantes, workshops e comissões abertas!. Os posts recentes destacam workshops, neon, ilustradora."
+}

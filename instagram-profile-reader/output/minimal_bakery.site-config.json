@@ -1,0 +1,26 @@
+{
+  "branding": {
+    "palette": [
+      "#f4c095",
+      "#8c6239",
+      "#fdf6e3",
+      "#e0c097",
+      "#5c3d2e",
+      "#faebd7"
+    ],
+    "toneOfVoice": "Aconchegante e artesanal"
+  },
+  "content": {
+    "heroHeadline": "Minimal Bakery: padaria • artesanal • fermentação",
+    "heroSubheadline": "Minimal Bakery se apresenta como Padaria artesanal, fermentação natural e cafés especiais. Encomendas via DM 💌. Os posts recentes destacam padaria, artesanal, fermentação.",
+    "ctas": [
+      "Peça um orçamento personalizado",
+      "Envie uma mensagem no Instagram"
+    ],
+    "activeSections": [
+      "banner",
+      "instagram",
+      "portfolio"
+    ]
+  }
+}

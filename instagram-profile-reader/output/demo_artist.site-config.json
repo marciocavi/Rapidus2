@@ -1,0 +1,26 @@
+{
+  "branding": {
+    "palette": [
+      "#2e1a78",
+      "#ff6ec7",
+      "#0ff0fc",
+      "#f75c03",
+      "#f1c40f",
+      "#1a2238"
+    ],
+    "toneOfVoice": "Criativo e acolhedor"
+  },
+  "content": {
+    "heroHeadline": "Demo Artist: workshops • neon • ilustradora",
+    "heroSubheadline": "Demo Artist se apresenta como Ilustradora freelancer. Artes vibrantes, workshops e comissões abertas!. Os posts recentes destacam workshops, neon, ilustradora.",
+    "ctas": [
+      "Visite o site oficial",
+      "Reserve sua vaga no workshop"
+    ],
+    "activeSections": [
+      "banner",
+      "instagram",
+      "planos"
+    ]
+  }
+}

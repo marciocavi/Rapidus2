@@ -1,0 +1,31 @@
+{
+  "username": "minimal_bakery",
+  "fullName": "Minimal Bakery",
+  "bio": "Padaria artesanal, fermentação natural e cafés especiais. Encomendas via DM 💌",
+  "followers": 4800,
+  "following": 520,
+  "categories": ["food", "bakery"],
+  "recentHighlights": ["Cardápio", "Eventos"],
+  "posts": [
+    {
+      "id": "post_a",
+      "caption": "Croissant de pistache chegando quentinho às 8h!",
+      "likeCount": 520,
+      "commentCount": 35,
+      "publishedAt": "2024-11-01T06:30:00.000Z",
+      "imageUrls": ["fixtures/images/minimal_bakery/post_a.jpg"],
+      "dominantColors": ["#F4C095", "#8C6239", "#FDF6E3"],
+      "keywords": ["croissant", "pistache", "fermentação"]
+    },
+    {
+      "id": "post_b",
+      "caption": "Cardápio de novembro no ar — inclui degustação guiada para eventos corporativos.",
+      "likeCount": 610,
+      "commentCount": 42,
+      "publishedAt": "2024-10-25T11:00:00.000Z",
+      "imageUrls": ["fixtures/images/minimal_bakery/post_b.jpg"],
+      "dominantColors": ["#E0C097", "#5C3D2E", "#FAEBD7"],
+      "keywords": ["cardápio", "degustação", "eventos"]
+    }
+  ]
+}
