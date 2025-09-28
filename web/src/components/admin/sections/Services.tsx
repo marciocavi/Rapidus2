@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, GripVertical, Star } from 'lucide-react';
 import { useSiteConfig } from '../../../context/SiteConfigContext';
+import { SiteConfig } from '@/lib/site-config';
 import TextStylePicker from '../TextStylePicker';
 import ImageUpload from '../ImageUpload';
 import ColorPicker from '../ColorPicker';
@@ -22,40 +23,55 @@ export default function ServicesAdmin() {
     style: {}
   };
 
-  const updateServicesContent = (key: string, value: any) => {
-    updateConfig({
-      ...config,
+  const applyServicesUpdate = ({
+    contentPatch,
+    stylePatch
+  }: {
+    contentPatch?: Record<string, unknown>;
+    stylePatch?: Record<string, unknown>;
+  }) => {
+    const baseContent =
+      (servicesConfig.content as Record<string, unknown> | undefined) ??
+      (config.content?.services as Record<string, unknown> | undefined) ??
+      { items: [] };
+    const baseStyle = (servicesConfig.style as Record<string, unknown> | undefined) ?? {};
+
+    const nextSection = {
+      ...servicesConfig,
+      content: contentPatch ? { ...baseContent, ...contentPatch } : baseContent,
+      style: stylePatch ? { ...baseStyle, ...stylePatch } : baseStyle
+    };
+
+    const payload: Partial<SiteConfig> = {
       sections: {
         ...config.sections,
-        services: {
-          ...servicesConfig,
-          content: {
-            ...servicesConfig.content,
-            [key]: value
-          }
-        }
+        services: nextSection
       }
-    });
+    };
+
+    if (contentPatch && Object.keys(contentPatch).length > 0) {
+      payload.content = {
+        ...config.content,
+        services: {
+          ...(config.content?.services ?? {}),
+          ...contentPatch
+        }
+      };
+    }
+
+    updateConfig(payload);
   };
 
-  const updateServicesStyle = (key: string, value: any) => {
-    updateConfig({
-      ...config,
-      sections: {
-        ...config.sections,
-        services: {
-          ...servicesConfig,
-          style: {
-            ...servicesConfig.style,
-            [key]: value
-          }
-        }
-      }
-    });
+  const updateServicesContent = (key: string, value: unknown) => {
+    applyServicesUpdate({ contentPatch: { [key]: value } });
   };
 
-  const updateTextStyle = (field: string, style: any) => {
-    updateServicesStyle(field, style);
+  const updateServicesStyle = (key: string, value: unknown) => {
+    applyServicesUpdate({ stylePatch: { [key]: value } });
+  };
+
+  const updateTextStyle = (field: string, style: unknown) => {
+    applyServicesUpdate({ stylePatch: { [field]: style } });
   };
 
   const addService = () => {

@@ -1,0 +1,11 @@
+{
+  "type": "module",
+  "scripts": {
+    "start:server": "node --loader ts-node/esm src/server.ts",
+    "dev": "node --loader ts-node/esm src/index.ts",
+    "build": "tsc --project tsconfig.json",
+    "test": "vitest run"
+  }
+}
+
+

@@ -1,4 +1,4 @@
-/** @type {import('next').NextConfig} */
+/** @type {import(''next'').NextConfig} */
 const nextConfig = {
   async redirects() {
     return [
@@ -9,9 +9,22 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'plus.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'source.unsplash.com',
+      },
+    ],
+  },
 };
 
 export default nextConfig;
-
-
-

@@ -27,3 +27,5 @@ export function mapInsightsToSiteConfig(insights: ProfileInsights): SiteConfigSu
     }
   };
 }
+
+

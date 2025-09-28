@@ -23,3 +23,5 @@ export const ProfileInsightsSchema = z.object({
 });
 
 export type ProfileInsights = z.infer<typeof ProfileInsightsSchema>;
+
+

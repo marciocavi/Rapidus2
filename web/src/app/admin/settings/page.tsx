@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ComponentType } from 'react';
 import Link from 'next/link';
 import { 
   Settings, 
@@ -18,31 +18,44 @@ import {
 } from 'lucide-react';
 
 import { useSiteConfig } from '@/context/SiteConfigContext';
-import { SiteConfig } from '@/lib/site-config';
+import { SiteConfig, SectionKey } from '@/lib/site-config';
 import { Panel, Toggle } from '@/components/admin/ui';
 import HeroAdmin from '@/components/admin/sections/Hero';
 import FeaturesAdmin from '@/components/admin/sections/Features';
 import ServicesAdmin from '@/components/admin/sections/Services';
+import ParceirosAdmin from '@/components/admin/sections/Parceiros';
+import InstagramAdmin from '@/components/admin/sections/Instagram';
+import BlogAdmin from '@/components/admin/sections/Blog';
+import CTAAdmin from '@/components/admin/sections/CTA';
+import StatsAdmin from '@/components/admin/sections/Stats';
+import CarrosselsAdmin from '@/components/admin/sections/Carrossels';
+import CertificacoesAdmin from '@/components/admin/sections/Certificacoes';
+import IconesFlutuantesAdmin from '@/components/admin/sections/IconesFlutuantes';
+import HeaderAdmin from '@/components/admin/sections/Header';
+import FooterAdmin from '@/components/admin/sections/Footer';
 
 export default function AdminSettings() {
   const { config, updateConfig, saveConfig } = useSiteConfig();
   const [message, setMessage] = useState<string>('');
   const [isClient, setIsClient] = useState(false);
   const [sectionsDnD, setSectionsDnD] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>('hero');
+  const [activeSection, setActiveSection] = useState<SectionKey>('hero');
 
   // Evitar hydration error
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const handleSectionToggle = (section: keyof SiteConfig['sections']) => {
+  const handleSectionToggle = (section: SectionKey) => {
+    const fallbackPosition = Object.keys(config.sections).length + 1;
+    const currentSection = config.sections[section] ?? { enabled: false, position: fallbackPosition };
+
     updateConfig({
       sections: {
         ...config.sections,
         [section]: {
-          ...config.sections[section],
-          enabled: !config.sections[section]?.enabled
+          ...currentSection,
+          enabled: !currentSection.enabled
         }
       }
     });
@@ -59,7 +72,7 @@ export default function AdminSettings() {
     }
   };
 
-  const sections = [
+  const sections: Array<{ key: SectionKey; label: string; icon: typeof Settings; description: string }> = [
     { key: 'hero', label: 'Hero', icon: Home, description: 'Seção principal do site' },
     { key: 'features', label: 'Features', icon: Star, description: 'Diferenciais e características' },
     { key: 'services', label: 'Services', icon: Wrench, description: 'Serviços oferecidos' },
@@ -67,13 +80,32 @@ export default function AdminSettings() {
     { key: 'instagram', label: 'Instagram', icon: Instagram, description: 'Posts do Instagram' },
     { key: 'blog', label: 'Blog', icon: FileText, description: 'Artigos do blog' },
     { key: 'cta', label: 'CTA', icon: Megaphone, description: 'Call to action' },
-    { key: 'stats', label: 'Stats', icon: BarChart3, description: 'Estatísticas' },
-    { key: 'carrossels', label: 'Carrosséis', icon: Images, description: 'Carrosséis de conteúdo' },
-    { key: 'certificacoes', label: 'Certificações', icon: Award, description: 'Certificações e selos' },
-    { key: 'iconesFlutuantes', label: 'Ícones Flutuantes', icon: Share2, description: 'Redes sociais flutuantes' },
+    { key: 'stats', label: 'Stats', icon: BarChart3, description: 'Indicadores e métricas' },
+    { key: 'carrossels', label: 'Carrosséis', icon: Images, description: 'Slides de conteúdo' },
+    { key: 'certificacoes', label: 'Certificações', icon: Award, description: 'Selos e garantias' },
+    { key: 'icones-flutuantes', label: 'Ícones Flutuantes', icon: Share2, description: 'Botões flutuantes de redes sociais' },
     { key: 'header', label: 'Header', icon: Settings, description: 'Cabeçalho do site' },
     { key: 'footer', label: 'Footer', icon: Settings, description: 'Rodapé do site' }
   ];
+
+  const sectionComponents: Partial<Record<SectionKey, ComponentType>> = {
+    hero: HeroAdmin,
+    features: FeaturesAdmin,
+    services: ServicesAdmin,
+    parceiros: ParceirosAdmin,
+    instagram: InstagramAdmin,
+    blog: BlogAdmin,
+    cta: CTAAdmin,
+    stats: StatsAdmin,
+    carrossels: CarrosselsAdmin,
+    certificacoes: CertificacoesAdmin,
+    'icones-flutuantes': IconesFlutuantesAdmin,
+    header: HeaderAdmin,
+    footer: FooterAdmin,
+  };
+
+  const activeMeta = sections.find((section) => section.key === activeSection);
+  const ActiveComponent = activeSection ? sectionComponents[activeSection] : undefined;
 
   if (!isClient) {
     return <div className="min-h-screen bg-neutral-dark-bg flex items-center justify-center">
@@ -157,7 +189,8 @@ export default function AdminSettings() {
                   {sections.map((section) => {
                     const Icon = section.icon;
                     const isActive = activeSection === section.key;
-                    const isEnabled = config.sections[section.key as keyof SiteConfig['sections']]?.enabled ?? false;
+                    const sectionConfig = config.sections[section.key] ?? null;
+                    const isEnabled = sectionConfig?.enabled ?? false;
                     
                     return (
                       <div
@@ -180,7 +213,7 @@ export default function AdminSettings() {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleSectionToggle(section.key as keyof SiteConfig['sections']);
+                              handleSectionToggle(section.key);
                             }}
                             className={`w-6 h-6 rounded-full transition-colors ${
                               isEnabled ? 'bg-green-500' : 'bg-zinc-600'
@@ -201,20 +234,20 @@ export default function AdminSettings() {
             {/* Section Configuration */}
             <div className="lg:col-span-2">
               <Panel header={<h3 className="text-lg font-semibold text-white">Configurações das Seções</h3>} className="min-h-[600px]">
-                {activeSection === 'hero' && <HeroAdmin />}
-                {activeSection === 'features' && <FeaturesAdmin />}
-                {activeSection === 'services' && <ServicesAdmin />}
-                {activeSection !== 'hero' && activeSection !== 'features' && activeSection !== 'services' && (
+                {ActiveComponent ? (
+                  <ActiveComponent />
+                ) : (
                   <div className="flex items-center justify-center h-64">
-                    <div className="text-center">
-                      <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="text-center space-y-4">
+                      <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto">
                         <Settings className="w-8 h-8 text-zinc-400" />
                       </div>
-                      <h3 className="text-white font-medium mb-2">Configurações em Desenvolvimento</h3>
-                      <p className="text-zinc-400 text-sm">
-                        As configurações para a seção &quot;{sections.find(s => s.key === activeSection)?.label}&quot; 
-                        estão sendo desenvolvidas.
-                      </p>
+                      <div>
+                        <h3 className="text-white font-medium mb-2">Seção ainda não configurada</h3>
+                        <p className="text-zinc-400 text-sm">
+                          Ajustes para "{activeMeta?.label ?? 'esta seção'}" ainda serão implementados.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 )}

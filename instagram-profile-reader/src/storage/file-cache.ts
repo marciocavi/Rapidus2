@@ -43,3 +43,5 @@ export function buildMarkdownSummary({
 
   return `# Perfil @${username}\n\n${summary}\n\n## Paleta sugerida\n${paletteList}\n\n## Chamadas para ação\n${ctasList}\n\n_Tom de voz:_ ${toneOfVoice}\n`;
 }
+
+

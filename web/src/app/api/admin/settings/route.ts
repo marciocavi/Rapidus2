@@ -26,12 +26,12 @@ export async function POST(request: NextRequest) {
     
     if (saved) {
       return NextResponse.json({ success: true, message: 'Configuration saved to server' });
-    } else {
-      return NextResponse.json(
-        { success: false, message: 'Server write not allowed, use localStorage fallback' },
-        { status: 403 }
-      );
     }
+
+    return NextResponse.json({
+      success: false,
+      message: 'Server write not allowed, using localStorage fallback',
+    });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json(

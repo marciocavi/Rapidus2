@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, GripVertical } from 'lucide-react';
 import { useSiteConfig } from '../../../context/SiteConfigContext';
+import { SiteConfig } from '@/lib/site-config';
 import TextStylePicker from '../TextStylePicker';
 import ImageUpload from '../ImageUpload';
 import ColorPicker from '../ColorPicker';
@@ -23,40 +24,55 @@ export default function FeaturesAdmin() {
     style: {}
   };
 
-  const updateFeaturesContent = (key: string, value: any) => {
-    updateConfig({
-      ...config,
+  const applyFeaturesUpdate = ({
+    contentPatch,
+    stylePatch
+  }: {
+    contentPatch?: Record<string, unknown>;
+    stylePatch?: Record<string, unknown>;
+  }) => {
+    const baseContent =
+      (featuresConfig.content as Record<string, unknown> | undefined) ??
+      (config.content?.features as Record<string, unknown> | undefined) ??
+      { items: [] };
+    const baseStyle = (featuresConfig.style as Record<string, unknown> | undefined) ?? {};
+
+    const nextSection = {
+      ...featuresConfig,
+      content: contentPatch ? { ...baseContent, ...contentPatch } : baseContent,
+      style: stylePatch ? { ...baseStyle, ...stylePatch } : baseStyle
+    };
+
+    const payload: Partial<SiteConfig> = {
       sections: {
         ...config.sections,
-        features: {
-          ...featuresConfig,
-          content: {
-            ...featuresConfig.content,
-            [key]: value
-          }
-        }
+        features: nextSection
       }
-    });
+    };
+
+    if (contentPatch && Object.keys(contentPatch).length > 0) {
+      payload.content = {
+        ...config.content,
+        features: {
+          ...(config.content?.features ?? {}),
+          ...contentPatch
+        }
+      };
+    }
+
+    updateConfig(payload);
   };
 
-  const updateFeaturesStyle = (key: string, value: any) => {
-    updateConfig({
-      ...config,
-      sections: {
-        ...config.sections,
-        features: {
-          ...featuresConfig,
-          style: {
-            ...featuresConfig.style,
-            [key]: value
-          }
-        }
-      }
-    });
+  const updateFeaturesContent = (key: string, value: unknown) => {
+    applyFeaturesUpdate({ contentPatch: { [key]: value } });
   };
 
-  const updateTextStyle = (field: string, style: any) => {
-    updateFeaturesStyle(field, style);
+  const updateFeaturesStyle = (key: string, value: unknown) => {
+    applyFeaturesUpdate({ stylePatch: { [key]: value } });
+  };
+
+  const updateTextStyle = (field: string, style: unknown) => {
+    applyFeaturesUpdate({ stylePatch: { [field]: style } });
   };
 
   const addFeature = () => {

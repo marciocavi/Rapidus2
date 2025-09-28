@@ -38,3 +38,5 @@ export interface IngestResult {
   profile: RawInstagramProfile;
   metadata: IngestMetadata;
 }
+
+

@@ -79,3 +79,5 @@ export function AnalysisResult({ result }: AnalysisResultProps) {
     </div>
   );
 }
+
+

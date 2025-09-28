@@ -20,18 +20,23 @@ export default function ImageUpload({ value, onChange, placeholder = "Clique par
     if (!file) return;
 
     setIsUploading(true);
-    
+
     try {
-      // Simular upload - em produção, usar serviço real como Cloudinary, AWS S3, etc.
-      const mockUrl = `https://images.unsplash.com/photo-${Math.random().toString(36).substr(2, 9)}?w=800&h=600&fit=crop`;
-      
-      // Simular delay do upload
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      onChange(mockUrl);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result;
+        if (typeof result === 'string') {
+          onChange(result);
+        }
+        setIsUploading(false);
+      };
+      reader.onerror = (error) => {
+        console.error('Erro ao ler arquivo:', error);
+        setIsUploading(false);
+      };
+      reader.readAsDataURL(file);
     } catch (error) {
       console.error('Erro no upload:', error);
-    } finally {
       setIsUploading(false);
     }
   };
@@ -52,7 +57,7 @@ export default function ImageUpload({ value, onChange, placeholder = "Clique par
         onChange={handleFileSelect}
         className="hidden"
       />
-      
+
       {value ? (
         <div className="relative group">
           <div className="relative w-full h-24 rounded-md border border-slate-600/30 overflow-hidden">
@@ -61,6 +66,8 @@ export default function ImageUpload({ value, onChange, placeholder = "Clique par
               alt="Preview"
               fill
               className="object-cover"
+              unoptimized
+              priority
             />
           </div>
           <button

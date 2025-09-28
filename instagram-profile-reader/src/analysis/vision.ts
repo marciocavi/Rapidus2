@@ -55,3 +55,5 @@ export function buildPaletteInsights(posts: ProfilePost[]): PaletteInsights {
     referencePostIds
   };
 }
+
+

@@ -204,7 +204,9 @@ export const SiteConfigSchema = z.object({
       title: z.string(),
       subtitle: z.string(),
       primaryButton: z.string(),
-      secondaryButton: z.string()
+      secondaryButton: z.string(),
+      primaryButtonLink: z.string().optional(),
+      secondaryButtonLink: z.string().optional()
     }),
     stats: z.object({
       items: z.array(z.object({

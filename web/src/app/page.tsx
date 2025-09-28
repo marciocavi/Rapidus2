@@ -1,11 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
+import clsx from 'clsx';
 import { useSiteConfig } from '@/context/SiteConfigContext';
+import type { TextStyle } from '@/theme/tokens';
+import { textStyleToStyle } from '@/utils/textStyle';
 
 export default function HomePage() {
   const { config } = useSiteConfig();
-  const [, setHoveredCard] = useState<number | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   if (!config) {
     return (
@@ -15,6 +18,49 @@ export default function HomePage() {
     );
   }
 
+  const toStringValue = (value: unknown, fallback = '') => {
+    if (typeof value !== 'string') return fallback;
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : fallback;
+  };
+
+  const toNumberValue = (value: unknown, fallback: number) => (typeof value === 'number' ? value : fallback);
+
+  const resolveTextStyle = (value: unknown) => {
+    if (!value || typeof value !== 'object') {
+      return { className: '', style: {} as CSSProperties };
+    }
+    const { className, style } = textStyleToStyle(value as TextStyle);
+    return { className, style };
+  };
+
+  const mergeItems = <T,>(override: unknown, fallback: T[]): T[] => (
+    Array.isArray(override) && override.length > 0 ? (override as T[]) : fallback
+  );
+
+  const animationClassMap: Record<string, string> = {
+    entrada: 'animate-fade-in',
+    parallax: 'animate-parallax',
+    rolagem: 'animate-scroll',
+    'slide-up': 'animate-slide-up',
+    'slide-down': 'animate-slide-down',
+    zoom: 'animate-zoom',
+    bounce: 'animate-bounce',
+    none: '',
+  };
+
+  const cardStyleClassMap: Record<string, string> = {
+    flat: 'border border-transparent bg-zinc-900/60',
+    elevated: 'border border-zinc-800 bg-zinc-900/70 shadow-lg',
+    outlined: 'border-2 border-zinc-700 bg-transparent',
+  };
+
+  const hoverEffectClassMap: Record<string, string> = {
+    scale: 'hover:scale-105',
+    glow: 'hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]',
+    shadow: 'hover:shadow-2xl',
+  };
+
   // Função para ordenar seções baseada na posição
   const getOrderedSections = () => {
     const sections = Object.entries(config.sections)
@@ -73,147 +119,659 @@ export default function HomePage() {
           </header>
         );
 
-      case 'hero':
-        return (
-          <section key="hero" id="hero" className="relative mx-4 sm:mx-6 lg:mx-8">
-            <div className="relative w-full h-96 overflow-hidden rounded-xl shadow-2xl bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-800">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-              
-              {/* Hero Content Overlay */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center space-y-8 px-6">
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                  <h1 
-                    className="font-bold bg-gradient-to-r from-zinc-100 via-zinc-200 to-zinc-400 bg-clip-text text-transparent drop-shadow-lg"
-                    style={{ fontSize: config.theme.fontSize?.h1 || '3rem' }}
-                  >
-                    {config.content.hero.title}
-                  </h1>
-                </div>
-                
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
-                  <p 
-                    className="text-zinc-200 max-w-2xl mx-auto leading-relaxed drop-shadow-md"
-                    style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
-                  >
-                    {config.content.hero.subtitle}
-                  </p>
-                </div>
-                
-                {/* Hero Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-400">
-                  <button 
-                    className="px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                    style={{ 
-                      backgroundColor: config.theme.button,
-                      color: config.theme.text
-                    }}
-                    onMouseEnter={() => setHoveredCard(0)}
-                    onMouseLeave={() => setHoveredCard(null)}
-                  >
-                    {config.content.hero.primaryButton}
-                  </button>
-                  <button 
-                    className="px-8 py-4 border-2 border-zinc-300 text-zinc-100 rounded-xl font-semibold hover:bg-white hover:bg-opacity-20 hover:border-zinc-200 transition-all duration-300 transform hover:scale-105"
-                    onMouseEnter={() => setHoveredCard(1)}
-                    onMouseLeave={() => setHoveredCard(null)}
-                  >
-                    {config.content.hero.secondaryButton}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
-        );
 
-      case 'features':
-        return (
-          <section key="features" id="features" className="mx-4 sm:mx-6 lg:mx-8 py-16">
-            <div className="text-center animate-in fade-in slide-in-from-bottom-4 duration-1000 mb-12">
-              <h2 
-                className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent"
-                style={{ fontSize: config.theme.fontSize?.h2 || '2.25rem' }}
-              >
-                {config.content.features.title}
-              </h2>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {config.content.features.items.map((feature: Record<string, unknown>, index: number) => (
-                <div 
-                  key={index}
-                  className="group p-8 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className="text-center">
-                    <div className="w-20 h-20 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
-                      <span className="text-3xl">⚡</span>
-                    </div>
-                    <div className="text-zinc-300 text-sm font-medium">{feature.title as string}</div>
-                  </div>
-                  
-                  <h3 
-                    className="font-semibold text-zinc-100 group-hover:text-zinc-50 transition-colors duration-300"
-                    style={{ fontSize: config.theme.fontSize?.h3 || '1.5rem' }}
-                  >
-                    {feature.title as string}
-                  </h3>
-                  
-                  <p 
-                    className="text-zinc-400 group-hover:text-zinc-300 leading-relaxed transition-colors duration-300"
-                    style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
-                  >
-                    {feature.description as string}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-        );
 
-      case 'services':
-        return (
-          <section key="services" id="services" className="mx-4 sm:mx-6 lg:mx-8 py-16">
-            <div className="text-center animate-in fade-in slide-in-from-bottom-4 duration-1000 mb-12">
-              <h2 
-                className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent"
-                style={{ fontSize: config.theme.fontSize?.h2 || '2.25rem' }}
-              >
-                {config.content.services.title}
-              </h2>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {config.content.services.items.map((service: Record<string, unknown>, index: number) => (
-                <div 
-                  key={index}
-                  className="group p-8 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className="text-center">
-                    <div className="w-20 h-20 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
-                      <span className="text-3xl">🔧</span>
-                    </div>
-                    <div className="text-zinc-300 text-sm font-medium">{service.title as string}</div>
-                  </div>
-                  
-                  <h3 
-                    className="font-semibold text-zinc-100 group-hover:text-zinc-50 transition-colors duration-300"
-                    style={{ fontSize: config.theme.fontSize?.h3 || '1.5rem' }}
-                  >
-                    {service.title as string}
-                  </h3>
-                  
-                  <p 
-                    className="text-zinc-400 group-hover:text-zinc-300 leading-relaxed transition-colors duration-300"
-                    style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
-                  >
-                    {service.description as string}
-                  </p>
+      case 'hero': {
+
+  const overrides = config.sections.hero?.content as Record<string, unknown> | undefined;
+
+
+
+  const normalizeText = (value: unknown, fallback: string) => {
+
+    if (typeof value !== 'string') return fallback;
+
+    const trimmed = value.trim();
+
+    return trimmed.length > 0 ? trimmed : fallback;
+
+  };
+
+
+
+  const normalizeUrl = (value: unknown, fallback: string = '') => {
+
+    if (typeof value !== 'string') return fallback;
+
+    const trimmed = value.trim();
+
+    return trimmed.length > 0 ? trimmed : fallback;
+
+  };
+
+
+
+  const heroTitle = normalizeText(overrides?.['title'], config.content.hero.title);
+
+  const heroSubtitle = normalizeText(overrides?.['subtitle'], config.content.hero.subtitle);
+
+  const heroPrimaryLabel = normalizeText(overrides?.['primaryButton'], config.content.hero.primaryButton);
+
+  const heroSecondaryLabel = normalizeText(overrides?.['secondaryButton'], config.content.hero.secondaryButton);
+
+
+
+  const heroPrimaryLink = normalizeUrl(overrides?.['primaryButtonLink']);
+
+  const heroSecondaryLink = normalizeUrl(overrides?.['secondaryButtonLink']);
+
+
+
+  const heroImageCandidates = [
+
+    overrides?.['image'],
+
+    overrides?.['bannerImage'],
+
+    config.content.hero.bannerImage,
+
+  ];
+
+  const heroImage = heroImageCandidates
+
+    .map((candidate) => normalizeUrl(candidate))
+
+    .find((candidate) => candidate.length > 0) ?? '';
+
+  const heroBackgroundImage = normalizeUrl(overrides?.['backgroundImage']);
+
+  const heroBackgroundVideo = normalizeUrl(overrides?.['backgroundVideo']);
+
+
+
+  const resolveHref = (href: string) => (href.length > 0 ? href : '#');
+
+  const computeLinkProps = (href: string) =>
+
+    /^(https?:)?\/\//i.test(href) ? { target: '_blank', rel: 'noopener noreferrer' as const } : {};
+
+
+
+  const primaryHref = resolveHref(heroPrimaryLink);
+
+  const secondaryHref = resolveHref(heroSecondaryLink);
+
+  const primaryLinkProps = computeLinkProps(primaryHref);
+
+  const secondaryLinkProps = computeLinkProps(secondaryHref);
+
+
+
+  const containerStyles: Record<string, string> = {
+
+    backgroundSize: 'cover',
+
+    backgroundPosition: 'center',
+
+    backgroundRepeat: 'no-repeat',
+
+  };
+
+  if (heroBackgroundImage && !heroBackgroundVideo) {
+
+    containerStyles.backgroundImage = `url(${heroBackgroundImage})`;
+
+  }
+
+
+
+  return (
+
+    <section key="hero" id="hero" className="relative mx-4 sm:mx-6 lg:mx-8">
+
+      <div className="relative w-full h-96 overflow-hidden rounded-xl shadow-2xl" style={containerStyles}>
+
+        {!heroBackgroundImage && !heroBackgroundVideo && (
+
+          <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-800" />
+
+        )}
+
+
+
+        {heroBackgroundVideo && (
+
+          <video
+
+            className="absolute inset-0 w-full h-full object-cover"
+
+            src={heroBackgroundVideo}
+
+            autoPlay
+
+            muted
+
+            loop
+
+            playsInline
+
+            aria-hidden="true"
+
+          />
+
+        )}
+
+
+
+        {heroImage && (
+
+          <img
+
+            src={heroImage}
+
+            alt={normalizeText(overrides?.['bannerAlt'], 'Hero background')}
+
+            className="absolute inset-0 w-full h-full object-cover opacity-70"
+
+          />
+
+        )}
+
+
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+
+
+
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center space-y-8 px-6">
+
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
+
+            <h1
+
+              className="font-bold bg-gradient-to-r from-zinc-100 via-zinc-200 to-zinc-400 bg-clip-text text-transparent drop-shadow-lg"
+
+              style={{ fontSize: config.theme.fontSize?.h1 || '3rem' }}
+
+            >
+
+              {heroTitle}
+
+            </h1>
+
+          </div>
+
+
+
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
+
+            <p
+
+              className="text-zinc-200 max-w-2xl mx-auto leading-relaxed drop-shadow-md"
+
+              style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
+
+            >
+
+              {heroSubtitle}
+
+            </p>
+
+          </div>
+
+
+
+          {/* Hero Buttons */}
+
+          <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-400">
+
+            <a
+
+              className="px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+
+              style={{
+
+                backgroundColor: config.theme.button,
+
+                color: config.theme.text,
+
+              }}
+
+              onMouseEnter={() => setHoveredCard(0)}
+
+              onMouseLeave={() => setHoveredCard(null)}
+
+              href={primaryHref}
+
+              {...primaryLinkProps}
+
+            >
+
+              {heroPrimaryLabel}
+
+            </a>
+
+            <a
+
+              className="px-8 py-4 border-2 border-zinc-300 text-zinc-100 rounded-xl font-semibold hover:bg-white hover:bg-opacity-20 hover:border-zinc-200 transition-all duration-300 transform hover:scale-105"
+
+              onMouseEnter={() => setHoveredCard(1)}
+
+              onMouseLeave={() => setHoveredCard(null)}
+
+              href={secondaryHref}
+
+              {...secondaryLinkProps}
+
+            >
+
+              {heroSecondaryLabel}
+
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  );
+
+}
+
+
+
+
+
+
+
+      case 'features': {
+
+  const overrides = config.sections.features?.content as Record<string, unknown> | undefined;
+
+  const fallbackItems = config.content.features.items as Record<string, unknown>[];
+
+  const merged = {
+
+    ...config.content.features,
+
+    ...(overrides ?? {}),
+
+  } as { title: string; items?: Record<string, unknown>[] };
+
+
+
+  const normalizeText = (value: unknown, fallback: string) => {
+
+    if (typeof value !== 'string') return fallback;
+
+    const trimmed = value.trim();
+
+    return trimmed.length > 0 ? trimmed : fallback;
+
+  };
+
+
+
+  const normalizeUrl = (value: unknown, fallback: string = '') => {
+
+    if (typeof value !== 'string') return fallback;
+
+    const trimmed = value.trim();
+
+    return trimmed.length > 0 ? trimmed : fallback;
+
+  };
+
+
+
+  const items = Array.isArray(merged.items) && merged.items.length > 0 ? merged.items : fallbackItems;
+
+
+
+  return (
+
+    <section key="features" id="features" className="mx-4 sm:mx-6 lg:mx-8 py-16">
+
+      <div className="text-center animate-in fade-in slide-in-from-bottom-4 duration-1000 mb-12">
+
+        <h2
+
+          className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent"
+
+          style={{ fontSize: config.theme.fontSize?.h2 || '2.25rem' }}
+
+        >
+
+          {normalizeText(merged.title, config.content.features.title)}
+
+        </h2>
+
+      </div>
+
+
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        {items.map((feature, index) => {
+
+          const featureRecord = feature as Record<string, unknown>;
+
+          const baseRecord = (fallbackItems[index] ?? {}) as Record<string, unknown>;
+
+          const title = normalizeText(featureRecord['title'], normalizeText(baseRecord['title'], `Feature ${index + 1}`));
+
+          const description = normalizeText(featureRecord['description'], normalizeText(baseRecord['description'], ''));
+
+          const icon = normalizeText(featureRecord['icon'], normalizeText(baseRecord['icon'], '★'));
+
+          const imageUrl = normalizeUrl(featureRecord['image'], normalizeUrl(baseRecord['image']));
+
+
+
+          return (
+
+            <div
+
+              key={index}
+
+              className="group p-8 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+
+              style={{ animationDelay: `${index * 100}ms` }}
+
+            >
+
+              {imageUrl ? (
+
+                <div className="mb-4 overflow-hidden rounded-xl border border-zinc-800">
+
+                  <img src={imageUrl} alt={title} className="w-full h-36 object-cover" />
+
                 </div>
-              ))}
+
+              ) : (
+
+                <div className="w-20 h-20 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
+
+                  <span className="text-3xl">{icon}</span>
+
+                </div>
+
+              )}
+
+
+
+              <h3
+
+                className="font-semibold text-zinc-100 group-hover:text-zinc-50 transition-colors duration-300 text-center"
+
+                style={{ fontSize: config.theme.fontSize?.h3 || '1.5rem' }}
+
+              >
+
+                {title}
+
+              </h3>
+
+
+
+              <p
+
+                className="text-zinc-400 group-hover:text-zinc-300 leading-relaxed transition-colors duration-300 text-center mt-2"
+
+                style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
+
+              >
+
+                {description}
+
+              </p>
+
             </div>
-          </section>
-        );
+
+          );
+
+        })}
+
+      </div>
+
+    </section>
+
+  );
+
+}
+
+
+
+
+
+
+
+      case 'services': {
+
+  const overrides = config.sections.services?.content as Record<string, unknown> | undefined;
+
+  const fallbackItems = config.content.services.items as Record<string, unknown>[];
+
+  const merged = {
+
+    ...config.content.services,
+
+    ...(overrides ?? {}),
+
+  } as { title: string; items?: Record<string, unknown>[] };
+
+
+
+  const normalizeText = (value: unknown, fallback: string) => {
+
+    if (typeof value !== 'string') return fallback;
+
+    const trimmed = value.trim();
+
+    return trimmed.length > 0 ? trimmed : fallback;
+
+  };
+
+
+
+  const normalizeUrl = (value: unknown, fallback: string = '') => {
+
+    if (typeof value !== 'string') return fallback;
+
+    const trimmed = value.trim();
+
+    return trimmed.length > 0 ? trimmed : fallback;
+
+  };
+
+
+
+  const computeLinkProps = (href: string) =>
+
+    /^(https?:)?\/\//i.test(href) ? { target: '_blank', rel: 'noopener noreferrer' as const } : {};
+
+
+
+  const items = Array.isArray(merged.items) && merged.items.length > 0 ? merged.items : fallbackItems;
+
+
+
+  return (
+
+    <section key="services" id="services" className="mx-4 sm:mx-6 lg:mx-8 py-16">
+
+      <div className="text-center animate-in fade-in slide-in-from-bottom-4 duration-1000 mb-12">
+
+        <h2
+
+          className="font-semibold bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent"
+
+          style={{ fontSize: config.theme.fontSize?.h2 || '2.25rem' }}
+
+        >
+
+          {normalizeText(merged.title, config.content.services.title)}
+
+        </h2>
+
+      </div>
+
+
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        {items.map((service, index) => {
+
+          const serviceRecord = service as Record<string, unknown>;
+
+          const baseRecord = (fallbackItems[index] ?? {}) as Record<string, unknown>;
+
+          const title = normalizeText(serviceRecord['title'], normalizeText(baseRecord['title'], `Serviço ${index + 1}`));
+
+          const description = normalizeText(serviceRecord['description'], normalizeText(baseRecord['description'], ''));
+
+          const icon = normalizeText(serviceRecord['icon'], normalizeText(baseRecord['icon'], '⚙'));
+
+          const imageUrl = normalizeUrl(serviceRecord['image'], normalizeUrl(baseRecord['image']));
+
+          const link = normalizeUrl(serviceRecord['link'], normalizeUrl(baseRecord['link']));
+
+          const featuresList = (
+
+            Array.isArray(serviceRecord['features']) && serviceRecord['features'].length > 0
+
+              ? serviceRecord['features']
+
+              : Array.isArray(baseRecord['features'])
+
+                ? baseRecord['features']
+
+                : []
+
+          ) as unknown[];
+
+
+
+          return (
+
+            <div
+
+              key={index}
+
+              className="group p-8 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+
+              style={{ animationDelay: `${index * 100}ms` }}
+
+            >
+
+              {imageUrl ? (
+
+                <div className="mb-4 overflow-hidden rounded-xl border border-zinc-800">
+
+                  <img src={imageUrl} alt={title} className="w-full h-36 object-cover" />
+
+                </div>
+
+              ) : (
+
+                <div className="w-20 h-20 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl flex items-center justify-center mx-auto mb-4">
+
+                  <span className="text-3xl">{icon}</span>
+
+                </div>
+
+              )}
+
+
+
+              <h3
+
+                className="font-semibold text-zinc-100 group-hover:text-zinc-50 transition-colors duration-300 text-center"
+
+                style={{ fontSize: config.theme.fontSize?.h3 || '1.5rem' }}
+
+              >
+
+                {title}
+
+              </h3>
+
+
+
+              <p
+
+                className="text-zinc-400 group-hover:text-zinc-300 leading-relaxed transition-colors duration-300 text-center mt-2"
+
+                style={{ fontSize: config.theme.fontSize?.body || '1rem' }}
+
+              >
+
+                {description}
+
+              </p>
+
+
+
+              {featuresList.length > 0 && (
+
+                <ul className="mt-4 space-y-1 text-sm text-zinc-300">
+
+                  {featuresList.map((featureItem, featureIndex) => (
+
+                    <li key={featureIndex} className="flex items-center gap-2">
+
+                      <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
+
+                      <span>{normalizeText(featureItem, '')}</span>
+
+                    </li>
+
+                  ))}
+
+                </ul>
+
+              )}
+
+
+
+              {link && (
+
+                <a
+
+                  href={link}
+
+                  {...computeLinkProps(link)}
+
+                  className="inline-flex mt-4 items-center justify-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 transition-colors"
+
+                >
+
+                  Saiba mais
+
+                </a>
+
+              )}
+
+            </div>
+
+          );
+
+        })}
+
+      </div>
+
+    </section>
+
+  );
+
+}
+
+
+
+
 
       case 'parceiros':
         return (

@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { useSiteConfig } from '../../../context/SiteConfigContext';
+import { SiteConfig } from '@/lib/site-config';
 import TextStylePicker from '../TextStylePicker';
 import ImageUpload from '../ImageUpload';
 import ColorPicker from '../ColorPicker';
@@ -22,40 +23,58 @@ export default function HeroAdmin() {
     style: {}
   };
 
-  const updateHeroContent = (key: string, value: any) => {
-    updateConfig({
-      ...config,
+  const applyHeroUpdate = ({
+    sectionPatch,
+    contentPatch,
+    stylePatch
+  }: {
+    sectionPatch?: Record<string, unknown>;
+    contentPatch?: Record<string, unknown>;
+    stylePatch?: Record<string, unknown>;
+  }) => {
+    const baseContent =
+      (heroConfig.content as Record<string, unknown> | undefined) ??
+      (config.content?.hero as Record<string, unknown> | undefined) ??
+      {};
+    const baseStyle = (heroConfig.style as Record<string, unknown> | undefined) ?? {};
+
+    const nextSection = {
+      ...heroConfig,
+      ...(sectionPatch ?? {}),
+      content: contentPatch ? { ...baseContent, ...contentPatch } : baseContent,
+      style: stylePatch ? { ...baseStyle, ...stylePatch } : baseStyle
+    };
+
+    const payload: Partial<SiteConfig> = {
       sections: {
         ...config.sections,
-        hero: {
-          ...heroConfig,
-          content: {
-            ...heroConfig.content,
-            [key]: value
-          }
-        }
+        hero: nextSection
       }
-    });
+    };
+
+    if (contentPatch && Object.keys(contentPatch).length > 0) {
+      payload.content = {
+        ...config.content,
+        hero: {
+          ...(config.content?.hero ?? {}),
+          ...contentPatch
+        }
+      };
+    }
+
+    updateConfig(payload);
   };
 
-  const updateHeroStyle = (key: string, value: any) => {
-    updateConfig({
-      ...config,
-      sections: {
-        ...config.sections,
-        hero: {
-          ...heroConfig,
-          style: {
-            ...heroConfig.style,
-            [key]: value
-          }
-        }
-      }
-    });
+  const updateHeroContent = (key: string, value: unknown) => {
+    applyHeroUpdate({ contentPatch: { [key]: value } });
   };
 
-  const updateTextStyle = (field: string, style: any) => {
-    updateHeroStyle(field, style);
+  const updateHeroStyle = (key: string, value: unknown) => {
+    applyHeroUpdate({ stylePatch: { [key]: value } });
+  };
+
+  const updateTextStyle = (field: string, style: unknown) => {
+    applyHeroUpdate({ stylePatch: { [field]: style } });
   };
 
   return (
