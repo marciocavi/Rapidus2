@@ -1,0 +1,49 @@
+﻿diff --git a/web/src/app/page.tsx b/web/src/app/page.tsx
+--- a/web/src/app/page.tsx
++++ b/web/src/app/page.tsx
+@@ -108,12 +108,26 @@ export default function HomePage() {
+-  const getOrderedSections = () => {
+-    const sections = Object.entries(config.sections)
+-      .filter(([, section]) => section?.enabled)
+-      .map(([key, section]) => ({
+-        key,
+-        section,
+-        position: section?.position || 999
+-      }))
+-      .sort((a, b) => a.position - b.position);
+-    
+-    console.log('Ordered sections:', sections.map(s => ({ key: s.key, position: s.position })));
+-    return sections;
++  const getOrderedSections = () => {
++    const items = Object.entries(config.sections)
++      .filter(([, section]) => section?.enabled)
++      .map(([key, section]) => ({
++        key,
++        section,
++        position: section?.position ?? 999,
++      }))
++      .sort((a, b) => a.position - b.position);
++
++    const headerIndex = items.findIndex((item) => item.key === 'header');
++    const footerIndex = items.findIndex((item) => item.key === 'footer');
++
++    const reordered: typeof items = [];
++
++    if (headerIndex !== -1) {
++      reordered.push(items[headerIndex]);
++    }
++
++    items.forEach((item, index) => {
++      if (index !== headerIndex && index !== footerIndex) {
++        reordered.push(item);
++      }
++    });
++
++    if (footerIndex !== -1 && footerIndex !== headerIndex) {
++      reordered.push(items[footerIndex]);
++    }
++
++    return reordered;
+   };
+ 
+   const orderedSections = getOrderedSections();

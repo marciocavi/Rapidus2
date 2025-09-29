@@ -18,65 +18,149 @@ export default function HomePage() {
     );
   }
 
-  const toStringValue = (value: unknown, fallback = '') => {
-    if (typeof value !== 'string') return fallback;
-    const trimmed = value.trim();
-    return trimmed.length > 0 ? trimmed : fallback;
-  };
-
-  const toNumberValue = (value: unknown, fallback: number) => (typeof value === 'number' ? value : fallback);
-
-  const resolveTextStyle = (value: unknown) => {
-    if (!value || typeof value !== 'object') {
-      return { className: '', style: {} as CSSProperties };
-    }
-    const { className, style } = textStyleToStyle(value as TextStyle);
-    return { className, style };
-  };
-
-  const mergeItems = <T,>(override: unknown, fallback: T[]): T[] => (
-    Array.isArray(override) && override.length > 0 ? (override as T[]) : fallback
-  );
-
-  const animationClassMap: Record<string, string> = {
-    entrada: 'animate-fade-in',
-    parallax: 'animate-parallax',
-    rolagem: 'animate-scroll',
-    'slide-up': 'animate-slide-up',
-    'slide-down': 'animate-slide-down',
-    zoom: 'animate-zoom',
-    bounce: 'animate-bounce',
-    none: '',
-  };
-
-  const cardStyleClassMap: Record<string, string> = {
-    flat: 'border border-transparent bg-zinc-900/60',
-    elevated: 'border border-zinc-800 bg-zinc-900/70 shadow-lg',
-    outlined: 'border-2 border-zinc-700 bg-transparent',
-  };
-
-  const hoverEffectClassMap: Record<string, string> = {
-    scale: 'hover:scale-105',
-    glow: 'hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]',
-    shadow: 'hover:shadow-2xl',
-  };
-
+  const toStringValue = (value: unknown, fallback = '') => {
+
+    if (typeof value !== 'string') return fallback;
+
+    const trimmed = value.trim();
+
+    return trimmed.length > 0 ? trimmed : fallback;
+
+  };
+
+
+
+  const toNumberValue = (value: unknown, fallback: number) => (typeof value === 'number' ? value : fallback);
+
+
+
+  const resolveTextStyle = (value: unknown) => {
+
+    if (!value || typeof value !== 'object') {
+
+      return { className: '', style: {} as CSSProperties };
+
+    }
+
+    const { className, style } = textStyleToStyle(value as TextStyle);
+
+    return { className, style };
+
+  };
+
+
+
+  const mergeItems = <T,>(override: unknown, fallback: T[]): T[] => (
+
+    Array.isArray(override) && override.length > 0 ? (override as T[]) : fallback
+
+  );
+
+
+
+  const animationClassMap: Record<string, string> = {
+
+    entrada: 'animate-fade-in',
+
+    parallax: 'animate-parallax',
+
+    rolagem: 'animate-scroll',
+
+    'slide-up': 'animate-slide-up',
+
+    'slide-down': 'animate-slide-down',
+
+    zoom: 'animate-zoom',
+
+    bounce: 'animate-bounce',
+
+    none: '',
+
+  };
+
+
+
+  const cardStyleClassMap: Record<string, string> = {
+
+    flat: 'border border-transparent bg-zinc-900/60',
+
+    elevated: 'border border-zinc-800 bg-zinc-900/70 shadow-lg',
+
+    outlined: 'border-2 border-zinc-700 bg-transparent',
+
+  };
+
+
+
+  const hoverEffectClassMap: Record<string, string> = {
+
+    scale: 'hover:scale-105',
+
+    glow: 'hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]',
+
+    shadow: 'hover:shadow-2xl',
+
+  };
+
+
+
   // Função para ordenar seções baseada na posição
   const getOrderedSections = () => {
-    const sections = Object.entries(config.sections)
+    const items = Object.entries(config.sections)
       .filter(([, section]) => section?.enabled)
       .map(([key, section]) => ({
         key,
         section,
-        position: section?.position || 999
+        position: section?.position ?? 999,
       }))
       .sort((a, b) => a.position - b.position);
-    
-    console.log('Ordered sections:', sections.map(s => ({ key: s.key, position: s.position })));
-    return sections;
+
+    const headerIndex = items.findIndex((item) => item.key === 'header');
+    const footerIndex = items.findIndex((item) => item.key === 'footer');
+
+    const reordered: typeof items = [];
+
+    if (headerIndex !== -1) {
+      reordered.push(items[headerIndex]);
+    }
+
+    items.forEach((item, index) => {
+      if (index !== headerIndex && index !== footerIndex) {
+        reordered.push(item);
+      }
+    });
+
+    if (footerIndex !== -1 && footerIndex !== headerIndex) {
+      reordered.push(items[footerIndex]);
+    }
+
+    return reordered;
   };
 
   const orderedSections = getOrderedSections();
+
+  const normalizedSections = (() => {
+    const header = orderedSections.find((section) => section.key === 'header');
+    const footer = orderedSections.find((section) => section.key === 'footer');
+
+    const middle = orderedSections.filter(
+      (section) => section.key !== 'header' && section.key !== 'footer'
+    );
+
+    const result = [] as typeof orderedSections;
+
+    if (header) {
+      result.push(header);
+    }
+
+    result.push(...middle);
+
+    if (footer && footer !== header) {
+      result.push(footer);
+    }
+
+    return result;
+  })();
 
   // Componente para renderizar seções dinamicamente
   const renderSection = (sectionKey: string) => {
@@ -1143,7 +1227,7 @@ export default function HomePage() {
   return (
     <div className="space-y-12" style={{ fontFamily: config.theme.font }}>
       {/* Renderizar seções na ordem definida */}
-      {orderedSections.map(({ key }) => renderSection(key))}
+      {normalizedSections.map(({ key }) => renderSection(key))}
     </div>
   );
 }
