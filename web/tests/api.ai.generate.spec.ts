@@ -1,14 +1,22 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import { POST } from '@/app/api/ai/site/generate/route';
+import { NextRequest } from 'next/server';
 
-const base = process.env.TEST_BASE_URL ?? 'http://localhost:3000';
+vi.mock('@/config/featureFlags', () => ({
+  featureFlags: {
+    AI_DRY_RUN: true,
+    AI_ASSISTANT_ENABLED: true,
+  },
+  assertAssistantEnabled: () => {},
+}));
 
 describe('AI generate (dry-run)', () => {
   it('POST /api/ai/site/generate retorna plano válido', async () => {
-    const res = await fetch(`${base}/api/ai/site/generate`, {
+    const req = new NextRequest('http://localhost', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt: 'Gerar título do herói' }),
     });
+    const res = await POST(req);
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json).toHaveProperty('plan.layout.sections');
@@ -18,11 +26,11 @@ describe('AI generate (dry-run)', () => {
     const calls = 11; // limite é 10/min
     let lastStatus = 0;
     for (let i = 0; i < calls; i++) {
-      const res = await fetch(`${base}/api/ai/site/generate`, {
+      const req = new NextRequest('http://localhost', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: 'ratelimit' }),
       });
+      const res = await POST(req);
       lastStatus = res.status;
       // pequena espera para não sobrecarregar o dev server em Windows
       await new Promise((r) => setTimeout(r, 50));

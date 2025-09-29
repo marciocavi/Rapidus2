@@ -1,20 +1,24 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import { GET as GET_plan, POST as POST_plan } from '@/app/api/ai/site/plan/route';
+import { GET as GET_components } from '@/app/api/ai/site/components-map/route';
+import { NextRequest } from 'next/server';
 
-// Esses testes são brandos: apenas verificam que os endpoints respondem 200
-// quando as flags estão habilitadas e que retornam o formato básico esperado.
-
-const base = process.env.TEST_BASE_URL ?? 'http://localhost:3000';
-const isReal = String(process.env.AI_DRY_RUN).toLowerCase() === 'false';
-const WAIT = isReal ? 20000 : 5000;
+vi.mock('@/config/featureFlags', () => ({
+  featureFlags: {
+    AI_DRY_RUN: true,
+    AI_ASSISTANT_ENABLED: true,
+  },
+  assertAssistantEnabled: () => {},
+}));
 
 describe('AI endpoints (dry-run)', () => {
   it('GET /api/ai/site/plan deve responder 200 e conter layout', async () => {
-    const res = await fetch(`${base}/api/ai/site/plan`);
+    const res = await GET_plan();
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json).toHaveProperty('plan.layout.sections');
     expect(typeof json.dryRun).toBe('boolean');
-  }, WAIT);
+  });
 
   it('POST /api/ai/site/plan valida e retorna shape válido', async () => {
     const body = {
@@ -24,23 +28,23 @@ describe('AI endpoints (dry-run)', () => {
         ctas: [{ text: 'OK', href: '/' }],
       },
     };
-    const res = await fetch(`${base}/api/ai/site/plan`, {
+    const req = new NextRequest('http://localhost', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
+    const res = await POST_plan(req);
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(typeof json.dryRun).toBe('boolean');
     expect(json).toHaveProperty('plan.layout.sections');
-  }, WAIT);
+  });
 
   it('GET /api/ai/site/components-map deve responder 200 e conter components', async () => {
-    const res = await fetch(`${base}/api/ai/site/components-map`);
+    const res = await GET_components();
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json).toHaveProperty('components');
-  }, WAIT);
+  });
 });
 
 
