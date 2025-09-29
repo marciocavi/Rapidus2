@@ -2,6 +2,12 @@ import { NextResponse } from 'next/server';
 import { assertAssistantEnabled } from '@/config/featureFlags';
 
 // Mapa simples de componentes disponíveis no projeto com props esperadas (superficial)
+// TODO: Futuramente, este mapa pode ser gerado dinamicamente em tempo de build.
+// Um script poderia escanear o diretório `src/sections`, usar uma ferramenta como
+// `react-docgen-typescript` para extrair as props de cada componente de seção
+// e gerar este mapa automaticamente. Isso evitaria a dessincronização manual
+// entre os componentes reais e os que a IA conhece.
+
 export async function GET() {
   try {
     assertAssistantEnabled();

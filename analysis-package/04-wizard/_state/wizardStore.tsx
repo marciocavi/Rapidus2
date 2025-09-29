@@ -1,9 +1,9 @@
 "use client";
 import { createContext, useContext, useMemo, useRef, useState, type ReactNode } from 'react';
 
-export type Palette = { primary: string; secondary: string; accent: string; neutral: string; background: string };
-export type Typography = { heading: string; body: string };
-export type SectionKey = 'hero'|'carousel'|'portfolio'|'contacts'|'blog'|'testimonials'|'floatingIcons';
+type Palette = { primary: string; secondary: string; accent: string; neutral: string; background: string };
+type Typography = { heading: string; body: string };
+type SectionKey = 'hero'|'carousel'|'portfolio'|'contacts'|'blog'|'testimonials'|'floatingIcons';
 
 export interface WizardState {
   identity: { name: string; slogan?: string };
@@ -17,11 +17,11 @@ export interface WizardState {
   stepIndex: number;
 }
 
-type WizardActions = {
-  setState: (partial: Partial<WizardState>) => void;
+interface WizardActions {
   nextStep: () => void;
   prevStep: () => void;
   reset: () => void;
+  saveDraft: () => void;
 };
 
 const DEFAULT_STATE: WizardState = {
@@ -76,9 +76,11 @@ export function WizardProvider({ children }: { children: ReactNode }) {
   const stateRef = useRef(state);
   stateRef.current = state;
 
-  const api: WizardContextValue = useMemo(() => ({
+  const api = useMemo((): WizardContextValue => ({
     ...state,
-    setState: (partial) => {
+    // Esta função genérica não deve ser exposta. Usar actions específicas.
+    // A lógica foi movida para dentro do useMemo para ser usada pelas actions.
+    setState: (partial: Partial<WizardState>) => {
       const next = { ...stateRef.current, ...partial, dirty: true } as WizardState;
       setStateInternal(next);
       saveToStorage(next);
@@ -86,6 +88,11 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     nextStep: () => setStateInternal((s) => ({ ...s, stepIndex: s.stepIndex + 1, dirty: true })),
     prevStep: () => setStateInternal((s) => ({ ...s, stepIndex: Math.max(0, s.stepIndex - 1), dirty: true })),
     reset: () => setStateInternal(DEFAULT_STATE),
+    saveDraft: () => {
+      const next = { ...stateRef.current, dirty: false };
+      setStateInternal(next);
+      saveToStorage(next);
+    },
   }), [state]);
 
   return <WizardContext.Provider value={api}>{children}</WizardContext.Provider>;
@@ -96,6 +103,3 @@ export function useWizardStore(): WizardContextValue {
   if (!ctx) throw new Error('WizardProvider ausente');
   return ctx;
 }
-
-
-
