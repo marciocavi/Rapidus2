@@ -35,12 +35,34 @@ export function hasOpenAI(): boolean {
   return Boolean(integrationsEnv.OPENAI_API_KEY);
 }
 
-export function hasGA4(): boolean {
-  return Boolean(
-    integrationsEnv.GA4_PROPERTY_ID &&
-      (integrationsEnv.GOOGLE_APPLICATION_CREDENTIALS_JSON ||
-        (integrationsEnv.GA_OAUTH_CLIENT_ID && integrationsEnv.GA_OAUTH_CLIENT_SECRET && integrationsEnv.GA_OAUTH_REFRESH_TOKEN))
+export type GA4ConfigInput = Partial<
+  Pick<
+    IntegrationsEnv,
+    | 'GA4_PROPERTY_ID'
+    | 'GOOGLE_APPLICATION_CREDENTIALS_JSON'
+    | 'GA_OAUTH_CLIENT_ID'
+    | 'GA_OAUTH_CLIENT_SECRET'
+    | 'GA_OAUTH_REFRESH_TOKEN'
+  >
+>;
+
+export function hasGA4Config(config: GA4ConfigInput): boolean {
+  if (!config.GA4_PROPERTY_ID) {
+    return false;
+  }
+
+  const hasServiceAccount = Boolean(config.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+  const hasOAuthCredentials = Boolean(
+    config.GA_OAUTH_CLIENT_ID &&
+      config.GA_OAUTH_CLIENT_SECRET &&
+      config.GA_OAUTH_REFRESH_TOKEN
   );
+
+  return hasServiceAccount || hasOAuthCredentials;
+}
+
+export function hasGA4(): boolean {
+  return hasGA4Config(integrationsEnv);
 }
 
 
