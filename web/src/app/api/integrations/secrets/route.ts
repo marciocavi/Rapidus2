@@ -17,7 +17,10 @@ export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as Record<string, string | undefined>;
     const current = loadSecrets();
-    const merged = { ...current, ...body };
+    const sanitized = Object.fromEntries(
+      Object.entries(body).map(([key, value]) => [key, typeof value === 'string' ? value : undefined])
+    );
+    const merged = { ...current, ...sanitized } as Parameters<typeof saveSecretsLocal>[0];
     saveSecretsLocal(merged);
     return NextResponse.json({ ok: true });
   } catch (e: any) {

@@ -103,6 +103,24 @@ NEXT_PUBLIC_MODERN_ADMIN_UI=0
 NEXT_PUBLIC_ENABLE_DEBUG=false
 ```
 
+### **Integrações do Google Analytics 4**
+```bash
+# Identificação da propriedade
+GA4_PROPERTY_ID=
+
+# Credenciais via service account
+GA4_SA_EMAIL=
+GA4_SA_KEY_BASE64=
+
+# Alternativa OAuth 2.0
+GA4_CLIENT_ID=
+GA4_CLIENT_SECRET=
+GA4_REFRESH_TOKEN=
+```
+> 💡 O campo `GA4_SA_KEY_BASE64` aceita tanto o JSON da chave (será convertido automaticamente)
+> quanto o conteúdo já codificado em Base64. Os campos legados `GOOGLE_APPLICATION_CREDENTIALS_JSON`
+> e `GA_OAUTH_*` continuam aceitos apenas como fallback.
+
 ## ⚠️ Regras e Boas Práticas
 
 ### **✅ Permitido**
